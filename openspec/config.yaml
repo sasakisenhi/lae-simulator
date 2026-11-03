@@ -1,0 +1,173 @@
+schema: spec-driven
+
+rules:
+  proposal:
+    - >-
+      State the problem, intended outcome, scope, and material exclusions
+      separately. Do not present an implementation mechanism as the reason
+      for the change.
+    - >-
+      Identify material assumptions that affect correctness, scope,
+      architecture, or verification. For each assumption, record whether it
+      is verified, the consequence if it is false, and how or where it will be
+      validated.
+    - >-
+      Identify affected capabilities, external contracts, dependencies, and
+      operational boundaries. Reuse existing capability paths rather than
+      creating near-duplicates.
+    - >-
+      When the change modifies upstream intent or a shared contract, identify
+      the downstream artifacts or consumers that will require revalidation.
+
+  specs:
+    - >-
+      Each requirement MUST express one independently identifiable obligation.
+      Split behaviors that can be independently implemented, verified, failed,
+      or changed into separate requirements.
+    - >-
+      Define observable behavior without prescribing an implementation
+      mechanism. Each scenario must make the triggering condition and expected
+      observable result identifiable.
+    - >-
+      When acceptance depends on observation or attribution, identify the
+      required evidence or responsible observer.
+    - >-
+      When evaluation can legitimately be inconclusive, preserve an explicit
+      state such as UNKNOWN, INVALID, or UNAVAILABLE rather than coercing the
+      outcome into PASS or FAIL.
+    - >-
+      When failure, retry, recovery, fallback, degraded operation,
+      reconciliation, or self-healing is material, specify both the required
+      behavior and material exclusions that must not be interpreted as
+      supported.
+    - >-
+      Keep required/optional semantics, field constraints, error conditions,
+      and examples consistent with affected external contracts.
+
+  design:
+    - >-
+      Ground significant design decisions in the repository. Inspect relevant
+      modules, abstractions, interfaces, conventions, dependencies, tests, and
+      integration points before introducing a new mechanism.
+    - >-
+      Prefer extending an established repository pattern over introducing a
+      parallel abstraction unless the deviation and its rationale are explicit.
+    - >-
+      For each significant technical decision, reference the requirement,
+      scenario, quality condition, or explicit constraint that justifies it.
+      Use the exact requirement name and capability path, or a stable identifier
+      when one exists.
+    - >-
+      Distinguish normative or desired state, raw observed state, interpreted
+      or derived state, and the action taken in response to differences when
+      those concepts are material to the domain.
+    - >-
+      Record external assumptions that materially affect reproducibility or
+      correctness, including runtime, platform, protocol, schema, dependency,
+      and infrastructure capabilities.
+    - >-
+      For retry, recovery, reconciliation, fallback, or degraded-mode behavior,
+      identify which component detects the condition, which component responds,
+      and which failure modes are intentionally not handled.
+    - >-
+      Flag decisions that are difficult to reverse, high blast-radius,
+      security/privacy sensitive, operationally expensive, or strongly
+      constraining to downstream design.
+    - >-
+      Do not silently promote an unverified assumption from the proposal or
+      specification into a design fact.
+
+  tasks:
+    - >-
+      Each task MUST describe one coherent implementation outcome that can be
+      reasonably reviewed and verified as a unit.
+    - >-
+      Split a task when it combines distinct outcomes or when keeping the work
+      together would materially obscure ownership, verification, failure
+      diagnosis, review, or rollback. Mere technical separability is not by
+      itself a reason to split a task.
+    - >-
+      A task may contain closely related implementation steps when they jointly
+      produce one reviewable outcome, but it must not hide substantial
+      unrelated work or leave important design decisions for the implementation
+      agent to invent.
+    - >-
+      For non-trivial work, state or reference the test, check, state transition,
+      artifact, or other evidence that distinguishes completion from partial or
+      non-working implementation.
+    - >-
+      For failure-handling requirements, include work that causes or simulates
+      the relevant failure and verifies the required response. Normal-path
+      verification alone is insufficient.
+    - >-
+      For asynchronous behavior, use explicit readiness, wait, or convergence
+      conditions. Prefer state-based conditions over arbitrary sleep durations.
+    - >-
+      Preserve traceability from capability and requirement to significant
+      design decision, task, verification, and expected evidence.
+    - >-
+      Include revalidation tasks when an upstream requirement, assumption,
+      contract, or significant design decision changed after downstream
+      artifacts were produced.
+
+operations:
+  apply:
+    guidance:
+      - >-
+        Do not mark non-trivial work complete merely because code was written.
+        Obtain the verification evidence defined by the task, requirement,
+        scenario, contract, or design before claiming completion.
+      - >-
+        If required evidence is unavailable or legitimately inconclusive,
+        report UNKNOWN, INVALID, UNAVAILABLE, or the applicable unresolved state
+        instead of claiming PASS.
+      - >-
+        When implementation reveals an upstream inconsistency, first classify
+        whether it is semantic and whether more than one reasonable
+        interpretation exists.
+      - >-
+        If the inconsistency materially changes required behavior, acceptance
+        conditions, safety, external contracts, or architectural responsibility,
+        pause only the affected work, identify the canonical owning artifact,
+        and correct or clarify that artifact before continuing.
+      - >-
+        If multiple reasonable interpretations exist, do not choose one
+        implicitly through implementation. Surface the alternatives and obtain
+        an explicit upstream decision before continuing the affected work.
+      - >-
+        If the inconsistency is minor, non-semantic, and has one clear
+        correction, record or correct it in the canonical artifact through the
+        appropriate workflow, revalidate the affected portion, and continue.
+      - >-
+        Unaffected work may continue when doing so does not depend on or conceal
+        the unresolved upstream issue.
+      - >-
+        Do not resolve a material upstream defect by inventing an implementation
+        workaround unless the governing artifacts explicitly authorize that
+        behavior.
+
+  archive:
+    guidance:
+      - >-
+        Before recommending archive, summarize the available traceability from
+        each material requirement to significant design decisions when
+        applicable, implementation tasks, verification, and evidence.
+      - >-
+        Report missing, inconclusive, or unattributed verification evidence and
+        explain which acceptance conditions are affected.
+      - >-
+        Report material inconsistencies across proposal, specifications,
+        design, tasks, implementation evidence, and affected contracts,
+        including required/optional semantics, constraints, examples, and
+        responsibility boundaries.
+      - >-
+        When an upstream semantic decision changed after downstream artifacts
+        or evidence were produced, identify the affected items and recommend
+        the revalidation needed before treating the change as fully verified.
+      - >-
+        If material issues remain, recommend deferring archive or preserving
+        explicit follow-up work. Present the issue and its consequences to the
+        user rather than representing this guidance as an enforced CLI gate.
+      - >-
+        Treat this guidance as advisory. Preserve built-in archive behavior,
+        CLI checks, explicit user choices, and confirmation requirements.
