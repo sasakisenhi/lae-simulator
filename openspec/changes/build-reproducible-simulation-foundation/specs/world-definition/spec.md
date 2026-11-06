@@ -2,52 +2,102 @@
 
 ## Purpose
 
-架空企業の業務を、調査結果や改善策に合わせて途中変更することなく実行するため、世界定義と実行前提を固定し識別する。正式な企業設定と開発検証用データを区別し、実行結果の由来を確認できるようにする。
+調査より先に教材・本人情報・環境・規則を固定し、演習用OSSと架空企業設定を区別する。入力の根拠と不確実性を識別し、同じ条件の実行や後続の調査に必要な参照境界を提供する。
 
 ## ADDED Requirements
 
-### Requirement: Explicit world inputs
-システムは組織・社員、固定背景情報、業務規則、初期状態、背景工程からの作用を明示した世界定義を入力できなければならない（SHALL）。
+### Requirement: WD01 Explicit world inputs
+システムは、教材、Issue、本人初期状態、行動規則、ツール、時間、アクセス・公開条件を指定した実行入力を受け付けなければならない（SHALL）。
 
-#### Scenario: Load a minimal world
-- **WHEN** 管理者が有効な最小世界を読み込む
-- **THEN** 実行に用いる社員、業務規則、初期状態、背景作用と背景情報を確認できる
+#### Scenario: Inspect a minimal world
+- **WHEN** 管理者が有効な一件のIssueの入力を読み込む
+- **THEN** 実行に使う各条件と定義版を確認できる
 
-### Requirement: Reject invalid definitions
-システムは未定義の社員への参照、不正な状態、非対応の定義版を含む入力を実行前に拒否しなければならない（SHALL）。
+### Requirement: WD02 Reject invalid definitions
+システムは、不正な状態、参照切れ、版の不一致、非対応の定義を実行前に理由付きで拒否しなければならない（SHALL）。
 
 #### Scenario: Invalid reference
-- **WHEN** Issueの担当者が世界定義に存在しない
-- **THEN** 対象箇所と理由を示して入力を拒否し、成功した実行結果を生成しない
+- **WHEN** 作業候補が未収録のコードIDまたは存在しない社員を参照する
+- **THEN** 対象と理由を報告して実行を拒否し、未収録参照を有効な参照として補完しない
 
-#### Scenario: Unsupported version
-- **WHEN** 非対応の定義版が入力される
-- **THEN** 非対応であることを明示し、暗黙の変換や既定値への置換を行わない
+#### Scenario: Unsupported definition version
+- **WHEN** 非対応の定義版を入力する
+- **THEN** 暗黙に変換せず拒否する
 
-### Requirement: Identifiable frozen inputs
-システムは実行で使用した世界定義、規則、初期条件を固定し、その内容を識別可能にしなければならない（SHALL）。
+### Requirement: WD03 Identifiable frozen inputs
+システムは、実行に使用する全入力と規則を内容識別可能なスナップショットとして固定しなければならない（SHALL）。
 
-#### Scenario: Input changes after execution
-- **WHEN** 実行完了後に元の世界定義ファイルが変更される
-- **THEN** 保存済み実行は元の入力を保持し、新しい入力とは区別できる
+#### Scenario: Changed preparation output
+- **WHEN** 実行後に元資料やLLMの候補抽出結果が変更される
+- **THEN** 保存済み実行は使用時の入力を保持し、新しい入力と区別できる
 
-### Requirement: Predetermined study timeline
-システムは12週間を助走4週、履歴形成4週、主観測4週に分けた時間条件を実行前に固定しなければならない（SHALL）。
+### Requirement: WD04 Predetermined study timeline
+システムは、実行開始・終了条件と調査対象期間を結果確認前に固定しなければならない（SHALL）。
 
-#### Scenario: Period boundaries
-- **WHEN** 12週間の実行が完了する
-- **THEN** 最後の4週間が主観測期間として記録され、発生した問題による期間の自動選別は行われない
+#### Scenario: One issue instead of twelve weeks
+- **WHEN** 管理者が一件のIssueと有限の作業期限を設定する
+- **THEN** 12週間やレビュー・マージを要求せず実行でき、発生した問題に合わせて観測期間を自動選別しない
 
-### Requirement: Fixture provenance
-システムは開発検証用世界を正式なLAE設定と識別できなければならない（SHALL）。
+### Requirement: WD05 Fixture provenance
+システムは、演習用OSS、正式なLAE資料、検証用設定、実測、外部仕様、合成仮定を識別可能にしなければならない（SHALL）。
 
-#### Scenario: Unprovided company material
-- **WHEN** 開発検証用世界を使用して実行する
-- **THEN** 管理者向け入力・出力に検証用であることが明示され、正式資料に裏付けられた設定とは扱われない
+#### Scenario: Exercise is not an LAE product
+- **WHEN** VS Code ESLint教材と検証用社員条件を取得する
+- **THEN** LAEが当該OSSを開発・所有する事実や、社員条件が正式設定であるとは表示しない
 
-### Requirement: No required problem outcome
-世界定義は特定の課題の発生や特定改善策の有効性を実行成功の必須条件にしてはならない（MUST NOT）。
+### Requirement: WD06 No required problem outcome
+システムは、特定のDevEx課題や改善策の必要性を実行成功の条件としてはならない（MUST NOT）。
 
-#### Scenario: Uneventful valid world
-- **WHEN** 有効な定義による実行に、明確なボトルネックが発生しない
-- **THEN** その理由だけで実行を失敗扱いしたり、問題が発生するまで結果を差し替えたりしない
+#### Scenario: No improvement is justified
+- **WHEN** 有効な実行から明確なDevEx問題が見つからない
+- **THEN** その理由で結果を無効化したり、問題が出る入力・シードへ自動差し替えしたりしない
+
+### Requirement: WD07 Versioned exercise sources
+システムは、教材のコード・資料に出典、対象版、内容識別値、利用条件、取得・検証状態を関連づけなければならない（SHALL）。
+
+#### Scenario: Exact commit cannot be verified
+- **WHEN** 指定SHAの内容を確認できず別refだけ取得できる
+- **THEN** 同一内容とみなさずUNAVAILABLEまたは未検証と示し、必須教材なら実行を拒否する
+
+#### Scenario: Later issue discussion
+- **WHEN** Issue作成後のコメントを教材へ収録する
+- **THEN** 開始時に取得可能な資料と検証者向け後日資料を区別できる
+
+### Requirement: WD08 Scenario candidate catalog
+システムは、根拠・前提・結果・失敗時の扱いを持つ作業、探索、変更、チェック候補を、実行順序と独立した教材定義として受け付けなければならない（SHALL）。
+
+#### Scenario: Candidate is not a scripted path
+- **WHEN** 同じ候補集合に異なる初期知識を与える
+- **THEN** すべての候補を実行する固定順序を要求せず、選択候補と選択結果を記録できる
+
+### Requirement: WD09 Actor and tool configuration
+システムは、本人の知識・行動方針、利用可能な操作、ツール機能、権限を設定できなければならない（SHALL）。
+
+#### Scenario: AI is optional
+- **WHEN** AI利用を選ばない本人条件で実行する
+- **THEN** AI未使用のまま調査・変更・提出または未完了へ進める
+
+### Requirement: WD10 Time assumption provenance
+システムは、所要時間・応答時間の生成規則に、入力変数、単位、根拠分類、不確実性、適用範囲を関連づけなければならない（SHALL）。
+
+#### Scenario: Synthetic duration
+- **WHEN** 根拠となる実測値のない操作時間を使う
+- **THEN** 合成仮定と識別でき、規則・値を変更した別条件で感度を確認できる
+
+### Requirement: WD11 Source availability boundaries
+システムは、収録範囲と本人からのアクセス可否を区別し、範囲外・利用不能を不存在と扱ってはならない（MUST NOT）。
+
+#### Scenario: A fixed document is unavailable
+- **WHEN** 教材に存在する外部資料への本人アクセスが不能となる
+- **THEN** 閲覧成功や知識取得を生成せず、利用不能の結果を返す
+
+#### Scenario: A relationship is outside the index
+- **WHEN** 未収録の参照関係を問い合わせる
+- **THEN** 対象外またはUNKNOWNを示し、関係が存在しないとは断定しない
+
+### Requirement: WD12 Engine independent exercise definition
+システムは、Issue固有のコード参照・知識・変更候補・チェック規則を、汎用実行処理を変更せず教材として読み込めなければならない（SHALL）。
+
+#### Scenario: Replace a fixture
+- **WHEN** 対応済み操作と定義形式を使う別の最小教材へ差し替える
+- **THEN** Issue IDや対象シンボルをエンジンへ追加せず実行・検査できる
