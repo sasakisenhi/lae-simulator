@@ -7,7 +7,7 @@
 ## ADDED Requirements
 
 ### Requirement: WD01 Explicit world inputs
-システムは、教材、Issue、本人初期状態、行動規則、ツール、時間、アクセス・公開条件を指定した実行入力を受け付けなければならない（SHALL）。
+システムは、教材、Issue、本人・ツール定義、規則、時間、アクセス・公開条件を参照可能な一つの実行入力として受け付けなければならない（SHALL）。本人・ツール定義の内容はWD09で扱う。
 
 #### Scenario: Inspect a minimal world
 - **WHEN** 管理者が有効な一件のIssueの入力を読み込む
@@ -17,7 +17,7 @@
 システムは、不正な状態、参照切れ、版の不一致、非対応の定義を実行前に理由付きで拒否しなければならない（SHALL）。
 
 #### Scenario: Invalid reference
-- **WHEN** 作業候補が未収録のコードIDまたは存在しない社員を参照する
+- **WHEN** 作業候補が未定義のコード参照IDまたは存在しない社員を参照する
 - **THEN** 対象と理由を報告して実行を拒否し、未収録参照を有効な参照として補完しない
 
 #### Scenario: Unsupported definition version
@@ -77,6 +77,10 @@
 - **WHEN** AI利用を選ばない本人条件で実行する
 - **THEN** AI未使用のまま調査・変更・提出または未完了へ進める
 
+#### Scenario: Invalid initial knowledge or capability
+- **WHEN** 本人定義が未定義の根拠IDを初期知識として含む、またはツール定義が非対応操作を利用可能とする
+- **THEN** WD02に従い対象を示して拒否し、管理者用情報や代替操作で暗黙補完しない
+
 ### Requirement: WD10 Time assumption provenance
 システムは、所要時間・応答時間の生成規則に、入力変数、単位、根拠分類、不確実性、適用範囲を関連づけなければならない（SHALL）。
 
@@ -84,16 +88,12 @@
 - **WHEN** 根拠となる実測値のない操作時間を使う
 - **THEN** 合成仮定と識別でき、規則・値を変更した別条件で感度を確認できる
 
-### Requirement: WD11 Source availability boundaries
-システムは、収録範囲と本人からのアクセス可否を区別し、範囲外・利用不能を不存在と扱ってはならない（MUST NOT）。
+### Requirement: WD11 Source access outcomes
+システムは、本人による資料アクセスの成否を収録範囲とは独立して記録しなければならない（SHALL）。
 
 #### Scenario: A fixed document is unavailable
-- **WHEN** 教材に存在する外部資料への本人アクセスが不能となる
-- **THEN** 閲覧成功や知識取得を生成せず、利用不能の結果を返す
-
-#### Scenario: A relationship is outside the index
-- **WHEN** 未収録の参照関係を問い合わせる
-- **THEN** 対象外またはUNKNOWNを示し、関係が存在しないとは断定しない
+- **WHEN** 教材に存在する資料への本人アクセスが不能となる
+- **THEN** 利用不能という結果を記録し、閲覧成功や内容の知識取得を生成しない
 
 ### Requirement: WD12 Engine independent exercise definition
 システムは、Issue固有のコード参照・知識・変更候補・チェック規則を、汎用実行処理を変更せず教材として読み込めなければならない（SHALL）。
@@ -101,3 +101,10 @@
 #### Scenario: Replace a fixture
 - **WHEN** 対応済み操作と定義形式を使う別の最小教材へ差し替える
 - **THEN** Issue IDや対象シンボルをエンジンへ追加せず実行・検査できる
+
+### Requirement: WD13 Reference coverage uncertainty
+システムは、未収録・未解決の参照関係を不存在として回答してはならない（MUST NOT）。
+
+#### Scenario: A relationship is outside the index
+- **WHEN** 定義済み参照IDの収録範囲外または未解決の関係を問い合わせる
+- **THEN** 対象外またはUNKNOWNを示し、関係が存在しないとは断定しない

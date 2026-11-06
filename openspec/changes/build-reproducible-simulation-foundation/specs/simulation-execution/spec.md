@@ -20,12 +20,16 @@
 - **WHEN** 定義した外部作用が実行中の作業に影響する
 - **THEN** 発生イベント、通知内容、停止・残作業・再開への作用を管理者が照合できる
 
+#### Scenario: Dependency release is stale or unobserved
+- **WHEN** 依存が解除されても本人への通知が未確認である、または解除前の完了イベントが中断によって失効している
+- **THEN** 環境の依存状態と本人の認識を区別し、未確認情報を判断へ使わず、失効イベントを再作用させない
+
 ### Requirement: SE03 Knowledge bounded decisions
 システムは、本人の行動選択を、その時点の本人情報と認識に基づかせなければならない（SHALL）。
 
 #### Scenario: Hidden cause does not guide action
-- **WHEN** 本人に伝わっていない管理用原因または実際の将来応答時刻だけを変更する
-- **THEN** 本人が新情報を取得する前の判断に、その非公開情報を根拠として使わない
+- **WHEN** 非公開の原因または将来応答時刻だけを変え、比較時点の論理時刻・本人が観測したイベント列・本人情報が同一である
+- **THEN** その共通観測区間の行動選択に隠れた情報を使わない。応答到着や観測できる待機経過によって観測条件が異なった後の行動差は禁止しない
 
 ### Requirement: SE04 Action feasibility separation
 システムは、操作前提を満たすが目的に不適切な行動を、正解でないことだけを理由に拒否してはならない（MUST NOT）。
@@ -165,20 +169,41 @@
 - **WHEN** 管理者が規則または介入条件を変更して再実行する
 - **THEN** 元結果を保持し、変更点と追加仮定を持つ別条件の結果として識別する
 
-### Requirement: SE18 Explicit failed execution
-システムは、内部処理・整合性検査・保存の失敗を明示し、無効な部分結果を有効な提出・未完了結果として公開してはならない（MUST NOT）。
+### Requirement: SE18 Execution failure report
+システムは、内部処理・整合性検査・保存の失敗を、対象と理由を持つ管理用の失敗記録として報告しなければならない（SHALL）。
 
-#### Scenario: Interrupted persistence
-- **WHEN** 保存途中に障害を発生させる
-- **THEN** 今回の結果を正常公開せず、既存の有効結果を保持して障害を報告する
+#### Scenario: Report a persistence failure
+- **WHEN** 結果保存の途中で障害が発生する
+- **THEN** 保存成功とは別の失敗記録に対象と理由を残し、業務上の未完了と区別する
 
 ### Requirement: SE19 Behavioral responsiveness
 システムは、本人知識・取得情報・アクセス・応答条件・ツール機能の影響を、制御した条件対で検証可能にしなければならない（SHALL）。
 
 #### Scenario: Change a relevant condition
-- **WHEN** 該当規則が作用する最小条件対で、知識、反例情報、資料アクセス、AI・同僚応答時間、または操作機能を一つずつ変更する
-- **THEN** 各条件対について候補・選択根拠・経路・待機の期待する差と実結果を比較できる
+- **WHEN** 決定的な規則と固定時間を使い、知識、反例情報、資料アクセス、AI・同僚応答時間、または操作機能を一つだけ変えた最小条件対を実行する
+- **THEN** 他の入力が同じである証拠と、変更条件に対応する最初の候補・判断・待機の分岐を特定できる。3経路デモの比較だけで代替しない
 
 #### Scenario: No forced variation
 - **WHEN** 変更条件が選択に影響しない実行、または別シードで同じ結果が出る実行を得る
 - **THEN** 結果差を作るために追加の問題や分岐を挿入しない
+
+### Requirement: SE20 Canonical state reconstruction
+システムは、初期スナップショット・固定入力と規則・順序付き正準イベント列を基礎として状態を再生し、保存状態との不一致をINVALIDとして扱わなければならない（SHALL）。
+
+#### Scenario: Stored state contradicts replay
+- **WHEN** 保存された最終状態の版、知識、終了理由、またはキューを改変して再生状態と照合する
+- **THEN** 不一致を対象付きで検出し、その実行を有効結果と判定しない
+
+### Requirement: SE21 Scheduled event lifecycle
+システムは、イベント予約・取消・失効とその順序を再生可能な正準記録として保持しなければならない（SHALL）。
+
+#### Scenario: Replay a cancelled completion
+- **WHEN** 作業の完了予約後に中断・取消を行い、保存履歴を再生する
+- **THEN** 同じ予約と取消・失効状態を復元し、古い完了の効果を適用せず、終了時の未処理キューが一致する
+
+### Requirement: SE22 Invalid result publication prevention
+システムは、内部失敗または整合性違反のある部分結果を、有効な提出・未完了結果として公開してはならない（MUST NOT）。
+
+#### Scenario: Failure does not publish a valid run
+- **WHEN** 保存途中障害、再生不一致、または不正遷移を検出する
+- **THEN** 有効公開を停止し、既存の有効結果を変更せず、調査者向け取得から無効な部分結果を返さない
