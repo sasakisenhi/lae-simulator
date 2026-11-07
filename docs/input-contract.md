@@ -53,3 +53,5 @@
 `fixtures/cf0/world.json`は合成のengine conformance fixtureである。埋込み固定テキスト、合成Issue、一人の本人、IssueRead候補、決定的優先規則、1tickの合成時間、期限2tick、最小の公開条件を持つ。世界側だけが保持するfact、本人がアクセスできない固定document、未収録reference、未解決referenceを含み、これらの区別を検査できる。
 
 CF0は架空企業設定、特定チーム、実在OSS、外部Issue、ネットワーク、文書サービス、生成サービスを参照しない。これは実測データ、正式な企業資料、ケーススタディの結果ではなく、汎用入力処理の合成適合教材である。
+
+Task 2.2/2.3で追加した実在教材の候補・Patch・Checkは、CF0 schema 1.0の実行能力を偽らないよう別の固定シナリオ束として検証する。契約と利用方法は [scenario-contract.md](scenario-contract.md) を参照する。`load_world`とCF0の内容・識別値は変更しない。

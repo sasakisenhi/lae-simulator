@@ -19,7 +19,7 @@ from lae_simulator.simulation import (
     project_public_log,
     save_run,
 )
-from lae_simulator.world import WorldValidationError, load_world
+from lae_simulator.world import WorldValidationError, load_scenario_bundle, load_world
 
 SUPPORTED_PYTHON = (3, 14, 8)
 
@@ -56,6 +56,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="固定教材の来歴・内容digest・Git blobをオフライン検証する",
     )
     validate_materials.add_argument("manifest", type=Path)
+    validate_scenario = subcommands.add_parser(
+        "validate-scenario",
+        help="固定候補・Patch・modeled Check教材を実行せずに検証する",
+    )
+    validate_scenario.add_argument("path", type=Path)
     run = subcommands.add_parser(
         "run",
         help="固定世界入力を実行し、検査済みrunを新規保存する",
@@ -115,6 +120,31 @@ def main(argv: Sequence[str] | None = None) -> int:
                 file=sys.stderr,
             )
             return 2
+        print(json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True))
+        return 0
+    if args.command == "validate-scenario":
+        try:
+            scenario = load_scenario_bundle(args.path)
+        except WorldValidationError as error:
+            print(
+                json.dumps(
+                    {"issues": [issue.as_dict() for issue in error.issues], "status": "invalid"},
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                    sort_keys=True,
+                ),
+                file=sys.stderr,
+            )
+            return 2
+        report = {
+            "candidates": len(scenario.candidate_ids),
+            "checks": len(scenario.check_ids),
+            "content_id": scenario.content_id,
+            "exercise_id": scenario.exercise_id,
+            "patches": len(scenario.patch_ids),
+            "schema_version": scenario.schema_version,
+            "status": "valid",
+        }
         print(json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True))
         return 0
     if args.command == "run":

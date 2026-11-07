@@ -89,3 +89,9 @@ Task 1.3の状態は、論理時刻、Workspace入力版、本人の知識ID、�
 セキュリティ修正等でPythonのpatch版を更新する場合は、`.python-version`、`pyproject.toml`、`uv.lock`、CLIの`SUPPORTED_PYTHON`を同じ変更で更新する。そのうえで、隔離環境での`doctor`、全自動テスト、`compileall`、CF0の検証と内容識別値、JSONの正規化結果、OpenSpec strict validationを再確認する。標準ライブラリのJSON・列挙型・dataclass・hashlibの挙動差と、ビルドバックエンドの対応状況も確認する。確認前に旧patch版の結果と新patch版の結果を同一対応環境の証拠として扱わない。
 
 
+### G2のworld責務分離
+
+`world/loader.py` はCF0 schema 1.0のJSON構造、cross-reference、本人境界、実行用モデル構築を引き続き所有する。G2で追加された候補規則・Patch断片・modeled Checkは、変更理由も実行準備段階も異なるため `world/scenario.py` が所有する。両者は例外型だけを共有し、相互import、可変状態、外部SDK依存を持たない。
+
+この分離は行数削減ではなく、未実装のWorkspace適用やCheck評価をCF0実行モデルへ先取りしないための境界である。G3以降で両契約を統合する必要が生じた場合も、検証済みデータから状態遷移へ渡す明示的な変換を置き、ファイルI/Oや管理用期待値をDomain Coreへ混ぜない。
+

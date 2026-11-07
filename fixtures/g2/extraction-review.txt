@@ -1,0 +1,5 @@
+Manual extraction review for G2
+Inputs: OpenSpec Design D3, D6, D7 and G1 manifest
+Outputs checked: T01-T15, R-A-R-G, P1-P5, C01-C12
+Preparation LLM: not used
+Result: accepted as fixed scenario input; no executed-check evidence
