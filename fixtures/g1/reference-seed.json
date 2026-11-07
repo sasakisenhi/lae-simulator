@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "references": [
+    {"id":"B0","source_id":"B0","kind":"real_oss","target":"microsoft/vscode-eslint@790646388696511b2665a4d119bf0fb713dd990d"},
+    {"id":"I1955","source_id":"I1955","kind":"real_oss_issue","target":"microsoft/vscode-eslint#1955"},
+    {"id":"I1955-C1","source_id":"I1955-C1","kind":"audit_only_comment","target":"issue-comment:2503124072"},
+    {"id":"E0","source_id":"E0","kind":"real_oss","target":"eslint/eslint@abea3b6f399fde9e28cf6dc5d6c013938f163cdc"},
+    {"id":"H0","source_id":"H0","kind":"real_oss","target":"Stuk/eslint-plugin-header@63f18ce725edb23a2d274b234df7f12ff0b7f009"},
+    {"id":"LAE00","source_id":"LAE-v0.2.0","kind":"fictional_company_draft","target":"README.md"},
+    {"id":"LAE01","source_id":"LAE-v0.2.0","kind":"fictional_company_draft","target":"01_企業概要.md"},
+    {"id":"LAE02","source_id":"LAE-v0.2.0","kind":"fictional_company_draft","target":"02_組織と制作プロジェクト.md"},
+    {"id":"LAE03","source_id":"LAE-v0.2.0","kind":"fictional_company_draft","target":"03_開発業務フロー.md"},
+    {"id":"LAE04","source_id":"LAE-v0.2.0","kind":"fictional_company_draft","target":"04_現行システム台帳.md"},
+    {"id":"LAE05","source_id":"LAE-v0.2.0","kind":"fictional_company_draft","target":"05_関係者と制約.md"}
+  ]
+}

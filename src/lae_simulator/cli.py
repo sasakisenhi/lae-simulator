@@ -9,6 +9,7 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from lae_simulator import __version__
+from lae_simulator.provenance import ProvenanceValidationError, verify_provenance_bundle
 from lae_simulator.simulation import (
     PersistenceError,
     PublicationError,
@@ -50,6 +51,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="固定世界入力を読み込み、実行せずに検証する",
     )
     validate_world.add_argument("path", type=Path)
+    validate_materials = subcommands.add_parser(
+        "validate-materials",
+        help="固定教材の来歴・内容digest・Git blobをオフライン検証する",
+    )
+    validate_materials.add_argument("manifest", type=Path)
     run = subcommands.add_parser(
         "run",
         help="固定世界入力を実行し、検査済みrunを新規保存する",
@@ -93,6 +99,22 @@ def main(argv: Sequence[str] | None = None) -> int:
             "schema_version": world.schema_version,
             "status": "valid",
         }
+        print(json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True))
+        return 0
+    if args.command == "validate-materials":
+        try:
+            report = verify_provenance_bundle(args.manifest)
+        except ProvenanceValidationError as error:
+            print(
+                json.dumps(
+                    {"issues": [issue.as_dict() for issue in error.issues], "status": "invalid"},
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                    sort_keys=True,
+                ),
+                file=sys.stderr,
+            )
+            return 2
         print(json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True))
         return 0
     if args.command == "run":

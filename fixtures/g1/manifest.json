@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0.0",
+  "fixture_id": "g1-provenance-v1",
+  "retrieved_at": "2026-11-07T00:00:00+09:00",
+  "sources": [
+    {
+      "id": "B0",
+      "classification": "real_oss",
+      "source": "https://github.com/microsoft/vscode-eslint",
+      "revision": "790646388696511b2665a4d119bf0fb713dd990d",
+      "published_at": "2024-06-17T08:55:59Z",
+      "license": {"spdx": "MIT", "file": "raw/b0/License.txt.b64"},
+      "files": [
+        {"path":"raw/b0/server/src/eslint.ts.b64","encoding":"base64","sha256":"fa82ed6953f9c4dee3462bb744a1d2b2d20d4a65011c171623b91ef2d153df57","git_blob":"b355b6b332307577b175ea3ba78f999c6e0d096f"},
+        {"path":"raw/b0/server/src/eslintServer.ts.b64","encoding":"base64","sha256":"22485bdda6ba5745f2916aaf82fbd06f2cf20d1a6f35aefbd05f426171c2cfc9","git_blob":"2f2719efcf3af8992b5af4e071785015b515e78d"},
+        {"path":"raw/b0/package.json.b64","encoding":"base64","sha256":"bd673703374f3fd50a3e33b3ab67e8ece6fadd96ef627c83c634c6aea49db95d","git_blob":"93efd44a8478538c16b7e9f8ff3129e4257bb63f"},
+        {"path":"raw/b0/README.md.b64","encoding":"base64","sha256":"b1be3a1c54cf5bc2994aa995ab8e1510be75c50e393aefbc4112dbc08bf70db9","git_blob":"94875302f7441a36c2e9e4aa69221311b6b60c06"},
+        {"path":"raw/b0/server/package.json.b64","encoding":"base64","sha256":"bb93b2426b1683e4095ff9a16fd1465229579b85aeed8639d189c8eef561ec97","git_blob":"355e5661de8bc4a420f4ee81879b2dfd7197accb"},
+        {"path":"raw/b0/package-lock.json.b64","encoding":"base64","sha256":"21031f8cf007b573a0292d58db881b35f5624dbd60620e24616c2e8ca7ac04d9","git_blob":"09c46484ca4eadc4dce7f035bcf107d21b8339b1"},
+        {"path":"raw/b0/License.txt.b64","encoding":"base64","sha256":"976f8ed671d885872afac0021bd78b3d84fe8d4783a98b46deb5a7dc4e29dbff","git_blob":"dcdd1210b29d59ae4e456eb1bec0fcde2eec8f6a"},
+        {"path":"raw/b0/$shared/settings.ts.b64","encoding":"base64","sha256":"b1f2ce75ee2591d393ef4dccda3a410f07e38aec01e861fa70384d0b1501f01b","git_blob":"4679c71b6d39488998d65fcd2158305bef52a804"},
+        {"path":"raw/b0/server/src/shared.b64","encoding":"base64","sha256":"76da5aa68e4d5deb7fc9f51f2d8124b63d73a8b6a1a0f3c2fc3170090b4dedd9","git_blob":"fbd7093c1049453929cfa5adaa88ab6abd186e12","mode":"120000","link_target":"../../$shared/"},
+        {"path":"raw/b0/server/src/is.ts.b64","encoding":"base64","sha256":"caa10fb82231adbdc92c93e506b42ab5e1c3f453aa274e329a6cd6b0368f143f","git_blob":"a4200156367f62682ab1df72a44349cf0be37ada"}
+      ]
+    },
+    {
+      "id": "I1955",
+      "classification": "real_oss_issue",
+      "source": "https://github.com/microsoft/vscode-eslint/issues/1955",
+      "revision": "issue:1955",
+      "published_at": "2024-11-26T23:12:55Z",
+      "license": {"spdx": "NOASSERTION", "terms": "GitHub Terms of Service; no separate issue-text license observed"},
+      "files": [{"path":"sources/issue/issue-1955.md","encoding":"utf-8-drop-one-terminal-newline","sha256":"2a72ca684624451441f22859ca01334e4742bee5a307f6daeb8c8cf944b1de59"}]
+    },
+    {
+      "id": "I1955-C1",
+      "classification": "audit_only_comment",
+      "source": "https://github.com/microsoft/vscode-eslint/issues/1955#issuecomment-2503124072",
+      "revision": "issue-comment:2503124072",
+      "published_at": "2024-11-27T07:38:40Z",
+      "license": {"spdx": "NOASSERTION", "terms": "GitHub Terms of Service; no separate comment-text license observed"},
+      "files": [{"path":"sources/issue/comment-2503124072.md","encoding":"utf-8-drop-one-terminal-newline","sha256":"3f34e097502b589b74ace67115c9339464cde780fdc95d5e5eca429add0f49f6"}]
+    },
+    {
+      "id": "E0",
+      "classification": "real_oss",
+      "source": "https://github.com/eslint/eslint",
+      "revision": "abea3b6f399fde9e28cf6dc5d6c013938f163cdc",
+      "license": {"spdx": "MIT", "file": "raw/e0/LICENSE.b64"},
+      "files": [
+        {"path":"raw/e0/docs/src/extend/custom-rules.md.b64","encoding":"base64","sha256":"7cce74f8fb8983489f470f450e1a376aa74f0f3178f6dba91930946349142ada"},
+        {"path":"raw/e0/docs/src/integrate/nodejs-api.md.b64","encoding":"base64","sha256":"3e37439e25166138733258d975cf87a55d73838ed3f48023f3d6cdb7ad0fe6ea"},
+        {"path":"raw/e0/LICENSE.b64","encoding":"base64","sha256":"3b6be04f862a077a4b97929dbf247299360824d9365f8603c263769303ace18c"}
+      ]
+    },
+    {
+      "id": "H0",
+      "classification": "real_oss",
+      "source": "https://github.com/Stuk/eslint-plugin-header",
+      "revision": "63f18ce725edb23a2d274b234df7f12ff0b7f009",
+      "package_version": "3.1.1",
+      "license": {"spdx": "MIT", "file": "raw/h0/LICENSE.md.b64"},
+      "files": [
+        {"path":"raw/h0/lib/rules/header.js.b64","encoding":"base64","sha256":"aa0fc639f0a520b7c0220dfc7b95cca9e0f2432b820c14e6cb73882ec28764f8"},
+        {"path":"raw/h0/index.js.b64","encoding":"base64","sha256":"c5787d84d91980f17396cc001fee5c3291ef14be37d64085089c42b7e53d644c"},
+        {"path":"raw/h0/package.json.b64","encoding":"base64","sha256":"f80cc91c961b9032dec5bc6fa51b6b4f64aa4dffe33ef14f710aacf866f68bc5"},
+        {"path":"raw/h0/LICENSE.md.b64","encoding":"base64","sha256":"08c98374b7cc1f1e21a7cdcaafacdad49cde98949df3c55351ab822bcc80e2f3"}
+      ]
+    },
+    {
+      "id": "LAE-v0.2.0",
+      "classification": "fictional_company_draft",
+      "source": "https://drive.google.com/drive/folders/1fBAMUcA3za_Pk02e8nCrIvkZ8DMP3rBM",
+      "revision": "0.2.0",
+      "published_at": "2026-10-26",
+      "license": {"spdx": "NOASSERTION", "terms": "project-provided fictional exercise material; no standalone license declared"},
+      "files": [
+        {"reference_id":"LAE00","drive_file_id":"1mmj37kGGAyJAk5D3rtwLuFRnkAGmAj1D","path":"sources/lae/README.md","encoding":"utf-8-drop-one-terminal-newline","sha256":"065a06c58ad961aa97818f7749c8a35cf2da461ad9db774d047f6a65a59121a2"},
+        {"reference_id":"LAE01","drive_file_id":"1964pgFfAd99dDi_MoAMS6i89folih1NO","path":"sources/lae/01_企業概要.md","encoding":"utf-8-drop-one-terminal-newline","sha256":"b2ec500d3cd88094244eab3966e520da20e0c87e78bb1802b426a5302aa2ce34"},
+        {"reference_id":"LAE02","drive_file_id":"1axcAUZOclxo0FbsYRXryEE1yeyU6e9SE","path":"sources/lae/02_組織と制作プロジェクト.md","encoding":"utf-8-drop-one-terminal-newline","sha256":"83635d2640400d365bbab679b7efa5adec46dd3d65ea7eb28352c58651b1c080"},
+        {"reference_id":"LAE03","drive_file_id":"1LZBJRl4oRu3xLB5Ljoa2Cg7M6UWWLDcZ","path":"sources/lae/03_開発業務フロー.md","encoding":"utf-8-drop-one-terminal-newline","sha256":"e19328f1fd38f58b7a43f7c8f9bc46cb0686b066b68c1b92a917518feff01790"},
+        {"reference_id":"LAE04","drive_file_id":"1Jn9KO3tc2zG_EIongZ_6s5IbafEgR33s","path":"sources/lae/04_現行システム台帳.md","encoding":"utf-8-drop-one-terminal-newline","sha256":"bd8d9690ced6317d17b904f5688e8d3fbbc34820aeaa719a5d28b84994e37a0a"},
+        {"reference_id":"LAE05","drive_file_id":"1R10_4MapK5okmVLrQJcjjzi0crfJTHxg","path":"sources/lae/05_関係者と制約.md","encoding":"utf-8-drop-one-terminal-newline","sha256":"b2dfac03c02ef5ac103adc57ec3673a0405d9bb5474966fcedb0b4628ebf1d79"}
+      ],
+      "excluded": ["cases/A_レビュー工程の課題と要求.md","cases/B_環境提供と運用の課題と要求.md","cases/C_QA報告の課題と要求.md"]
+    }
+  ],
+  "synthetic_assumptions": [
+    {"id":"A-G1-01","text":"Issue body is available at exercise start; later comment I1955-C1 is audit-only and is not initial participant knowledge."},
+    {"id":"A-G1-02","text":"E0 documents describe a fixed API reference; they are not evidence that the reporter executed ESLint 8.57.0."},
+    {"id":"A-G1-03","text":"LAE documents are fictional draft context, not measurements, and do not make old cases A/B/C run conditions or causes."}
+  ],
+  "transformations": [
+    {"id":"T-G1-01","input":"GitHub bytes","output":"raw/**/*.b64","method":"Base64 without semantic normalization"},
+    {"id":"T-G1-02","input":"Drive/GitHub text payload","output":"sources/**/*.md and sources/oss/**/*","method":"UTF-8 readable extraction with one repository terminal newline; source digest drops exactly that added newline"}
+  ]
+}
