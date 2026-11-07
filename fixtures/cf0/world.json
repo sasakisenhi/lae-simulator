@@ -1,0 +1,225 @@
+{
+  "schema_version": "1.0",
+  "exercise_id": "cf0",
+  "fixture": {
+    "kind": "conformance",
+    "synthetic": true,
+    "purpose": "Minimal synthetic input for validating the generic world contract"
+  },
+  "seed": 0,
+  "source_manifest": [
+    {
+      "id": "SRC-CF0",
+      "version": "1",
+      "provenance_class": "synthetic-fixture",
+      "origin": "embedded",
+      "license": "CC0-1.0",
+      "retrieval_status": "generated-and-fixed"
+    }
+  ],
+  "documents": [
+    {
+      "id": "D-CF0-ISSUE",
+      "source_id": "SRC-CF0",
+      "version": "1",
+      "media_type": "text/plain",
+      "content_digest": "sha256:037e9d6fe08d98fe29cf5fbd1e2cf813e13aa3fb8dca026d9c9dd4111b830129",
+      "content": "Read the sample note and record its visible message.",
+      "classification": "public-evidence"
+    },
+    {
+      "id": "D-CF0-NOTE",
+      "source_id": "SRC-CF0",
+      "version": "1",
+      "media_type": "text/plain",
+      "content_digest": "sha256:2da556568f8703e6643bc71c3439bff629a1de7ae22a23256f4cf9a3305be063",
+      "content": "The sample widget is blue.",
+      "classification": "administrative"
+    }
+  ],
+  "issue": {
+    "id": "ISSUE-CF0",
+    "source_id": "SRC-CF0",
+    "version": "1",
+    "title": "Inspect a fixed sample note",
+    "body_document_id": "D-CF0-ISSUE"
+  },
+  "world_facts": [
+    {
+      "id": "FACT-CF0-COLOR",
+      "statement": "The sample widget is blue.",
+      "evidence_ids": ["D-CF0-NOTE"],
+      "provenance_class": "synthetic-fixture",
+      "classification": "administrative"
+    }
+  ],
+  "references": [
+    {
+      "id": "R-CF0-BODY",
+      "source_id": "SRC-CF0",
+      "revision": "1",
+      "relation": "described-by",
+      "coverage": "recorded",
+      "target_id": "D-CF0-ISSUE"
+    },
+    {
+      "id": "R-CF0-OUTSIDE",
+      "source_id": "SRC-CF0",
+      "revision": "1",
+      "relation": "related-material",
+      "coverage": "unrecorded"
+    },
+    {
+      "id": "R-CF0-UNRESOLVED",
+      "source_id": "SRC-CF0",
+      "revision": "1",
+      "relation": "possible-dependency",
+      "coverage": "unresolved"
+    }
+  ],
+  "actors": [
+    {
+      "id": "ACTOR-CF0",
+      "initial_knowledge": [
+        {
+          "id": "K-CF0-ASSIGNMENT",
+          "statement": "A sample issue is assigned.",
+          "epistemic_state": "acquired",
+          "evidence_ids": ["ISSUE-CF0"],
+          "provenance_class": "synthetic-fixture"
+        }
+      ],
+      "tool_ids": ["TOOL-CF0-READER"],
+      "permissions": [
+        {
+          "resource_id": "ISSUE-CF0",
+          "actions": ["read"]
+        },
+        {
+          "resource_id": "D-CF0-ISSUE",
+          "actions": ["read"]
+        }
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "id": "TOOL-CF0-READER",
+      "operations": ["issue.read", "document.read"]
+    }
+  ],
+  "access_outcomes": [
+    {
+      "actor_id": "ACTOR-CF0",
+      "resource_id": "ISSUE-CF0",
+      "outcome": "available"
+    },
+    {
+      "actor_id": "ACTOR-CF0",
+      "resource_id": "D-CF0-ISSUE",
+      "outcome": "available"
+    },
+    {
+      "actor_id": "ACTOR-CF0",
+      "resource_id": "D-CF0-NOTE",
+      "outcome": "unavailable"
+    }
+  ],
+  "policies": [
+    {
+      "id": "POLICY-CF0",
+      "actor_id": "ACTOR-CF0",
+      "kind": "deterministic-priority",
+      "candidate_priority": ["CANDIDATE-CF0-READ"]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "CANDIDATE-CF0-READ",
+      "actor_id": "ACTOR-CF0",
+      "goal": "Inspect the assigned issue",
+      "actor_visible_label": "Read the assigned sample issue",
+      "required_information": ["K-CF0-ASSIGNMENT"],
+      "availability": {
+        "required_access": [
+          {
+            "resource_id": "ISSUE-CF0",
+            "outcome": "available"
+          }
+        ]
+      },
+      "operation": {
+        "kind": "issue.read",
+        "tool_id": "TOOL-CF0-READER",
+        "target_id": "ISSUE-CF0"
+      },
+      "target_refs": ["R-CF0-BODY"],
+      "operation_preconditions": {
+        "permissions": ["read"],
+        "required_version": "1"
+      },
+      "expected_information": [
+        {
+          "id": "INFO-CF0-VISIBLE-MESSAGE",
+          "classification": "public-evidence"
+        }
+      ],
+      "on_success": {
+        "status": "completed"
+      },
+      "on_failure": {
+        "status": "incomplete",
+        "reason": "issue-unavailable"
+      },
+      "knowledge_effects": [
+        {
+          "id": "K-CF0-ISSUE-TEXT",
+          "statement": "The issue asks the actor to inspect a sample note.",
+          "epistemic_state": "acquired",
+          "evidence_ids": ["D-CF0-ISSUE"],
+          "provenance_class": "synthetic-fixture"
+        }
+      ],
+      "next_goal_options": [],
+      "duration_model_id": "TIME-CF0-READ",
+      "evidence_refs": ["R-CF0-BODY"]
+    }
+  ],
+  "patches": [],
+  "checks": [],
+  "time_models": [
+    {
+      "id": "TIME-CF0-READ",
+      "unit": "tick",
+      "variables": [],
+      "formula": {
+        "kind": "constant",
+        "value": 1
+      },
+      "provenance_class": "synthetic-assumption",
+      "source": "CF0 conformance assumption",
+      "uncertainty": "not calibrated to measured work",
+      "scope": ["issue.read"]
+    }
+  ],
+  "response_models": [],
+  "timeline": {
+    "start_tick": 0,
+    "deadline_tick": 2,
+    "observation_start_tick": 0,
+    "observation_end_tick": 2,
+    "time_unit": "tick"
+  },
+  "disclosure": {
+    "role_allowlists": {
+      "administrator": ["administrative", "actor-private", "public-evidence"],
+      "actor-policy": ["actor-private", "public-evidence"],
+      "interview-generator": ["actor-private", "public-evidence"],
+      "investigator": ["public-evidence"]
+    }
+  },
+  "retention": {
+    "retained": true,
+    "retained_since_tick": 0
+  }
+}
