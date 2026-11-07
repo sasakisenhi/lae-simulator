@@ -1,0 +1,26 @@
+G4 fixed timing input record
+
+The original G2 catalog and byte-snippet review remain in extraction-review.txt.
+scenario-timed.json is a separate synthetic scheduling conformance input. It
+preserves those sources, patch bytes, modeled check facts, and company claims.
+Its timing values are additional exercise assumptions, not measured LAE work.
+
+All original candidate duration-model IDs have explicit definitions and operation
+scopes. TM-NAV has zero ticks; other models have one tick. The window is [0,30],
+seed is 0, and the per-tick consumption bound is 100. These values demonstrate
+scheduler behavior and do not claim productivity or empirical calibration.
+T10-REVERT binds the existing G3 patch.revert capability to TM-REVERT and requires
+an applied overlay. This adds no new patch, AI collaboration, or G5 behavior.
+
+Optional controls are scheduler conformance inputs: priority20 denotes an external
+control and priority40 a decision control. Each control names one candidate and
+an explicit cancellation or invalidation effect. Effects apply immediately after
+their cause is consumed; generation1 denotes a uniquely identified reservation.
+Task resumption and later generations belong to G5 and are not modeled here.
+
+Optional jitter_ticks adds bounded synthetic jitter via raw % (jitter_ticks+1),
+with no claim of exact statistical uniformity, using
+lae-keyed-sha256-v1. Its key is (operation-duration, actor, candidate, model,
+occurrence), and the raw 64-bit value is retained in the reservation event.
+The default input has no jitter and uses no draws. Replay verifies the fixed
+mapping without consuming any random stream.

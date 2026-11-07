@@ -29,6 +29,7 @@ PREDICATES = frozenset({
     "all", "equals", "nonempty-url", "not", "one-of", "present",
     "recorded", "same-version", "type-allowed",
 })
+SUPPORTED_SCENARIO_VERSIONS = frozenset({"1.0.0", "1.1.0", "1.2.0"})
 
 
 class _DuplicateKeyError(ValueError):
@@ -93,10 +94,12 @@ class _Validator:
         self.ids: dict[str, str] = {}
         self.sources: set[str] = set()
         self.source_digests: dict[str, set[str]] = {}
+        self.source_classes: dict[str, str] = {}
         self.references: set[str] = set()
         self.claims: set[str] = set()
         self.candidates: set[str] = set()
         self.patches: set[str] = set()
+        self.semantic_fact_ids: set[str] = set()
 
     def issue(self, path: str, code: str, message: str) -> None:
         self.issues.append(ValidationIssue(path, code, message))
@@ -157,9 +160,14 @@ class _Validator:
             "exercise_id", "extraction_history", "participant_profile", "patches", "references", "rules",
             "schema_version", "source_manifest", "world_claims",
         }
-        self.keys(self.root, "$", required)
-        if self.text(self.root.get("schema_version"), "$.schema_version") != "1.0.0":
-            self.issue("$.schema_version", "unsupported-version", "expected '1.0.0'")
+        self.keys(self.root, "$", required, {"semantic_model", "timing", "collaboration"})
+        schema_version = self.text(self.root.get("schema_version"), "$.schema_version")
+        if schema_version not in SUPPORTED_SCENARIO_VERSIONS:
+            self.issue("$.schema_version", "unsupported-version", "expected '1.0.0', '1.1.0', or '1.2.0'")
+        if schema_version in {"1.1.0", "1.2.0"} and "semantic_model" not in self.root:
+            self.issue("$.semantic_model", "missing-field", "scenario requires a bounded semantic model")
+        if schema_version == "1.0.0" and "semantic_model" in self.root:
+            self.issue("$.semantic_model", "version-conflict", "semantic models require scenario 1.1.0")
         self.text(self.root.get("exercise_id"), "$.exercise_id")
         self._validate_sources()
         self._validate_documents()
@@ -168,9 +176,64 @@ class _Validator:
         self._validate_context()
         self._validate_participant_profile()
         self._validate_candidates()
+        if "timing" in self.root:
+            from lae_simulator.world.timing import load_timing
+            candidate_rows = self.root.get("candidates")
+            candidate_rows = candidate_rows if isinstance(candidate_rows, list) else []
+            try:
+                timing = load_timing(self.root["timing"], {
+                    item["duration_model"] for item in candidate_rows
+                    if isinstance(item, dict) and isinstance(item.get("duration_model"), str)
+                })
+                models = {item.id: item for item in timing.models}
+                candidate_ids = {item.get("id") for item in candidate_rows if isinstance(item, dict)
+                                 and isinstance(item.get("id"), str)}
+                if any(control.target_candidate_id not in candidate_ids for control in timing.controls):
+                    self.issue("$.timing.controls", "unknown-control-target", "control candidate is not defined")
+                for item in candidate_rows:
+                    if (isinstance(item, dict) and isinstance(item.get("duration_model"), str)
+                            and item["duration_model"] in models
+                            and item.get("operation") not in models[item["duration_model"]].scope):
+                        self.issue("$.timing", "invalid-timing-scope", "duration model does not cover candidate operation")
+            except (TypeError, ValueError) as error:
+                self.issue("$.timing", "invalid-timing", str(error))
         self._validate_rules()
         self._validate_patches()
+        candidate_data = self.root.get("candidates")
+        for index, item in enumerate(candidate_data if isinstance(candidate_data, list) else []):
+            if isinstance(item, dict):
+                patch_ids = item.get("patch_ids", [])
+                for patch_id in patch_ids if isinstance(patch_ids, list) else []:
+                    if isinstance(patch_id, str) and patch_id not in self.patches:
+                        self.issue(f"$.candidates[{index}].patch_ids", "unknown-patch", str(patch_id))
+        self._validate_semantic_model()
         self._validate_checks()
+        if "collaboration" in self.root:
+            from lae_simulator.world.collaboration import (
+                collaboration_scopes,
+                load_collaboration,
+            )
+            try:
+                if "timing" not in self.root:
+                    raise ValueError("collaboration requires explicit scheduler timing")
+                claims, evidence = collaboration_scopes(self.root, self.source_classes)
+                collaboration = load_collaboration(self.root["collaboration"], claims, evidence, self.patches)
+                profile = self.root['participant_profile']
+                contacts = {row['id']: row for row in profile['contacts']}
+                for peer in collaboration.collaborators:
+                    if peer.kind == 'peer' and (peer.id not in contacts or
+                            peer.approval_scopes and not contacts[peer.id]['can_approve']):
+                        raise ValueError('collaborator exceeds the participant contact/approval profile')
+                for rule in collaboration.rules:
+                    if (rule.operation == 'ai.delegate' and rule.overlay_patch_id is not None
+                            and not profile['ai']['can_edit'] and rule.required_scope is None):
+                        raise ValueError('AI overlay without initial edit permission requires an explicit scope')
+                    if rule.operation == 'ai.delegate' and rule.required_scope is not None and not any(
+                        approval.operation == 'approval.request' and approval.collaborator_id == rule.approver_id
+                        and approval.required_scope == rule.required_scope for approval in collaboration.rules):
+                        raise ValueError('required AI scope has no fixed approver rule')
+            except (TypeError, ValueError) as error:
+                self.issue("$.collaboration", "invalid-collaboration", str(error))
         self._validate_actor_view()
         self._validate_history()
 
@@ -204,6 +267,7 @@ class _Validator:
         digests = {f"sha256:{entry.get('sha256')}" for entry in record.get("files", [])}
         if isinstance(item.get("id"), str):
             self.source_digests[item["id"]] = digests
+            self.source_classes[item["id"]] = str(record.get("classification", ""))
         if item.get("digest") not in digests:
             self.issue(f"{path}.digest", "digest-mismatch", "digest is absent from the G1 source")
 
@@ -332,7 +396,14 @@ class _Validator:
         for index, raw in enumerate(self.array(self.root.get("candidates"), "$.candidates")):
             path = f"$.candidates[{index}]"
             item = self.obj(raw, path)
-            self.keys(item, path, required)
+            self.keys(item, path, required, {"patch_ids"})
+            if (self.root.get("schema_version") == "1.2.0"
+                    and item.get("operation") == "patch.apply" and not item.get("patch_ids")):
+                self.issue(f"{path}.patch_ids", "missing-patch-targets", "patch.apply requires explicit targets")
+            if "patch_ids" in item:
+                self.strings(item["patch_ids"], f"{path}.patch_ids")
+                if item.get("operation") != "patch.apply":
+                    self.issue(f"{path}.patch_ids", "invalid-operation", "patch targets require patch.apply")
             self.register(item.get("id"), f"{path}.id", self.candidates)
             for field in ("actor_visible_label", "duration_model", "expected_information", "failure", "goal"):
                 self.text(item.get(field), f"{path}.{field}")
@@ -454,7 +525,7 @@ class _Validator:
         for index, raw in enumerate(self.array(self.root.get("checks"), "$.checks")):
             path = f"$.checks[{index}]"
             item = self.obj(raw, path)
-            self.keys(item, path, required)
+            self.keys(item, path, required, {"assertions"})
             self.register(item.get("id"), f"{path}.id", group)
             if item.get("mode") != "modeled":
                 self.issue(f"{path}.mode", "unsupported-evidence-mode", "G2 has no executed checks")
@@ -467,9 +538,78 @@ class _Validator:
             for predicate_index, predicate in enumerate(self.strings(item.get("predicates"), f"{path}.predicates")):
                 if predicate not in PREDICATES:
                     self.issue(f"{path}.predicates[{predicate_index}]", "unsupported-predicate", "predicate is not supported")
+            assertion_ids: set[str] = set()
+            for assertion_index, raw_assertion in enumerate(self.array(item.get("assertions", []), f"{path}.assertions")):
+                assertion_path = f"{path}.assertions[{assertion_index}]"
+                assertion = self.obj(raw_assertion, assertion_path)
+                self.keys(assertion, assertion_path, {"expected", "fact_id", "operator"})
+                fact_id = self.text(assertion.get("fact_id"), f"{assertion_path}.fact_id")
+                if fact_id is not None:
+                    if fact_id not in self.semantic_fact_ids:
+                        self.issue(f"{assertion_path}.fact_id", "unknown-reference", "semantic fact is not defined")
+                    if fact_id in assertion_ids:
+                        self.issue(f"{assertion_path}.fact_id", "duplicate-reference", "fact is asserted more than once")
+                    assertion_ids.add(fact_id)
+                if assertion.get("operator") != "equals":
+                    self.issue(f"{assertion_path}.operator", "unsupported-operator", "only typed equality is supported")
+                if type(assertion.get("expected")) is not bool:
+                    self.issue(f"{assertion_path}.expected", "invalid-type", "expected a boolean")
             for ref_index, ref_id in enumerate(self.strings(item.get("evidence_refs"), f"{path}.evidence_refs")):
                 if ref_id not in self.references:
                     self.issue(f"{path}.evidence_refs[{ref_index}]", "unknown-reference", "reference is not defined")
+
+    def _validate_semantic_model(self) -> None:
+        if "semantic_model" not in self.root:
+            return
+        model = self.obj(self.root["semantic_model"], "$.semantic_model")
+        self.keys(model, "$.semantic_model", {"facts", "version"})
+        if self.text(model.get("version"), "$.semantic_model.version") != "source-facts-1":
+            self.issue("$.semantic_model.version", "unsupported-version", "expected 'source-facts-1'")
+        known_b0_paths = self._known_b0_paths()
+        self.semantic_fact_ids = set()
+        for index, raw in enumerate(self.array(model.get("facts"), "$.semantic_model.facts")):
+            path = f"$.semantic_model.facts[{index}]"
+            item = self.obj(raw, path)
+            self.keys(item, path, {"file", "false_if_all", "id", "true_if_all"})
+            fact_id = self.register(item.get("id"), f"{path}.id", self.semantic_fact_ids)
+            file_name = self.text(item.get("file"), f"{path}.file")
+            if file_name is not None and file_name not in known_b0_paths:
+                self.issue(f"{path}.file", "unknown-reference", "fact file is not a fixed B0 workspace file")
+            true_markers = self.strings(item.get("true_if_all"), f"{path}.true_if_all")
+            false_markers = self.strings(item.get("false_if_all"), f"{path}.false_if_all")
+            if not true_markers and not false_markers:
+                self.issue(path, "missing-semantic-evidence", "at least one source marker is required")
+            if set(true_markers) & set(false_markers):
+                self.issue(path, "contradictory-semantic-evidence", "true and false markers overlap")
+            if fact_id is not None and not fact_id.startswith("SEM-"):
+                self.issue(f"{path}.id", "invalid-id", "semantic fact IDs must start with SEM-")
+
+    def _known_b0_paths(self) -> set[str]:
+        for raw in self.array(self.root.get("source_manifest"), "$.source_manifest"):
+            if not isinstance(raw, dict) or raw.get("id") != "B0":
+                continue
+            source_path = self.text(raw.get("manifest_path"), "$.source_manifest.B0.manifest_path")
+            if source_path is None:
+                return set()
+            manifest_path = (self.bundle_dir / source_path).resolve()
+            try:
+                manifest_path.relative_to(self.bundle_dir.parent.resolve())
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
+                return set()
+            source = next((entry for entry in manifest.get("sources", [])
+                           if entry.get("id") == "B0"), None)
+            if not isinstance(source, dict):
+                return set()
+            result: set[str] = set()
+            for file in source.get("files", []):
+                if not isinstance(file, dict) or not isinstance(file.get("path"), str):
+                    continue
+                file_path = file["path"]
+                if file_path.startswith("raw/b0/"):
+                    result.add(file_path.removeprefix("raw/b0/").removesuffix(".b64"))
+            return result
+        return set()
 
     def _validate_actor_view(self) -> None:
         view = self.obj(self.root.get("actor_view"), "$.actor_view")

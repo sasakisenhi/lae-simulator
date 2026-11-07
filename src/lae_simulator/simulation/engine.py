@@ -2,8 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
+from lae_simulator.simulation.canonical import (
+    project_verified,
+    start_execution,
+    transition,
+)
 from lae_simulator.simulation.errors import SimulationError
 from lae_simulator.simulation.identity import compute_run_id
 from lae_simulator.simulation.model import (
@@ -11,16 +16,15 @@ from lae_simulator.simulation.model import (
     CanonicalEvent,
     EventKind,
     InternalValidity,
+    PublicRecord,
     RunResult,
     ScheduledEvent,
+    SimulationState,
     SourceClass,
 )
 from lae_simulator.simulation.policy import select_candidate
-from lae_simulator.simulation.projector import project_public_log
-from lae_simulator.simulation.queue import DeterministicQueue
 from lae_simulator.simulation.reducer import (
     initial_state,
-    reduce_event,
     validate_result,
 )
 from lae_simulator.world.model import Candidate, Classification, WorldDefinition
@@ -32,7 +36,6 @@ class _Execution:
         self.initial = initial_state(world)
         self.state = self.initial
         self.events: list[CanonicalEvent] = []
-        self.queue = DeterministicQueue()
         self.next_scheduled_number = 1
         self.next_insertion_sequence = 1
 
@@ -48,9 +51,7 @@ class _Execution:
             logical_time=logical_time,
             **values,
         )
-        self.state = reduce_event(
-            self.world, self.state, event, expected_order=order
-        )
+        self.state = cast(SimulationState, transition(self.world, self.state, event, order))
         self.events.append(event)
         return event
 
@@ -64,9 +65,7 @@ class _Execution:
         caused_by: tuple[str, ...] = (),
     ) -> ScheduledEvent:
         scheduled_id = f"SCH-{self.next_scheduled_number:06d}"
-        self.next_scheduled_number += 1
         insertion = self.next_insertion_sequence
-        self.next_insertion_sequence += 1
         scheduled_event = self.emit(
             kind=EventKind.EVENT_SCHEDULED,
             classification=Classification.ADMINISTRATIVE,
@@ -79,17 +78,10 @@ class _Execution:
             insertion_sequence=insertion,
             payload_kind=payload_kind,
         )
-        item = ScheduledEvent(
-            due_tick=due_tick,
-            priority=priority,
-            insertion_sequence=insertion,
-            scheduled_id=scheduled_id,
-            created_by_event_id=scheduled_event.id,
-            payload_kind=payload_kind,
-            candidate_id=candidate_id,
-        )
-        self.queue.push(item)
-        return item
+        self.next_scheduled_number += 1
+        self.next_insertion_sequence += 1
+        return next(item for item in self.state.pending_events
+                    if item.created_by_event_id == scheduled_event.id)
 
     def start_candidate(self, candidate: Candidate) -> None:
         selected = self.emit(
@@ -151,10 +143,8 @@ class _Execution:
         if candidate is not None:
             self.start_candidate(candidate)
 
-        while self.queue:
-            item = self.queue.pop()
-            if item not in self.state.pending_events:
-                raise SimulationError("scheduler and canonical queue diverged")
+        while self.state.pending_events:
+            item = min(self.state.pending_events)
             consumed = self.consume(item)
             if item.payload_kind == "operation-completion":
                 candidate = next(
@@ -204,9 +194,9 @@ class _Execution:
         report = validate_result(self.world, self.initial, events, self.state)
         if report.validity is not InternalValidity.VALID:
             raise SimulationError("normal execution produced an invalid canonical result")
-        public_log = project_public_log(
+        public_log = cast(tuple[PublicRecord, ...], project_verified(
             self.world, self.initial, events, self.state
-        )
+        ))
         run_id = compute_run_id(self.world)
         return RunResult(
             run_id=run_id,
@@ -226,4 +216,4 @@ def _resource_version(world: WorldDefinition, resource_id: str) -> str:
 
 
 def execute(world: WorldDefinition) -> RunResult:
-    return _Execution(world).run()
+    return cast(_Execution, start_execution(world)).run()

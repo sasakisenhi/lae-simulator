@@ -2,16 +2,22 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
-import platform
-import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
+from lae_simulator.simulation.canonical import project_verified
+from lae_simulator.simulation.canonical_store import (
+    canonical_json_bytes,
+    content_digest,
+    execution_environment,
+    read_artifact_bundle,
+    write_artifact_bundle,
+)
 from lae_simulator.simulation.errors import (
     FailureRecord,
+    HistoryValidationError,
     PersistenceError,
     PublicationError,
 )
@@ -29,8 +35,7 @@ from lae_simulator.simulation.model import (
     SourceClass,
     ValidationReport,
 )
-from lae_simulator.simulation.projector import project_public_log
-from lae_simulator.simulation.reducer import validate_result
+from lae_simulator.simulation.reducer import replay, validate_result
 from lae_simulator.world import WorldDefinition, load_world_text
 from lae_simulator.world.model import Classification
 
@@ -54,28 +59,11 @@ class StoredRun:
 
 
 def _json_bytes(value: Any) -> bytes:
-    return (
-        json.dumps(
-            value,
-            allow_nan=False,
-            ensure_ascii=False,
-            separators=(",", ":"),
-            sort_keys=True,
-        )
-        + "\n"
-    ).encode("utf-8")
+    return canonical_json_bytes(value)
 
 
 def _digest(value: bytes) -> str:
-    return "sha256:" + hashlib.sha256(value).hexdigest()
-
-
-def _lock_digest() -> str:
-    lock_path = Path(__file__).resolve().parents[3] / "uv.lock"
-    try:
-        return _digest(lock_path.read_bytes())
-    except OSError:
-        return "unavailable"
+    return content_digest(value)
 
 
 def _rules_id(world: WorldDefinition) -> str:
@@ -141,10 +129,11 @@ def save_run(world: WorldDefinition, result: RunResult, root: str | Path) -> Pat
                 "run identifier does not match canonical history",
             )
         )
+    destination = Path(root) / result.run_id
     try:
-        expected_public = project_public_log(
+        expected_public = cast(tuple[PublicRecord, ...], project_verified(
             world, result.initial_state, result.events, result.final_state
-        )
+        ))
     except PublicationError as error:
         raise PersistenceError(
             FailureRecord("internal-error", "publication", result.run_id, str(error))
@@ -159,32 +148,16 @@ def save_run(world: WorldDefinition, result: RunResult, root: str | Path) -> Pat
             )
         )
 
-    root_path = Path(root)
-    destination = root_path / result.run_id
-    temporary = root_path / f".{result.run_id}.tmp"
     try:
-        root_path.mkdir(parents=True, exist_ok=True)
-        if destination.exists() or temporary.exists():
-            raise FileExistsError("run destination already exists")
-        temporary.mkdir()
         artifacts = _artifact_bytes(world, result)
-        for name, content in artifacts.items():
-            (temporary / name).write_bytes(content)
         manifest = {
-            "artifacts": {name: _digest(content) for name, content in artifacts.items()},
             "definition_id": world.content_id,
             "engine_version": ENGINE_VERSION,
-            "environment": {
-                "machine": platform.machine(),
-                "python": platform.python_version(),
-                "sys_platform": sys.platform,
-                "uv_lock": _lock_digest(),
-            },
+            "environment": execution_environment(),
             "guarantee_boundary": "synthetic deterministic conformance execution",
             "normalization": "canonical-json-v1/json-lines-v1",
             "outcome": result.final_state.outcome.value if result.final_state.outcome else None,
             "rules_id": _rules_id(world),
-            "run_id": result.run_id,
             "schema_version": STORE_SCHEMA_VERSION,
             "seed": world.seed,
             "time": {
@@ -194,8 +167,7 @@ def save_run(world: WorldDefinition, result: RunResult, root: str | Path) -> Pat
             },
             "validity": result.validation.validity.value,
         }
-        (temporary / "manifest.json").write_bytes(_json_bytes(manifest))
-        temporary.rename(destination)
+        destination = write_artifact_bundle(root, result.run_id, artifacts, manifest)
     except (OSError, ValueError) as error:
         raise PersistenceError(
             FailureRecord(
@@ -203,10 +175,6 @@ def save_run(world: WorldDefinition, result: RunResult, root: str | Path) -> Pat
             )
         ) from error
     return destination
-
-
-def _read_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _state_from_dict(value: dict[str, Any]) -> SimulationState:
@@ -239,6 +207,12 @@ def _state_from_dict(value: dict[str, Any]) -> SimulationState:
         outcome=None if value["outcome"] is None else BusinessOutcome(value["outcome"]),
         outcome_reason=value["outcome_reason"],
         validity=InternalValidity(value["validity"]),
+        active_start_event_id=value.get("active_start_event_id"),
+        selected_candidate_event_ids=tuple(tuple(item) for item in value.get("selected_candidate_event_ids", [])),
+        cancelled_event_ids=tuple(value.get("cancelled_event_ids", [])),
+        last_consumed_key=(None if value.get("last_consumed_key") is None
+                           else tuple(value["last_consumed_key"])),
+        last_consumed_event_id=value.get("last_consumed_event_id"),
     )
 
 
@@ -292,17 +266,9 @@ def _public_from_dict(value: dict[str, Any]) -> PublicRecord:
 def load_run(path: str | Path) -> StoredRun:
     run_path = Path(path)
     try:
-        manifest = _read_json(run_path / "manifest.json")
-        if manifest["schema_version"] != STORE_SCHEMA_VERSION:
-            raise ValueError("unsupported run store schema")
-        if manifest["run_id"] != run_path.name:
-            raise ValueError("run directory and manifest identifiers differ")
-        artifact_bytes: dict[str, bytes] = {}
-        for name in _ARTIFACT_NAMES:
-            content = (run_path / name).read_bytes()
-            if manifest["artifacts"].get(name) != _digest(content):
-                raise ValueError(f"artifact digest mismatch: {name}")
-            artifact_bytes[name] = content
+        manifest, artifact_bytes = read_artifact_bundle(
+            run_path, _ARTIFACT_NAMES, STORE_SCHEMA_VERSION
+        )
         world = load_world_text(artifact_bytes["world.json"].decode("utf-8"))
         if manifest["definition_id"] != world.content_id:
             raise ValueError("manifest definition identifier mismatch")
@@ -316,7 +282,26 @@ def load_run(path: str | Path) -> StoredRun:
             for line in artifact_bytes["events.jsonl"].splitlines()
             if line
         )
-        final = _state_from_dict(json.loads(artifact_bytes["final-state.json"]))
+        final_data = json.loads(artifact_bytes["final-state.json"])
+        final = _state_from_dict(final_data)
+        if ("last_consumed_key" not in final_data and final.consumed_event_ids
+                or "selected_candidate_event_ids" not in final_data and final.selected_candidate_ids
+                or "active_start_event_id" not in final_data and final.active_candidate_id is not None):
+            reconstructed = replay(world, initial, events)
+            legacy = replace(
+                reconstructed,
+                active_start_event_id=(None if "active_start_event_id" not in final_data
+                                       else reconstructed.active_start_event_id),
+                selected_candidate_event_ids=(() if "selected_candidate_event_ids" not in final_data
+                                              else reconstructed.selected_candidate_event_ids),
+                last_consumed_key=(None if "last_consumed_key" not in final_data
+                                   else reconstructed.last_consumed_key),
+                last_consumed_event_id=(None if "last_consumed_event_id" not in final_data
+                                        else reconstructed.last_consumed_event_id),
+            )
+            if legacy != final:
+                raise ValueError("legacy final state differs from canonical replay")
+            final = reconstructed
         if manifest["run_id"] != compute_run_id(world):
             raise ValueError("run identifier does not match canonical history")
         if (
@@ -344,7 +329,7 @@ def load_run(path: str | Path) -> StoredRun:
             raise ValueError("stored run does not match canonical replay")
         if validation != stored_validation:
             raise ValueError("stored validation report is inconsistent")
-        projected = project_public_log(world, initial, events, final)
+        projected = cast(tuple[PublicRecord, ...], project_verified(world, initial, events, final))
         if projected != public:
             raise ValueError("stored public log is inconsistent with canonical history")
         result = RunResult(
@@ -355,7 +340,8 @@ def load_run(path: str | Path) -> StoredRun:
             public_log=public,
             validation=validation,
         )
-    except (OSError, UnicodeError, KeyError, TypeError, ValueError, PublicationError) as error:
+    except (OSError, UnicodeError, KeyError, TypeError, ValueError,
+            PublicationError, HistoryValidationError) as error:
         raise PersistenceError(
             FailureRecord("internal-error", "load-validation", str(run_path), str(error))
         ) from error

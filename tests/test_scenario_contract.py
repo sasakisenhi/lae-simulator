@@ -29,6 +29,13 @@ class ScenarioContractTests(unittest.TestCase):
             self.load_changed(data)
         self.assertIn(code, {issue.code for issue in raised.exception.issues})
 
+    def test_new_patch_candidate_requires_explicit_targets(self) -> None:
+        candidate = next(item for item in self.data["candidates"] if item["id"] == "T10")
+        del candidate["patch_ids"]
+        self.assert_invalid(self.data, "missing-patch-targets")
+        self.data["schema_version"] = "1.1.0"
+        self.load_changed(self.data)
+
     def test_fixed_catalog_loads_with_all_design_ids(self) -> None:
         bundle = load_scenario_bundle(SCENARIO_PATH)
 

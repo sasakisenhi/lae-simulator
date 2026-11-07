@@ -25,6 +25,7 @@ class EventKind(StrEnum):
     OPERATION_STARTED = "operation-started"
     EVENT_SCHEDULED = "event-scheduled"
     EVENT_CONSUMED = "event-consumed"
+    EVENT_CANCELLED = "event-cancelled"
     OPERATION_COMPLETED = "operation-completed"
     RUN_ENDED = "run-ended"
 
@@ -75,9 +76,14 @@ class SimulationState:
     outcome: BusinessOutcome | None
     outcome_reason: str | None
     validity: InternalValidity
+    active_start_event_id: str | None = None
+    selected_candidate_event_ids: tuple[tuple[str, str], ...] = ()
+    cancelled_event_ids: tuple[str, ...] = ()
+    last_consumed_key: tuple[int, int, int] | None = None
+    last_consumed_event_id: str | None = None
 
     def as_dict(self) -> dict[str, Any]:
-        return {
+        result: dict[str, Any] = {
             "active_candidate_id": self.active_candidate_id,
             "active_scheduled_id": self.active_scheduled_id,
             "active_view_id": self.active_view_id,
@@ -96,6 +102,16 @@ class SimulationState:
             "validity": self.validity.value,
             "workspace_version": self.workspace_version,
         }
+        if self.active_start_event_id is not None:
+            result["active_start_event_id"] = self.active_start_event_id
+        if self.selected_candidate_event_ids:
+            result["selected_candidate_event_ids"] = [list(item) for item in self.selected_candidate_event_ids]
+        if self.cancelled_event_ids:
+            result["cancelled_event_ids"] = list(self.cancelled_event_ids)
+        if self.last_consumed_key is not None:
+            result["last_consumed_key"] = list(self.last_consumed_key)
+            result["last_consumed_event_id"] = self.last_consumed_event_id
+        return result
 
 
 @dataclass(frozen=True)

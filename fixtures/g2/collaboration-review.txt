@@ -1,0 +1,18 @@
+G5 synthetic collaboration conformance input
+
+This input retains the fixed G1/G2 code, patch and check catalog. AI permission,
+peer knowledge, approval scope, availability, capacity and response timing below
+are exercise assumptions, not facts about LAE personnel or measured tool latency.
+The original AI-disabled input is unchanged.
+
+ROLE-PEER knows PEER-NOTE and R02 and cannot approve edits. ROLE-APPROVER can
+approve workspace.virtual-edit in this exercise. AI-FIXED is a fixed response
+adapter with one simulated concurrent task, not an executed external model.
+AI-SUGGESTION is tentative output and must not become administrative truth.
+P2 is deliberately a feasible but imperfect suggestion: its later modeled check
+may expose a counterexample. Nothing in the generic engine prefers this patch.
+
+Responses are fixed records. Delay, expiry and delivery counts are synthetic
+ticks; notification arrival does not imply participant observation. Individual
+expiry is priority90; response arrival20 and delivery30 precede it at equal tick.
+The earlier inserted study deadline at H ends the run with later keys pending.

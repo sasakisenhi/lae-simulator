@@ -11,6 +11,7 @@ from pathlib import Path
 from lae_simulator.simulation import (
     BusinessOutcome,
     EventKind,
+    HistoryValidationError,
     InternalValidity,
     PersistenceError,
     PublicationError,
@@ -31,6 +32,44 @@ CF0_PATH = PROJECT_ROOT / "fixtures" / "cf0" / "world.json"
 
 
 class WalkingSkeletonTests(unittest.TestCase):
+    def test_fixed_deadline_cannot_be_cancelled(self) -> None:
+        from lae_simulator.simulation.canonical import transition
+
+        result = execute(self.world)
+        scheduled = result.events[0]
+        state = transition(self.world, result.initial_state, scheduled, 1)
+        cancel = replace(scheduled, id='EVT-000002', order=2, kind=EventKind.EVENT_CANCELLED,
+                         due_tick=None, priority=None, insertion_sequence=None, payload_kind=None,
+                         caused_by=(scheduled.id,), reason='forged fixed deadline cancellation')
+        with self.assertRaisesRegex(HistoryValidationError, 'fixed-deadline'):
+            transition(self.world, state, cancel, 2)
+
+    def test_completion_effect_cannot_be_skipped_before_deadline(self) -> None:
+        from lae_simulator.simulation.canonical import transition
+        from lae_simulator.simulation.model import SimulationState
+
+        result = execute(self.world)
+        state = result.initial_state
+        consumed_index = next(i for i, event in enumerate(result.events)
+                              if event.kind is EventKind.EVENT_CONSUMED
+                              and event.payload_kind == 'operation-completion')
+        for event in result.events[:consumed_index + 1]:
+            value = transition(self.world, state, event, event.order)
+            assert isinstance(value, SimulationState)
+            state = value
+        deadline = result.events[-2]
+        forged = replace(deadline, id=f'EVT-{consumed_index + 2:06d}', order=consumed_index + 2)
+        with self.assertRaisesRegex(HistoryValidationError, 'unfinished-completion'):
+            transition(self.world, state, forged, forged.order)
+    def test_fixed_deadline_cannot_be_reserved_twice(self) -> None:
+        from lae_simulator.simulation.canonical import transition
+
+        result = execute(self.world)
+        state = transition(self.world, result.initial_state, result.events[0], 1)
+        duplicate = replace(result.events[0], id='EVT-000002', order=2,
+                            insertion_sequence=2, scheduled_id='SCH-DUPLICATE')
+        with self.assertRaisesRegex(HistoryValidationError, 'duplicate-deadline'):
+            transition(self.world, state, duplicate, 2)
     def setUp(self) -> None:
         self.world = load_world(CF0_PATH)
 
@@ -127,6 +166,115 @@ class WalkingSkeletonTests(unittest.TestCase):
         self.assertEqual(report.validity, InternalValidity.INVALID)
         self.assertEqual(report.issues[0].code, "consume-mismatch")
 
+    def test_schedule_replay_rejects_forged_priority_and_duration(self) -> None:
+        result = execute(self.world)
+        for payload, priority, due_tick in (
+            ("deadline", 10, None),
+            ("operation-completion", 90, None),
+            ("operation-completion", None, 2),
+        ):
+            with self.subTest(payload=payload, priority=priority, due_tick=due_tick):
+                events = list(result.events)
+                index = next(i for i, event in enumerate(events)
+                             if event.kind is EventKind.EVENT_SCHEDULED
+                             and event.payload_kind == payload)
+                events[index] = replace(events[index],
+                                        priority=priority if priority is not None else events[index].priority,
+                                        due_tick=due_tick if due_tick is not None else events[index].due_tick)
+                report = validate_result(self.world, result.initial_state,
+                                         tuple(events), result.final_state)
+                self.assertEqual(report.validity, InternalValidity.INVALID)
+                self.assertEqual(report.issues[0].target, events[index].id)
+
+    def test_schedule_rejects_boolean_order_or_tick(self) -> None:
+        result = execute(self.world)
+        for field in ("order", "logical_time", "due_tick", "insertion_sequence"):
+            with self.subTest(field=field):
+                event = result.events[0]
+                if field == "order":
+                    modified = replace(event, order=True)
+                elif field == "logical_time":
+                    modified = replace(event, logical_time=False)
+                elif field == "due_tick":
+                    modified = replace(event, due_tick=True)
+                else:
+                    modified = replace(event, insertion_sequence=True)
+                events = (modified,) + result.events[1:]
+                report = validate_result(self.world, result.initial_state, events, result.final_state)
+                self.assertEqual(report.validity, InternalValidity.INVALID)
+                self.assertEqual(report.issues[0].target, event.id)
+
+    def test_schedule_insertion_sequence_is_strictly_increasing(self) -> None:
+        result = execute(self.world)
+        events = list(result.events)
+        events[0] = replace(events[0], insertion_sequence=10)
+        report = validate_result(self.world, result.initial_state, tuple(events), result.final_state)
+        self.assertEqual(report.validity, InternalValidity.INVALID)
+        self.assertEqual(report.issues[0].code, "insertion-sequence-regression")
+
+    def test_unscheduled_time_advance_is_rejected(self) -> None:
+        result = execute(self.world)
+        events = list(result.events)
+        events[1] = replace(events[1], logical_time=1)
+        report = validate_result(self.world, result.initial_state, tuple(events), result.final_state)
+        self.assertEqual(report.validity, InternalValidity.INVALID)
+        self.assertEqual(report.issues[0].code, "unscheduled-time-advance")
+
+    def test_completion_reservation_must_cite_operation_start(self) -> None:
+        result = execute(self.world)
+        events = list(result.events)
+        deadline, selected, started, scheduled = events[:4]
+        events[:4] = [
+            replace(selected, id="EVT-000001", order=1),
+            replace(started, id="EVT-000002", order=2, caused_by=("EVT-000001",)),
+            replace(deadline, id="EVT-000003", order=3),
+            replace(scheduled, caused_by=("EVT-000003",)),
+        ]
+        deadline_index = next(i for i, event in enumerate(events)
+                              if event.kind is EventKind.EVENT_CONSUMED
+                              and event.payload_kind == "deadline")
+        events[deadline_index] = replace(events[deadline_index], caused_by=("EVT-000003",))
+        report = validate_result(self.world, result.initial_state, tuple(events), result.final_state)
+        self.assertEqual(report.validity, InternalValidity.INVALID)
+        self.assertEqual(report.issues[0].target, "EVT-000004")
+
+    def test_operation_start_must_cite_its_candidate_selection(self) -> None:
+        result = execute(self.world)
+        events = list(result.events)
+        index = next(i for i, event in enumerate(events) if event.kind is EventKind.OPERATION_STARTED)
+        events[index] = replace(events[index], caused_by=("EVT-000001",))
+        report = validate_result(self.world, result.initial_state, tuple(events), result.final_state)
+        self.assertEqual(report.validity, InternalValidity.INVALID)
+        self.assertEqual(report.issues[0].target, events[index].id)
+
+    def test_cancelled_reservation_is_not_consumable_and_replays(self) -> None:
+        result = execute(self.world)
+        deadline, selected, started, scheduled = result.events[:4]
+        cancelled = replace(
+            scheduled, id="EVT-000005", order=5, kind=EventKind.EVENT_CANCELLED,
+            due_tick=None, priority=None, insertion_sequence=None, payload_kind=None,
+            caused_by=(scheduled.id,), reason="cancelled by test",
+        )
+        consumed_deadline = replace(result.events[-2], id="EVT-000006", order=6)
+        ended = replace(result.events[-1], id="EVT-000007", order=7,
+                        caused_by=("EVT-000006",))
+        history = (deadline, selected, started, scheduled, cancelled, consumed_deadline, ended)
+        final = replay(self.world, result.initial_state, history)
+        self.assertIn(scheduled.scheduled_id, final.cancelled_event_ids)
+        self.assertFalse(final.pending_events)
+        forged = replace(result.events[4], id="EVT-000006", order=6)
+        with self.assertRaises(HistoryValidationError):
+            replay(self.world, result.initial_state, history[:5] + (forged, ended))
+        reused = replace(scheduled, id="EVT-000006", order=6, insertion_sequence=3,
+                         caused_by=(cancelled.id,))
+        with self.assertRaises(HistoryValidationError) as raised:
+            replay(self.world, result.initial_state, history[:5] + (reused, ended))
+        self.assertEqual(raised.exception.issue.code, "duplicate-schedule")
+        same_tick_cancel = replace(cancelled, logical_time=scheduled.due_tick or 0)
+        with self.assertRaises(HistoryValidationError):
+            replay(self.world, result.initial_state, history[:4] + (same_tick_cancel,) + history[5:])
+
+
     def test_modified_derived_state_is_invalid_not_incomplete(self) -> None:
         result = execute(self.world)
         modified = replace(result.final_state, active_view_id="D-CF0-NOTE")
@@ -197,6 +345,18 @@ class WalkingSkeletonTests(unittest.TestCase):
         self.assertEqual(queue.pop().scheduled_id, "SCH-1")
         self.assertEqual(queue.pop().scheduled_id, "SCH-2")
 
+    def test_queue_orders_tick_before_priority_and_preserves_insertion_order(self) -> None:
+        events = (
+            ScheduledEvent(2, 10, 4, "a", "e1", "operation-completion"),
+            ScheduledEvent(1, 90, 1, "b", "e2", "deadline"),
+            ScheduledEvent(1, 10, 3, "c", "e3", "operation-completion"),
+            ScheduledEvent(1, 10, 2, "d", "e4", "operation-completion"),
+        )
+        for order in (events, tuple(reversed(events))):
+            queue = DeterministicQueue(order)
+            self.assertEqual(tuple(queue.pop().scheduled_id for _ in order),
+                             ("d", "c", "b", "a"))
+
     def test_store_round_trip_revalidates_and_does_not_overwrite(self) -> None:
         result = execute(self.world)
         with tempfile.TemporaryDirectory() as directory:
@@ -209,6 +369,29 @@ class WalkingSkeletonTests(unittest.TestCase):
             with self.assertRaises(PersistenceError):
                 save_run(self.world, result, directory)
             self.assertEqual((path / "manifest.json").read_bytes(), before)
+
+    def test_legacy_unfinished_operation_recovers_start_causality(self) -> None:
+        from lae_simulator.simulation.canonical_store import (
+            canonical_json_bytes,
+            content_digest,
+        )
+        from lae_simulator.world import load_world_text
+
+        raw = json.loads(CF0_PATH.read_text(encoding="utf-8"))
+        raw["time_models"][0]["formula"]["value"] = 3
+        world = load_world_text(json.dumps(raw))
+        result = execute(world)
+        self.assertIsNotNone(result.final_state.active_start_event_id)
+        with tempfile.TemporaryDirectory() as directory:
+            path = save_run(world, result, directory)
+            state = json.loads((path / "final-state.json").read_bytes())
+            del state["active_start_event_id"]
+            payload = canonical_json_bytes(state)
+            (path / "final-state.json").write_bytes(payload)
+            manifest = json.loads((path / "manifest.json").read_bytes())
+            manifest["artifacts"]["final-state.json"] = content_digest(payload)
+            (path / "manifest.json").write_bytes(canonical_json_bytes(manifest))
+            self.assertEqual(load_run(path).result, result)
 
     def test_store_rejects_a_forged_validation_report(self) -> None:
         result = execute(self.world)

@@ -1,0 +1,1831 @@
+{
+  "schema_version": "1.2.0",
+  "exercise_id": "lae-vscode-eslint-1955-scenario-v1-g4-timing",
+  "source_manifest": [
+    {
+      "id": "B0",
+      "revision": "790646388696511b2665a4d119bf0fb713dd990d",
+      "digest": "sha256:fa82ed6953f9c4dee3462bb744a1d2b2d20d4a65011c171623b91ef2d153df57",
+      "manifest_path": "../g1/manifest.json"
+    },
+    {
+      "id": "I1955",
+      "revision": "issue:1955",
+      "digest": "sha256:2a72ca684624451441f22859ca01334e4742bee5a307f6daeb8c8cf944b1de59",
+      "manifest_path": "../g1/manifest.json"
+    },
+    {
+      "id": "I1955-C1",
+      "revision": "issue-comment:2503124072",
+      "digest": "sha256:3f34e097502b589b74ace67115c9339464cde780fdc95d5e5eca429add0f49f6",
+      "manifest_path": "../g1/manifest.json"
+    },
+    {
+      "id": "E0",
+      "revision": "abea3b6f399fde9e28cf6dc5d6c013938f163cdc",
+      "digest": "sha256:7cce74f8fb8983489f470f450e1a376aa74f0f3178f6dba91930946349142ada",
+      "manifest_path": "../g1/manifest.json"
+    },
+    {
+      "id": "H0",
+      "revision": "63f18ce725edb23a2d274b234df7f12ff0b7f009",
+      "digest": "sha256:aa0fc639f0a520b7c0220dfc7b95cca9e0f2432b820c14e6cb73882ec28764f8",
+      "manifest_path": "../g1/manifest.json"
+    },
+    {
+      "id": "LAE-v0.2.0",
+      "revision": "0.2.0",
+      "digest": "sha256:83635d2640400d365bbab679b7efa5adec46dd3d65ea7eb28352c58651b1c080",
+      "manifest_path": "../g1/manifest.json"
+    }
+  ],
+  "documents": [
+    {
+      "id": "D01",
+      "source_id": "I1955",
+      "digest": "sha256:2a72ca684624451441f22859ca01334e4742bee5a307f6daeb8c8cf944b1de59",
+      "classification": "public-evidence",
+      "availability": "available"
+    },
+    {
+      "id": "D02",
+      "source_id": "B0",
+      "digest": "sha256:b1be3a1c54cf5bc2994aa995ab8e1510be75c50e393aefbc4112dbc08bf70db9",
+      "classification": "public-evidence",
+      "availability": "available"
+    },
+    {
+      "id": "D03",
+      "source_id": "B0",
+      "digest": "sha256:bd673703374f3fd50a3e33b3ab67e8ece6fadd96ef627c83c634c6aea49db95d",
+      "classification": "public-evidence",
+      "availability": "available"
+    },
+    {
+      "id": "D04",
+      "source_id": "E0",
+      "digest": "sha256:7cce74f8fb8983489f470f450e1a376aa74f0f3178f6dba91930946349142ada",
+      "classification": "public-evidence",
+      "availability": "available"
+    },
+    {
+      "id": "D05",
+      "source_id": "E0",
+      "digest": "sha256:3e37439e25166138733258d975cf87a55d73838ed3f48023f3d6cdb7ad0fe6ea",
+      "classification": "public-evidence",
+      "availability": "available"
+    },
+    {
+      "id": "D06",
+      "source_id": "H0",
+      "digest": "sha256:aa0fc639f0a520b7c0220dfc7b95cca9e0f2432b820c14e6cb73882ec28764f8",
+      "classification": "public-evidence",
+      "availability": "available"
+    },
+    {
+      "id": "D07",
+      "source_id": "I1955-C1",
+      "digest": "sha256:3f34e097502b589b74ace67115c9339464cde780fdc95d5e5eca429add0f49f6",
+      "classification": "administrative",
+      "availability": "audit-only"
+    }
+  ],
+  "references": [
+    {
+      "id": "R01",
+      "source_id": "B0",
+      "relation": "metadata-fields",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslint.ts:121-126"
+    },
+    {
+      "id": "R02",
+      "source_id": "B0",
+      "relation": "metadata-capture",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslint.ts:143-165"
+    },
+    {
+      "id": "R03",
+      "source_id": "B0",
+      "relation": "url-lookup",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslint.ts:174-175"
+    },
+    {
+      "id": "R04",
+      "source_id": "B0",
+      "relation": "type-lookup",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslint.ts:178-179"
+    },
+    {
+      "id": "R05",
+      "source_id": "B0",
+      "relation": "registration-test",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslint.ts:182-183"
+    },
+    {
+      "id": "R06",
+      "source_id": "B0",
+      "relation": "validation-flow",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslint.ts:1188-1239"
+    },
+    {
+      "id": "R07",
+      "source_id": "B0",
+      "relation": "code-action-storage",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslint.ts:712-746"
+    },
+    {
+      "id": "R08",
+      "source_id": "B0",
+      "relation": "fix-record-link",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslint.ts:389-422"
+    },
+    {
+      "id": "R09",
+      "source_id": "B0",
+      "relation": "single-fix-generation",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslintServer.ts:582-643"
+    },
+    {
+      "id": "R10",
+      "source_id": "B0",
+      "relation": "documentation-action",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslintServer.ts:692-700,823-827"
+    },
+    {
+      "id": "R11",
+      "source_id": "B0",
+      "relation": "all-fixes-flow",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslintServer.ts:748-804"
+    },
+    {
+      "id": "R12",
+      "source_id": "B0",
+      "relation": "options-forwarding",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "eslint.ts:1113-1156"
+    },
+    {
+      "id": "R13",
+      "source_id": "B0",
+      "relation": "string-check",
+      "coverage": "recorded",
+      "target_id": "D02",
+      "evidence": "is.ts:16-17"
+    },
+    {
+      "id": "R14",
+      "source_id": "H0",
+      "relation": "url-less-layout-example",
+      "coverage": "recorded",
+      "target_id": "D06",
+      "evidence": "header.js:121-125"
+    },
+    {
+      "id": "R-UNKNOWN",
+      "source_id": "B0",
+      "relation": "outside-finite-index",
+      "coverage": "unresolved",
+      "evidence": "No relation is asserted outside the fixed index"
+    }
+  ],
+  "world_claims": [
+    {
+      "id": "LAE-CONTEXT",
+      "statement": "LAE is a fictional draft company context; internal tools and game source have distinct repository practices.",
+      "source_ids": [
+        "LAE-v0.2.0"
+      ],
+      "origin": "fictional-setting",
+      "status": "draft-setting",
+      "classification": "public-evidence"
+    },
+    {
+      "id": "TEAM-ASSIGNMENT",
+      "statement": "The participant is assigned to the Developer Tools exercise role without inferred ESLint expertise or administrative authority.",
+      "source_ids": [
+        "LAE-v0.2.0"
+      ],
+      "origin": "synthetic-assumption",
+      "status": "additional-assumption",
+      "classification": "actor-private"
+    },
+    {
+      "id": "EX01",
+      "statement": "Investigate the fixed issue and public specifications, optionally make a limited virtual change and modeled check, then submit or defer with evidence and limits; no particular improvement is required.",
+      "source_ids": [
+        "I1955",
+        "B0"
+      ],
+      "origin": "synthetic-assumption",
+      "status": "additional-assumption",
+      "classification": "actor-private"
+    },
+    {
+      "id": "EX02",
+      "statement": "The submission target is a simulated exercise repository with no external URL; upstream is reference-only.",
+      "source_ids": [
+        "B0",
+        "LAE-v0.2.0"
+      ],
+      "origin": "synthetic-assumption",
+      "status": "additional-assumption",
+      "classification": "actor-private"
+    },
+    {
+      "id": "EX03",
+      "statement": "One pseudonymous participant may read D01-D06, search and inspect B0, apply a virtual patch, run modeled checks, ask ROLE-PEER for information but not approval, and submit to the simulated target.",
+      "source_ids": [
+        "LAE-v0.2.0"
+      ],
+      "origin": "synthetic-assumption",
+      "status": "additional-assumption",
+      "classification": "actor-private"
+    },
+    {
+      "id": "EX04",
+      "statement": "AI delegation is disabled for this profile; all durations are synthetic ticks and ROLE-PEER response is not guaranteed before the deadline.",
+      "source_ids": [
+        "LAE-v0.2.0"
+      ],
+      "origin": "synthetic-assumption",
+      "status": "additional-assumption",
+      "classification": "actor-private"
+    },
+    {
+      "id": "OSS-FACT",
+      "statement": "B0, E0, H0 and the issue are fixed real-OSS materials, but no reporter environment or real VS Code execution is established.",
+      "source_ids": [
+        "B0",
+        "I1955",
+        "E0",
+        "H0"
+      ],
+      "origin": "real-oss",
+      "status": "provisional",
+      "classification": "public-evidence"
+    },
+    {
+      "id": "ADMIN-EXPECTED",
+      "statement": "P1 is the review baseline, while P2 has a documentation-action side effect and P3 violates the explicit type filter.",
+      "source_ids": [
+        "B0",
+        "E0"
+      ],
+      "origin": "synthetic-assumption",
+      "status": "additional-assumption",
+      "classification": "administrative"
+    },
+    {
+      "id": "UNDECIDED-COMPANY",
+      "statement": "Company-wide individual permissions, AI approval, named experts and response SLA remain undetermined.",
+      "source_ids": [
+        "LAE-v0.2.0"
+      ],
+      "origin": "fictional-setting",
+      "status": "undetermined",
+      "classification": "administrative"
+    }
+  ],
+  "context": {
+    "company_context": {
+      "claim_ids": [
+        "LAE-CONTEXT",
+        "UNDECIDED-COMPANY"
+      ]
+    },
+    "team_profile": {
+      "claim_ids": [
+        "TEAM-ASSIGNMENT",
+        "EX03",
+        "EX04"
+      ]
+    },
+    "exercise_scenario": {
+      "claim_ids": [
+        "EX01",
+        "EX02",
+        "OSS-FACT",
+        "ADMIN-EXPECTED"
+      ]
+    }
+  },
+  "participant_profile": {
+    "actor_id": "ACTOR-DEVTOOLS-EXERCISE",
+    "initial_claim_ids": [
+      "TEAM-ASSIGNMENT",
+      "EX01",
+      "EX02",
+      "EX03",
+      "EX04",
+      "OSS-FACT"
+    ],
+    "operation_capabilities": [
+      "ai.delegate",
+      "ai.integrate",
+      "check.model",
+      "code.search",
+      "document.read",
+      "file.open",
+      "issue.read",
+      "patch.apply",
+      "patch.revert",
+      "pr.create",
+      "question.send",
+      "run.defer",
+      "symbol.navigate",
+      "wait",
+      "work.compare"
+    ],
+    "permissions": [
+      {
+        "resource_id": "D01",
+        "action": "read"
+      },
+      {
+        "resource_id": "D02",
+        "action": "read"
+      },
+      {
+        "resource_id": "D03",
+        "action": "read"
+      },
+      {
+        "resource_id": "D04",
+        "action": "read"
+      },
+      {
+        "resource_id": "D05",
+        "action": "read"
+      },
+      {
+        "resource_id": "D06",
+        "action": "read"
+      },
+      {
+        "resource_id": "B0-WORKSPACE",
+        "action": "virtual-edit"
+      },
+      {
+        "resource_id": "SIMULATED-SUBMISSION",
+        "action": "create"
+      }
+    ],
+    "contacts": [
+      {
+        "id": "ROLE-PEER",
+        "knowledge_scope": "Only the fixed response profile; no inferred individual expertise.",
+        "can_approve": false
+      }
+    ],
+    "ai": {
+      "allowed": false,
+      "can_edit": false,
+      "input_classifications": [
+        "actor-private",
+        "public-evidence"
+      ]
+    }
+  },
+  "candidates": [
+    {
+      "id": "T01",
+      "goal": "Understand assignment",
+      "actor_visible_label": "Read assigned issue",
+      "availability": [
+        {
+          "field": "access.D01",
+          "operator": "equals",
+          "value": "available"
+        }
+      ],
+      "operation": "issue.read",
+      "target_refs": [
+        "R-UNKNOWN"
+      ],
+      "preconditions": [
+        {
+          "field": "permission.D01",
+          "operator": "equals",
+          "value": "read"
+        }
+      ],
+      "expected_information": "Issue symptom and author-stated hypothesis",
+      "effects": [
+        {
+          "field": "knowledge.issue",
+          "operator": "add",
+          "value": "acquired"
+        }
+      ],
+      "next_goal_options": [
+        "investigate",
+        "defer"
+      ],
+      "duration_model": "TM-READ",
+      "evidence_refs": [
+        "R-UNKNOWN"
+      ],
+      "failure": "Record unavailable and continue or defer"
+    },
+    {
+      "id": "T02",
+      "goal": "Inspect settings",
+      "actor_visible_label": "Read project documentation and settings",
+      "availability": [
+        {
+          "field": "access.D02",
+          "operator": "equals",
+          "value": "available"
+        }
+      ],
+      "operation": "document.read",
+      "target_refs": [
+        "R12"
+      ],
+      "preconditions": [
+        {
+          "field": "permission.D02",
+          "operator": "equals",
+          "value": "read"
+        }
+      ],
+      "expected_information": "Configuration and unresolved specification questions",
+      "effects": [
+        {
+          "field": "knowledge.settings",
+          "operator": "add",
+          "value": "tentative"
+        }
+      ],
+      "next_goal_options": [
+        "search",
+        "read-spec"
+      ],
+      "duration_model": "TM-READ",
+      "evidence_refs": [
+        "R12"
+      ],
+      "failure": "Record unavailable"
+    },
+    {
+      "id": "T03",
+      "goal": "Locate implementation",
+      "actor_visible_label": "Search the fixed source",
+      "availability": [
+        {
+          "field": "tool.search",
+          "operator": "equals",
+          "value": true
+        }
+      ],
+      "operation": "code.search",
+      "target_refs": [
+        "R02",
+        "R06"
+      ],
+      "preconditions": [
+        {
+          "field": "workspace.version",
+          "operator": "equals",
+          "value": "B0"
+        }
+      ],
+      "expected_information": "Matches or no match in fixed corpus",
+      "effects": [
+        {
+          "field": "knowledge.locations",
+          "operator": "add",
+          "value": "search-result"
+        }
+      ],
+      "next_goal_options": [
+        "navigate",
+        "search-again"
+      ],
+      "duration_model": "TM-SEARCH",
+      "evidence_refs": [
+        "R02",
+        "R06"
+      ],
+      "failure": "Record no match without asserting absence outside corpus"
+    },
+    {
+      "id": "T04",
+      "goal": "Trace definitions and uses",
+      "actor_visible_label": "Open a discovered file or symbol",
+      "availability": [
+        {
+          "field": "knowledge.locations",
+          "operator": "equals",
+          "value": "search-result"
+        }
+      ],
+      "operation": "symbol.navigate",
+      "target_refs": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13"
+      ],
+      "preconditions": [
+        {
+          "field": "workspace.version",
+          "operator": "equals",
+          "value": "B0"
+        }
+      ],
+      "expected_information": "Recorded relation or UNKNOWN outside index",
+      "effects": [
+        {
+          "field": "knowledge.relations",
+          "operator": "add",
+          "value": "acquired"
+        }
+      ],
+      "next_goal_options": [
+        "read-spec",
+        "compare"
+      ],
+      "duration_model": "TM-NAV",
+      "evidence_refs": [
+        "R01",
+        "R06",
+        "R10"
+      ],
+      "failure": "Return UNKNOWN for unrecorded relation"
+    },
+    {
+      "id": "T05",
+      "goal": "Confirm external API",
+      "actor_visible_label": "Read fixed ESLint API documents",
+      "availability": [
+        {
+          "field": "access.D04",
+          "operator": "equals",
+          "value": "available"
+        }
+      ],
+      "operation": "document.read",
+      "target_refs": [
+        "R01",
+        "R06"
+      ],
+      "preconditions": [
+        {
+          "field": "permission.D04",
+          "operator": "equals",
+          "value": "read"
+        }
+      ],
+      "expected_information": "Fixed API profile and its limits",
+      "effects": [
+        {
+          "field": "knowledge.api",
+          "operator": "add",
+          "value": "acquired"
+        }
+      ],
+      "next_goal_options": [
+        "compare",
+        "ask",
+        "defer"
+      ],
+      "duration_model": "TM-READ",
+      "evidence_refs": [
+        "R01",
+        "R06"
+      ],
+      "failure": "Record UNAVAILABLE; do not invent specification"
+    },
+    {
+      "id": "T06",
+      "goal": "Inspect external example",
+      "actor_visible_label": "Read the fixed URL-less rule example",
+      "availability": [
+        {
+          "field": "access.D06",
+          "operator": "equals",
+          "value": "available"
+        }
+      ],
+      "operation": "document.read",
+      "target_refs": [
+        "R14"
+      ],
+      "preconditions": [
+        {
+          "field": "permission.D06",
+          "operator": "equals",
+          "value": "read"
+        }
+      ],
+      "expected_information": "Example shape; reporter version remains unknown",
+      "effects": [
+        {
+          "field": "knowledge.example",
+          "operator": "add",
+          "value": "acquired"
+        }
+      ],
+      "next_goal_options": [
+        "navigate",
+        "compare"
+      ],
+      "duration_model": "TM-READ",
+      "evidence_refs": [
+        "R14"
+      ],
+      "failure": "Record UNAVAILABLE"
+    },
+    {
+      "id": "T07",
+      "goal": "Ask for missing information",
+      "actor_visible_label": "Ask the known peer role",
+      "availability": [
+        {
+          "field": "contact.ROLE-PEER",
+          "operator": "equals",
+          "value": "known"
+        }
+      ],
+      "operation": "question.send",
+      "target_refs": [
+        "R-UNKNOWN"
+      ],
+      "preconditions": [
+        {
+          "field": "question.content",
+          "operator": "equals",
+          "value": "bounded"
+        }
+      ],
+      "expected_information": "A response, no response, or inability to answer",
+      "effects": [
+        {
+          "field": "tasks.question",
+          "operator": "add",
+          "value": "pending"
+        }
+      ],
+      "next_goal_options": [
+        "independent-work",
+        "wait",
+        "defer"
+      ],
+      "duration_model": "TM-QUESTION",
+      "evidence_refs": [
+        "R-UNKNOWN"
+      ],
+      "failure": "Record unavailable contact; do not grant approval"
+    },
+    {
+      "id": "T08",
+      "goal": "Delegate bounded work",
+      "actor_visible_label": "Delegate a bounded investigation if AI is allowed",
+      "availability": [
+        {
+          "field": "ai.allowed",
+          "operator": "equals",
+          "value": true
+        }
+      ],
+      "operation": "ai.delegate",
+      "target_refs": [
+        "R-UNKNOWN"
+      ],
+      "preconditions": [
+        {
+          "field": "ai.input-scope",
+          "operator": "subset",
+          "value": "actor-visible"
+        }
+      ],
+      "expected_information": "A pending task, never an assumed answer",
+      "effects": [
+        {
+          "field": "tasks.ai",
+          "operator": "add",
+          "value": "pending"
+        }
+      ],
+      "next_goal_options": [
+        "independent-work",
+        "wait"
+      ],
+      "duration_model": "TM-AI",
+      "evidence_refs": [
+        "R-UNKNOWN"
+      ],
+      "failure": "Remain non-AI and continue or defer"
+    },
+    {
+      "id": "T09",
+      "goal": "Choose next approach",
+      "actor_visible_label": "Compare approaches using acquired evidence",
+      "availability": [
+        {
+          "field": "knowledge.count",
+          "operator": "equals",
+          "value": "nonzero"
+        }
+      ],
+      "operation": "work.compare",
+      "target_refs": [
+        "R02",
+        "R06",
+        "R10"
+      ],
+      "preconditions": [
+        {
+          "field": "admin.expected",
+          "operator": "equals",
+          "value": "hidden"
+        }
+      ],
+      "expected_information": "A tentative choice, rejection, or hold",
+      "effects": [
+        {
+          "field": "goal.choice",
+          "operator": "set",
+          "value": "participant-selected"
+        }
+      ],
+      "next_goal_options": [
+        "patch",
+        "read-spec",
+        "defer"
+      ],
+      "duration_model": "TM-COMPARE",
+      "evidence_refs": [
+        "R02",
+        "R06",
+        "R10"
+      ],
+      "failure": "Hold without forcing a solution"
+    },
+    {
+      "id": "T10",
+      "goal": "Try or revert a virtual change",
+      "actor_visible_label": "Apply or revert a selected virtual patch",
+      "availability": [
+        {
+          "field": "permission.workspace",
+          "operator": "equals",
+          "value": "edit"
+        }
+      ],
+      "operation": "patch.apply",
+      "target_refs": [
+        "R02",
+        "R06"
+      ],
+      "patch_ids": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "preconditions": [
+        {
+          "field": "workspace.version",
+          "operator": "equals",
+          "value": "B0"
+        }
+      ],
+      "expected_information": "New version or explicit rejection/conflict",
+      "effects": [
+        {
+          "field": "workspace.version",
+          "operator": "set",
+          "value": "selected-patch"
+        }
+      ],
+      "next_goal_options": [
+        "check",
+        "reinspect"
+      ],
+      "duration_model": "TM-PATCH",
+      "evidence_refs": [
+        "R02",
+        "R06"
+      ],
+      "failure": "Leave workspace unchanged"
+    },
+    {
+      "id": "T11",
+      "goal": "Evaluate limited properties",
+      "actor_visible_label": "Run a modeled check",
+      "availability": [
+        {
+          "field": "check.supported",
+          "operator": "equals",
+          "value": true
+        }
+      ],
+      "operation": "check.model",
+      "target_refs": [
+        "R02",
+        "R06",
+        "R10"
+      ],
+      "preconditions": [
+        {
+          "field": "workspace.version",
+          "operator": "equals",
+          "value": "known"
+        }
+      ],
+      "expected_information": "Modeled PASS, FAIL or UNKNOWN with coverage",
+      "effects": [
+        {
+          "field": "knowledge.check",
+          "operator": "add",
+          "value": "modeled-result"
+        }
+      ],
+      "next_goal_options": [
+        "compare",
+        "reinspect",
+        "submit"
+      ],
+      "duration_model": "TM-CHECK",
+      "evidence_refs": [
+        "R02",
+        "R06",
+        "R10"
+      ],
+      "failure": "Return UNKNOWN or INVALID, never executed evidence"
+    },
+    {
+      "id": "T12",
+      "goal": "Integrate delegated result",
+      "actor_visible_label": "Review and integrate a completed delegated result",
+      "availability": [
+        {
+          "field": "tasks.ai",
+          "operator": "equals",
+          "value": "completed"
+        }
+      ],
+      "operation": "ai.integrate",
+      "target_refs": [
+        "R-UNKNOWN"
+      ],
+      "preconditions": [
+        {
+          "field": "workspace.base",
+          "operator": "equals",
+          "value": "task-base"
+        }
+      ],
+      "expected_information": "Integrated version or conflict",
+      "effects": [
+        {
+          "field": "workspace.version",
+          "operator": "set",
+          "value": "integrated"
+        }
+      ],
+      "next_goal_options": [
+        "check",
+        "reinspect",
+        "defer"
+      ],
+      "duration_model": "TM-INTEGRATE",
+      "evidence_refs": [
+        "R-UNKNOWN"
+      ],
+      "failure": "Keep conflict pending"
+    },
+    {
+      "id": "T13",
+      "goal": "Manage pending work",
+      "actor_visible_label": "Wait, interrupt, or resume pending work",
+      "availability": [
+        {
+          "field": "tasks.pending",
+          "operator": "equals",
+          "value": true
+        }
+      ],
+      "operation": "wait",
+      "target_refs": [
+        "R-UNKNOWN"
+      ],
+      "preconditions": [
+        {
+          "field": "deadline.reached",
+          "operator": "equals",
+          "value": false
+        }
+      ],
+      "expected_information": "Arrival, remaining work, or timeout",
+      "effects": [
+        {
+          "field": "tasks.state",
+          "operator": "set",
+          "value": "reevaluate"
+        }
+      ],
+      "next_goal_options": [
+        "compare",
+        "independent-work",
+        "defer"
+      ],
+      "duration_model": "TM-WAIT",
+      "evidence_refs": [
+        "R-UNKNOWN"
+      ],
+      "failure": "Preserve pending dependency"
+    },
+    {
+      "id": "T14",
+      "goal": "Submit bounded result",
+      "actor_visible_label": "Create a virtual exercise pull request",
+      "availability": [
+        {
+          "field": "submission.ready",
+          "operator": "equals",
+          "value": true
+        }
+      ],
+      "operation": "pr.create",
+      "target_refs": [
+        "R02",
+        "R06",
+        "R10"
+      ],
+      "preconditions": [
+        {
+          "field": "submission.target",
+          "operator": "equals",
+          "value": "simulated"
+        }
+      ],
+      "expected_information": "A local virtual PR record only",
+      "effects": [
+        {
+          "field": "business.outcome",
+          "operator": "set",
+          "value": "submitted"
+        }
+      ],
+      "next_goal_options": [],
+      "duration_model": "TM-SUBMIT",
+      "evidence_refs": [
+        "R02",
+        "R06",
+        "R10"
+      ],
+      "failure": "Remain incomplete without external send"
+    },
+    {
+      "id": "T15",
+      "goal": "End without forced solution",
+      "actor_visible_label": "Defer or cancel with unresolved items",
+      "availability": [
+        {
+          "field": "run.active",
+          "operator": "equals",
+          "value": true
+        }
+      ],
+      "operation": "run.defer",
+      "target_refs": [
+        "R-UNKNOWN"
+      ],
+      "preconditions": [
+        {
+          "field": "outcome.valid",
+          "operator": "equals",
+          "value": true
+        }
+      ],
+      "expected_information": "Valid incomplete or cancelled result",
+      "effects": [
+        {
+          "field": "business.outcome",
+          "operator": "set",
+          "value": "incomplete"
+        }
+      ],
+      "next_goal_options": [],
+      "duration_model": "TM-DEFER",
+      "evidence_refs": [
+        "R-UNKNOWN"
+      ],
+      "failure": "Report internal error separately"
+    },
+    {
+      "id": "T10-REVERT",
+      "goal": "Revert the latest local overlay",
+      "actor_visible_label": "Revert the latest local overlay",
+      "availability": [
+        {
+          "field": "permission.workspace",
+          "operator": "equals",
+          "value": "edit"
+        }
+      ],
+      "operation": "patch.revert",
+      "target_refs": [
+        "R02",
+        "R06"
+      ],
+      "preconditions": [
+        {
+          "field": "workspace.version",
+          "operator": "equals",
+          "value": "known"
+        },
+        {
+          "field": "workspace.has-overlay",
+          "operator": "equals",
+          "value": true
+        }
+      ],
+      "expected_information": "New version or explicit rejection/conflict",
+      "effects": [
+        {
+          "field": "workspace.version",
+          "operator": "set",
+          "value": "selected-patch"
+        }
+      ],
+      "next_goal_options": [
+        "check",
+        "reinspect"
+      ],
+      "duration_model": "TM-REVERT",
+      "evidence_refs": [
+        "R02",
+        "R06"
+      ],
+      "failure": "Leave workspace unchanged"
+    }
+  ],
+  "rules": [
+    {
+      "id": "R-A",
+      "condition": "An uncertainty has an available investigation",
+      "outcome": "Offer that investigation",
+      "rationale": "Investigate without using hidden correctness"
+    },
+    {
+      "id": "R-B",
+      "condition": "A change is tentatively supported and violates no known prohibition",
+      "outcome": "Allow trying the change",
+      "rationale": "Availability is not correctness"
+    },
+    {
+      "id": "R-C",
+      "condition": "A counterexample is observed",
+      "outcome": "Withdraw or revise the hypothesis and reevaluate",
+      "rationale": "Keep revision responsive to evidence"
+    },
+    {
+      "id": "R-D",
+      "condition": "Delegation policy and scope are satisfied",
+      "outcome": "Allow delegation or integration decision",
+      "rationale": "AI remains optional and bounded"
+    },
+    {
+      "id": "R-E",
+      "condition": "A response is pending and independent work exists",
+      "outcome": "Offer independent work",
+      "rationale": "Waiting does not force idleness"
+    },
+    {
+      "id": "R-F",
+      "condition": "Required information is missing and no alternative work exists",
+      "outcome": "Wait or defer",
+      "rationale": "Do not invent unavailable information"
+    },
+    {
+      "id": "R-G",
+      "condition": "Participant submission policy is met",
+      "outcome": "Offer virtual submission; at deadline permit incomplete",
+      "rationale": "Do not require a PR or a problem outcome"
+    }
+  ],
+  "patches": [
+    {
+      "id": "P1",
+      "kind": "byte-diff",
+      "base_digest": "sha256:fa82ed6953f9c4dee3462bb744a1d2b2d20d4a65011c171623b91ef2d153df57",
+      "file": "server/src/eslint.ts",
+      "symbol_or_span": "RuleMetaData.capture and documentation action guard",
+      "before_path": "patches/P1.before.ts",
+      "before_digest": "sha256:1dbe256b21515adcf2aa8a371000b82bde154f8ed22cd4d4b1ba585f8718b727",
+      "after_path": "patches/P1.after.ts",
+      "after_digest": "sha256:f78984758cd0171627a20bb1c2e575c76456aafa90574586d78d5bef259fe74d",
+      "additional_changes": [
+        {
+          "base_digest": "sha256:22485bdda6ba5745f2916aaf82fbd06f2cf20d1a6f35aefbd05f426171c2cfc9",
+          "file": "server/src/eslintServer.ts",
+          "before_path": "patches/P1-doc.before.ts",
+          "before_digest": "sha256:05ed4f80cf6f9086739923453f5439e80ac22584b6c53bf50ac4e69a88cc103b",
+          "after_path": "patches/P1-doc.after.ts",
+          "after_digest": "sha256:f56d1a73fc07dd1c7cdb8514bfa8486947f88da5d6821b33e1898660b520f96d"
+        }
+      ],
+      "author": "participant",
+      "semantic_delta": "Store valid metadata independently of docs URL; present documentation action only when a nonempty URL is retrievable.",
+      "affected_refs": [
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R10"
+      ],
+      "limitations": "Modeled and reviewed bytes only; not compiled or run in VS Code."
+    },
+    {
+      "id": "P2",
+      "kind": "byte-diff",
+      "base_digest": "sha256:fa82ed6953f9c4dee3462bb744a1d2b2d20d4a65011c171623b91ef2d153df57",
+      "file": "server/src/eslint.ts",
+      "symbol_or_span": "RuleMetaData.capture",
+      "before_path": "patches/P2.before.ts",
+      "before_digest": "sha256:1dbe256b21515adcf2aa8a371000b82bde154f8ed22cd4d4b1ba585f8718b727",
+      "after_path": "patches/P2.after.ts",
+      "after_digest": "sha256:f78984758cd0171627a20bb1c2e575c76456aafa90574586d78d5bef259fe74d",
+      "author": "participant",
+      "semantic_delta": "Store URL-less metadata but leave hasRuleId-based documentation presentation unchanged.",
+      "affected_refs": [
+        "R02",
+        "R05",
+        "R10"
+      ],
+      "limitations": "Creates a modeled empty-documentation-action side effect; not executed."
+    },
+    {
+      "id": "P3",
+      "kind": "byte-diff",
+      "base_digest": "sha256:fa82ed6953f9c4dee3462bb744a1d2b2d20d4a65011c171623b91ef2d153df57",
+      "file": "server/src/eslint.ts",
+      "symbol_or_span": "validate fixTypes branch",
+      "before_path": "patches/P3.before.ts",
+      "before_digest": "sha256:fa3d196da5b3d005c8f0fa3bda2d7346f8718f6cdc0a6427f6cece9685db5089",
+      "after_path": "patches/P3.after.ts",
+      "after_digest": "sha256:5495db5872bc0addf940947fad45f5912ed2f1b293fc9e6ae1a02244c139c423",
+      "author": "participant",
+      "semantic_delta": "Record fixes regardless of the explicit fixTypes filter.",
+      "affected_refs": [
+        "R04",
+        "R06",
+        "R07"
+      ],
+      "limitations": "Modeled compatibility violation; not executed."
+    },
+    {
+      "id": "P4",
+      "kind": "byte-diff",
+      "base_digest": "sha256:fa82ed6953f9c4dee3462bb744a1d2b2d20d4a65011c171623b91ef2d153df57",
+      "file": "server/src/eslint.ts",
+      "symbol_or_span": "validate fixTypes branch",
+      "before_path": "patches/P4.before.ts",
+      "before_digest": "sha256:fa3d196da5b3d005c8f0fa3bda2d7346f8718f6cdc0a6427f6cece9685db5089",
+      "after_path": "patches/P4.after.ts",
+      "after_digest": "sha256:d5bfc00308193277af6ac01b9f9d6eae4ab2df7282e5ff743d497ae7afb856c9",
+      "author": "participant",
+      "semantic_delta": "Treat missing rule type as allowed under an active filter.",
+      "affected_refs": [
+        "R04",
+        "R06"
+      ],
+      "limitations": "Information absence is not evidence of an allowed type; modeled only."
+    },
+    {
+      "id": "P5",
+      "kind": "no-change",
+      "base_digest": "sha256:fa82ed6953f9c4dee3462bb744a1d2b2d20d4a65011c171623b91ef2d153df57",
+      "file": "server/src/eslint.ts",
+      "symbol_or_span": "none",
+      "before_path": "patches/P5.none",
+      "before_digest": "sha256:d202e92d819bdf64233b50146b7968d42cd039b22db2fad07c11871ebc2083ed",
+      "after_path": "patches/P5.none",
+      "after_digest": "sha256:d202e92d819bdf64233b50146b7968d42cd039b22db2fad07c11871ebc2083ed",
+      "author": "participant",
+      "semantic_delta": "No workspace change; retain B0 and gather more evidence.",
+      "affected_refs": [
+        "R-UNKNOWN"
+      ],
+      "limitations": "A valid unresolved outcome, not a technical fix."
+    }
+  ],
+  "checks": [
+    {
+      "id": "C01",
+      "input_cases": [
+        "url-absent",
+        "type-layout",
+        "layout-allowed",
+        "fresh-cache",
+        "ruleId-and-fix"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1",
+        "P2"
+      ],
+      "coverage": "metadata registration and fix recording",
+      "predicates": [
+        "recorded",
+        "type-allowed"
+      ],
+      "expected_property": "B0 FAIL; P1/P2 PASS in model",
+      "evidence_refs": [
+        "R02",
+        "R04",
+        "R06"
+      ],
+      "mode": "modeled",
+      "limitations": "No VS Code or plugin execution.",
+      "assertions": [
+        {
+          "fact_id": "SEM-metadata-without-url-stored",
+          "operator": "equals",
+          "expected": true
+        },
+        {
+          "fact_id": "SEM-fix-filter-respected",
+          "operator": "equals",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "C02",
+      "input_cases": [
+        "url-present",
+        "type-layout",
+        "problem-only"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1",
+        "P3"
+      ],
+      "coverage": "explicit type filtering",
+      "predicates": [
+        "not",
+        "type-allowed"
+      ],
+      "expected_property": "B0/P1 PASS; P3 FAIL in model",
+      "evidence_refs": [
+        "R04",
+        "R06"
+      ],
+      "mode": "modeled",
+      "limitations": "Limited semantic model.",
+      "assertions": [
+        {
+          "fact_id": "SEM-fix-filter-respected",
+          "operator": "equals",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "C03",
+      "input_cases": [
+        "url-present",
+        "allowed-type"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1"
+      ],
+      "coverage": "registration and URL retrieval",
+      "predicates": [
+        "recorded",
+        "nonempty-url"
+      ],
+      "expected_property": "B0/P1 PASS in model",
+      "evidence_refs": [
+        "R02",
+        "R03",
+        "R06"
+      ],
+      "mode": "modeled",
+      "limitations": "Does not prove action execution.",
+      "assertions": [
+        {
+          "fact_id": "SEM-url-lookup-defined",
+          "operator": "equals",
+          "expected": true
+        },
+        {
+          "fact_id": "SEM-metadata-store-present",
+          "operator": "equals",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "C04",
+      "input_cases": [
+        "url-absent",
+        "fix-recorded",
+        "documentation-enabled"
+      ],
+      "subject_versions": [
+        "P1",
+        "P2"
+      ],
+      "coverage": "documentation action presentation",
+      "predicates": [
+        "not",
+        "nonempty-url"
+      ],
+      "expected_property": "P1 PASS; P2 FAIL in model",
+      "evidence_refs": [
+        "R05",
+        "R10"
+      ],
+      "mode": "modeled",
+      "limitations": "UI rendering is not executed.",
+      "assertions": [
+        {
+          "fact_id": "SEM-documentation-action-requires-url",
+          "operator": "equals",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "C05",
+      "input_cases": [
+        "url-absent",
+        "type-present",
+        "fixTypes-absent"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1"
+      ],
+      "coverage": "unfiltered branch",
+      "predicates": [
+        "recorded"
+      ],
+      "expected_property": "B0/P1 PASS in model",
+      "evidence_refs": [
+        "R06"
+      ],
+      "mode": "modeled",
+      "limitations": "Only the bounded record path.",
+      "assertions": [
+        {
+          "fact_id": "SEM-unfiltered-fix-recording-branch",
+          "operator": "equals",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "id": "C06",
+      "input_cases": [
+        "type-absent",
+        "filter-active"
+      ],
+      "subject_versions": [
+        "P1",
+        "P4"
+      ],
+      "coverage": "unknown type handling",
+      "predicates": [
+        "not",
+        "type-allowed"
+      ],
+      "expected_property": "P1 PASS; overall user expectation UNKNOWN",
+      "evidence_refs": [
+        "R04",
+        "R06"
+      ],
+      "mode": "modeled",
+      "limitations": "Missing metadata may have other causes.",
+      "assertions": [
+        {
+          "fact_id": "SEM-missing-type-allowed-by-filter",
+          "operator": "equals",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "id": "C07",
+      "input_cases": [
+        "fixTypes-empty-or-invalid"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1"
+      ],
+      "coverage": "extension empty-set branch",
+      "predicates": [
+        "equals"
+      ],
+      "expected_property": "Extension branch modeled; external ESLint acceptance UNKNOWN",
+      "evidence_refs": [
+        "R06",
+        "R12"
+      ],
+      "mode": "modeled",
+      "limitations": "External input validation not executed."
+    },
+    {
+      "id": "C08",
+      "input_cases": [
+        "metadata-api-absent-or-no-results"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1"
+      ],
+      "coverage": "absence handling",
+      "predicates": [
+        "not",
+        "present"
+      ],
+      "expected_property": "Do not invent metadata; full autofix UNKNOWN",
+      "evidence_refs": [
+        "R02"
+      ],
+      "mode": "modeled",
+      "limitations": "No runtime ESLint instance."
+    },
+    {
+      "id": "C09",
+      "input_cases": [
+        "existing-id",
+        "clear",
+        "unused-directive"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1"
+      ],
+      "coverage": "cache lifecycle and special registration",
+      "predicates": [
+        "all",
+        "recorded"
+      ],
+      "expected_property": "Preserve existing and special semantics per cache case",
+      "evidence_refs": [
+        "R02",
+        "R05"
+      ],
+      "mode": "modeled",
+      "limitations": "Fresh and existing cache cases remain distinct."
+    },
+    {
+      "id": "C10",
+      "input_cases": [
+        "document-version",
+        "diagnostic-version",
+        "fix-version"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "coverage": "version correspondence",
+      "predicates": [
+        "same-version"
+      ],
+      "expected_property": "Reject mismatched subject version",
+      "evidence_refs": [
+        "R07",
+        "R08",
+        "R09"
+      ],
+      "mode": "modeled",
+      "limitations": "No actual workspace apply."
+    },
+    {
+      "id": "C11",
+      "input_cases": [
+        "real-vscode-autofix-paths"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1"
+      ],
+      "coverage": "not executed",
+      "predicates": [
+        "present"
+      ],
+      "expected_property": "UNKNOWN until separately executed",
+      "evidence_refs": [
+        "R08",
+        "R09",
+        "R11"
+      ],
+      "mode": "modeled",
+      "limitations": "Placeholder plan only; must never be reported as executed."
+    },
+    {
+      "id": "C12",
+      "input_cases": [
+        "build",
+        "typecheck",
+        "existing-tests"
+      ],
+      "subject_versions": [
+        "B0",
+        "P1"
+      ],
+      "coverage": "not executed",
+      "predicates": [
+        "present"
+      ],
+      "expected_property": "UNKNOWN until separately executed",
+      "evidence_refs": [
+        "R06"
+      ],
+      "mode": "modeled",
+      "limitations": "Placeholder plan only; must never be reported as executed."
+    }
+  ],
+  "semantic_model": {
+    "version": "source-facts-1",
+    "facts": [
+      {
+        "id": "SEM-metadata-without-url-stored",
+        "file": "server/src/eslint.ts",
+        "true_if_all": [
+          "if (meta) {\n\t\t\t\truleId2Meta.set(key, meta);"
+        ],
+        "false_if_all": [
+          "if (meta && meta.docs && Is.string(meta.docs.url)) {\n\t\t\t\truleId2Meta.set(key, meta);"
+        ]
+      },
+      {
+        "id": "SEM-url-lookup-defined",
+        "file": "server/src/eslint.ts",
+        "true_if_all": [
+          "return ruleId2Meta.get(ruleId)?.docs?.url;"
+        ],
+        "false_if_all": []
+      },
+      {
+        "id": "SEM-metadata-store-present",
+        "file": "server/src/eslint.ts",
+        "true_if_all": [
+          "ruleId2Meta.set(key, meta);"
+        ],
+        "false_if_all": []
+      },
+      {
+        "id": "SEM-documentation-action-requires-url",
+        "file": "server/src/eslintServer.ts",
+        "true_if_all": [
+          "if (RuleMetaData.getUrl(ruleId) !== undefined) {"
+        ],
+        "false_if_all": [
+          "if (RuleMetaData.hasRuleId(ruleId)) {"
+        ]
+      },
+      {
+        "id": "SEM-fix-filter-respected",
+        "file": "server/src/eslint.ts",
+        "true_if_all": [
+          "\t\t\t\t\t\t\t\tif (type !== undefined && fixTypes.has(type)) {\n\t\t\t\t\t\t\t\t\tCodeActions.record(document, diagnostic, problem);\n\t\t\t\t\t\t\t\t}"
+        ],
+        "false_if_all": [
+          "const type = RuleMetaData.getType(problem.ruleId);\n\t\t\t\t\t\t\t\tCodeActions.record(document, diagnostic, problem);"
+        ]
+      },
+      {
+        "id": "SEM-missing-type-allowed-by-filter",
+        "file": "server/src/eslint.ts",
+        "true_if_all": [
+          "\t\t\t\t\t\t\t\tif (type === undefined || fixTypes.has(type)) {\n\t\t\t\t\t\t\t\t\tCodeActions.record(document, diagnostic, problem);\n\t\t\t\t\t\t\t\t}"
+        ],
+        "false_if_all": [
+          "\t\t\t\t\t\t\t\tif (type !== undefined && fixTypes.has(type)) {\n\t\t\t\t\t\t\t\t\tCodeActions.record(document, diagnostic, problem);\n\t\t\t\t\t\t\t\t}"
+        ]
+      },
+      {
+        "id": "SEM-unfiltered-fix-recording-branch",
+        "file": "server/src/eslint.ts",
+        "true_if_all": [
+          "if (RuleMetaData.isUnusedDisableDirectiveProblem(problem)) {",
+          "CodeActions.record(document, diagnostic, problem);"
+        ],
+        "false_if_all": []
+      }
+    ]
+  },
+  "actor_view": {
+    "initial_claim_ids": [
+      "TEAM-ASSIGNMENT",
+      "EX01",
+      "EX02",
+      "EX03",
+      "EX04",
+      "OSS-FACT"
+    ],
+    "candidate_labels": {
+      "T01": "Read assigned issue",
+      "T02": "Read project documentation and settings",
+      "T03": "Search the fixed source",
+      "T04": "Open a discovered file or symbol",
+      "T05": "Read fixed ESLint API documents",
+      "T06": "Read the fixed URL-less rule example",
+      "T07": "Ask the known peer role",
+      "T08": "Delegate a bounded investigation if AI is allowed",
+      "T09": "Compare approaches using acquired evidence",
+      "T10": "Apply or revert a selected virtual patch",
+      "T11": "Run a modeled check",
+      "T12": "Review and integrate a completed delegated result",
+      "T13": "Wait, interrupt, or resume pending work",
+      "T14": "Create a virtual exercise pull request",
+      "T15": "Defer or cancel with unresolved items",
+      "T10-REVERT": "Revert the latest local overlay"
+    }
+  },
+  "extraction_history": {
+    "input_revision": "D5/D10 plus unchanged G2 byte catalog",
+    "method": "Manual binding of synthetic time assumptions and existing revert capability",
+    "output_path": "timing-review.txt",
+    "output_digest": "sha256:2ecf795c7f8a374503fc3045e486132dd10217e69f39be0cabd9747655c77924",
+    "reviewer": "G4 implementation review",
+    "review_result": "Synthetic timing assumptions only; original G2 source review is retained; no measured durations or executed OSS claims."
+  },
+  "timing": {
+    "seed": 0,
+    "deadline_tick": 30,
+    "max_same_tick_events": 100,
+    "models": [
+      {
+        "id": "TM-AI",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "ai.delegate"
+        ]
+      },
+      {
+        "id": "TM-CHECK",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "check.model"
+        ]
+      },
+      {
+        "id": "TM-COMPARE",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "work.compare"
+        ]
+      },
+      {
+        "id": "TM-DEFER",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "run.defer"
+        ]
+      },
+      {
+        "id": "TM-INTEGRATE",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "ai.integrate"
+        ]
+      },
+      {
+        "id": "TM-NAV",
+        "ticks": 0,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "symbol.navigate"
+        ]
+      },
+      {
+        "id": "TM-PATCH",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "patch.apply"
+        ]
+      },
+      {
+        "id": "TM-QUESTION",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "question.send"
+        ]
+      },
+      {
+        "id": "TM-READ",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "document.read",
+          "issue.read"
+        ]
+      },
+      {
+        "id": "TM-SEARCH",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "code.search"
+        ]
+      },
+      {
+        "id": "TM-SUBMIT",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "pr.create"
+        ]
+      },
+      {
+        "id": "TM-WAIT",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "wait"
+        ]
+      },
+      {
+        "id": "TM-REVERT",
+        "ticks": 1,
+        "provenance_class": "synthetic-assumption",
+        "source": "G4 scheduling conformance assumption; not measured LAE work",
+        "uncertainty": "Uncalibrated synthetic tick counts; no real productivity claim",
+        "scope": [
+          "patch.revert"
+        ]
+      }
+    ]
+  }
+}
