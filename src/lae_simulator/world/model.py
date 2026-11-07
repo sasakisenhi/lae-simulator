@@ -165,6 +165,14 @@ class Candidate:
     target_refs: tuple[str, ...]
     duration_model_id: str
     evidence_refs: tuple[str, ...]
+    required_information: tuple[str, ...]
+    required_permissions: frozenset[str]
+    required_version: str
+    required_access: tuple[tuple[str, AccessOutcome], ...]
+    knowledge_effects: tuple[KnowledgeClaim, ...]
+    success_status: str
+    failure_status: str
+    failure_reason: str
 
 
 @dataclass(frozen=True)

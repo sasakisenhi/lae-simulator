@@ -9,6 +9,15 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from lae_simulator import __version__
+from lae_simulator.simulation import (
+    PersistenceError,
+    PublicationError,
+    SimulationError,
+    execute,
+    load_run,
+    project_public_log,
+    save_run,
+)
 from lae_simulator.world import WorldValidationError, load_world
 
 SUPPORTED_PYTHON = (3, 14, 8)
@@ -41,11 +50,23 @@ def build_parser() -> argparse.ArgumentParser:
         help="固定世界入力を読み込み、実行せずに検証する",
     )
     validate_world.add_argument("path", type=Path)
+    run = subcommands.add_parser(
+        "run",
+        help="固定世界入力を実行し、検査済みrunを新規保存する",
+    )
+    run.add_argument("path", type=Path)
+    run.add_argument("--output", type=Path, required=True)
+    public_log = subcommands.add_parser(
+        "public-log",
+        help="保存済みrunを再検査し、調査者向け合成ログを取得する",
+    )
+    public_log.add_argument("run_path", type=Path)
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    report: dict[str, object]
     if args.command == "doctor":
         return _doctor()
     if args.command == "validate-world":
@@ -73,5 +94,89 @@ def main(argv: Sequence[str] | None = None) -> int:
             "status": "valid",
         }
         print(json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True))
+        return 0
+    if args.command == "run":
+        try:
+            world = load_world(args.path)
+            result = execute(world)
+            saved_path = save_run(world, result, args.output)
+            stored = load_run(saved_path)
+        except WorldValidationError as error:
+            report = {
+                "issues": [issue.as_dict() for issue in error.issues],
+                "status": "invalid-input",
+            }
+            print(
+                json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True),
+                file=sys.stderr,
+            )
+            return 2
+        except PersistenceError as error:
+            print(
+                json.dumps(
+                    error.record.as_dict(),
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                    sort_keys=True,
+                ),
+                file=sys.stderr,
+            )
+            return 3
+        except SimulationError as error:
+            report = {
+                "reason": str(error),
+                "stage": "execution",
+                "status": "internal-error",
+                "target": str(args.path),
+            }
+            print(
+                json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True),
+                file=sys.stderr,
+            )
+            return 3
+        outcome = stored.result.final_state.outcome
+        if outcome is None:
+            raise AssertionError("validated stored run has no business outcome")
+        report = {
+            "business_outcome": outcome.value,
+            "public_records": len(stored.result.public_log),
+            "run_id": stored.result.run_id,
+            "run_path": str(stored.path),
+            "status": stored.result.validation.validity.value,
+        }
+        print(json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True))
+        return 0
+    if args.command == "public-log":
+        try:
+            stored = load_run(args.run_path)
+            records = project_public_log(
+                stored.world,
+                stored.result.initial_state,
+                stored.result.events,
+                stored.result.final_state,
+            )
+        except (PersistenceError, PublicationError) as error:
+            if isinstance(error, PersistenceError):
+                report = dict[str, object](error.record.as_dict())
+            else:
+                report = {
+                    "reason": str(error),
+                    "stage": "publication",
+                    "status": "internal-error",
+                    "target": str(args.run_path),
+                }
+            print(
+                json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True),
+                file=sys.stderr,
+            )
+            return 3
+        print(
+            json.dumps(
+                [record.as_dict() for record in records],
+                ensure_ascii=False,
+                separators=(",", ":"),
+                sort_keys=True,
+            )
+        )
         return 0
     raise AssertionError(f"unhandled command: {args.command}")

@@ -917,6 +917,8 @@ class _Validator:
 
     def _build_candidate(self, item: JsonObject) -> Candidate:
         operation = item["operation"]
+        availability = item["availability"]
+        preconditions = item["operation_preconditions"]
         return Candidate(
             id=item["id"], actor_id=item["actor_id"], goal=item["goal"],
             actor_visible_label=item["actor_visible_label"],
@@ -924,4 +926,24 @@ class _Validator:
             target_id=operation["target_id"], target_refs=tuple(item["target_refs"]),
             duration_model_id=item["duration_model_id"],
             evidence_refs=tuple(item["evidence_refs"]),
+            required_information=tuple(item["required_information"]),
+            required_permissions=frozenset(preconditions["permissions"]),
+            required_version=preconditions["required_version"],
+            required_access=tuple(
+                (access["resource_id"], AccessOutcome(access["outcome"]))
+                for access in availability["required_access"]
+            ),
+            knowledge_effects=tuple(
+                KnowledgeClaim(
+                    id=claim["id"],
+                    statement=claim["statement"],
+                    epistemic_state=EpistemicState(claim["epistemic_state"]),
+                    evidence_ids=tuple(claim["evidence_ids"]),
+                    provenance_class=ProvenanceClass(claim["provenance_class"]),
+                )
+                for claim in item["knowledge_effects"]
+            ),
+            success_status=item["on_success"]["status"],
+            failure_status=item["on_failure"]["status"],
+            failure_reason=item["on_failure"]["reason"],
         )
