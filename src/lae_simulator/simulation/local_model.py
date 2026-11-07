@@ -262,6 +262,7 @@ class LocalState:
     invalidated_reference_ids: tuple[str, ...]
     check_results: tuple[LocalCheckResult, ...]
     observed_messages: tuple[str, ...]
+    submission_event_id: str | None = None
     outcome: str | None = None
     observations: tuple[LocalObservationRecord, ...] = ()
     scheduler: SchedulerState = field(default_factory=SchedulerState)
@@ -329,6 +330,8 @@ class LocalState:
             value["control_cause"] = None if self.control_cause is None else self.control_cause.as_dict()
         if self.collaboration != CollaborationState():
             value["collaboration"] = collaboration_dict(self.collaboration)
+        if self.submission_event_id is not None:
+            value['submission_event_id'] = self.submission_event_id
         return value
 
 
@@ -367,6 +370,7 @@ class LocalEventKind(StrEnum):
     PATCH_REJECTED = "patch-rejected"
     PATCH_REVERTED = "patch-reverted"
     CHECK_EVALUATED = "check-evaluated"
+    SUBMISSION_CREATED = "submission-created"
     RUN_ENDED = "run-ended"
 
 

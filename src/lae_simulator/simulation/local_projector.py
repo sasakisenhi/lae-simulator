@@ -23,7 +23,7 @@ _PUBLIC_KINDS = frozenset({
     LocalEventKind.DOCUMENT_READ, LocalEventKind.SEARCH, LocalEventKind.NAVIGATE,
     LocalEventKind.PATCH_APPLIED, LocalEventKind.PATCH_REJECTED,
     LocalEventKind.PATCH_REVERTED, LocalEventKind.CHECK_EVALUATED,
-    LocalEventKind.RUN_ENDED, LocalEventKind.REQUESTED, LocalEventKind.APPROVAL_REQUESTED,
+    LocalEventKind.SUBMISSION_CREATED, LocalEventKind.RUN_ENDED, LocalEventKind.REQUESTED, LocalEventKind.APPROVAL_REQUESTED,
     LocalEventKind.NOTICE_DELIVERED, LocalEventKind.NOTICE_ACKNOWLEDGED,
     LocalEventKind.RESPONSE_OBSERVED, LocalEventKind.AI_INTEGRATED, LocalEventKind.AI_DISCARDED,
     LocalEventKind.REQUEST_CANCELLED, LocalEventKind.WAIT_STARTED, LocalEventKind.WAIT_ENDED,

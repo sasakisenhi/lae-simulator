@@ -17,7 +17,7 @@ from lae_simulator.simulation.local_model import (
 
 _G3_OPERATIONS = frozenset({
     "issue.read", "document.read", "code.search", "symbol.navigate",
-    "patch.apply", "patch.revert", "check.model",
+    "patch.apply", "patch.revert", "check.model", "pr.create", "run.defer",
 })
 
 
@@ -174,6 +174,14 @@ def _field_value(field: str, execution: ScenarioExecution,
             return any(row.observed_tick is None for row in state.collaboration.requests)
         if field == 'deadline.reached':
             return execution.timing is not None and state.logical_time >= execution.timing.deadline_tick
+    if field == 'submission.ready':
+        return bool(state.applied_patch_ids)
+    if field == 'submission.target':
+        return 'simulated'
+    if field == 'run.active':
+        return state.outcome is None
+    if field == 'outcome.valid':
+        return True
     if field.startswith("access."):
         document_id = field.partition(".")[2]
         document = next((item for item in execution.documents if item.id == document_id), None)

@@ -37,6 +37,8 @@ def write_artifact_bundle(root: str | Path, run_id: str,
                           artifacts: dict[str, bytes],
                           metadata: dict[str, Any]) -> Path:
     """Atomically create a run directory with a digest manifest."""
+    if not run_id or Path(run_id).name != run_id or run_id in {'.', '..'}:
+        raise ValueError('run identifier must be one local path component')
     root_path = Path(root)
     destination = root_path / run_id
     temporary = root_path / f".{run_id}.tmp"
@@ -56,7 +58,7 @@ def write_artifact_bundle(root: str | Path, run_id: str,
         manifest["run_id"] = run_id
         (temporary / "manifest.json").write_bytes(canonical_json_bytes(manifest))
         temporary.rename(destination)
-    except (OSError, ValueError):
+    except Exception:
         for child in temporary.iterdir():
             child.unlink()
         temporary.rmdir()
@@ -73,6 +75,8 @@ def read_artifact_bundle(path: str | Path, artifact_names: tuple[str, ...],
         raise ValueError("unsupported run store schema")
     if manifest["run_id"] != run_path.name:
         raise ValueError("run directory and manifest identifiers differ")
+    if not isinstance(manifest.get('artifacts'), dict) or set(manifest['artifacts']) != set(artifact_names):
+        raise ValueError('manifest artifact set differs from the storage contract')
     artifacts: dict[str, bytes] = {}
     for name in artifact_names:
         content = (run_path / name).read_bytes()

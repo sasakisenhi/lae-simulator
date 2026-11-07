@@ -106,7 +106,8 @@ _EVENT_PAYLOAD_FIELDS: dict[LocalEventKind, frozenset[str]] = {
         "candidate_id", "check_id", "input_version", "observed_result", "evidence_refs",
         "coverage", "limitations", "workspace_digest", "caused_by",
     }),
-    LocalEventKind.RUN_ENDED: frozenset({"observed_result", "caused_by"}),
+    LocalEventKind.SUBMISSION_CREATED: frozenset({'candidate_id', 'input_version', 'target_id', 'prediction_text', 'coverage', 'limitations', 'evidence_refs', 'caused_by'}),
+    LocalEventKind.RUN_ENDED: frozenset({"observed_result", "caused_by", 'limitations'}),
 }
 
 for _kind in COLLABORATION_KINDS:
@@ -115,6 +116,16 @@ for _kind in COLLABORATION_KINDS:
 
 
 def _validate_event_payload(event: LocalEvent) -> None:
+    if any(not isinstance(value, str) or not value for value in (event.id, event.run_id, event.actor_id)):
+        _event_fail(event, 'invalid-identity-payload', 'identity fields require nonempty strings')
+    for name in ('candidate_id', 'target_id', 'query', 'patch_id', 'check_id', 'claim_id',
+                 'prediction_text', 'supersedes_prediction_id', 'observed_result', 'coverage',
+                 'limitations', 'input_version', 'output_version', 'workspace_digest', 'scheduled_id'):
+        value = getattr(event, name)
+        if value is not None and not isinstance(value, str):
+            _event_fail(event, 'invalid-scalar-payload', name + ' must be a string or null')
+    if not isinstance(event.evidence_refs, tuple) or any(not isinstance(ref, str) for ref in event.evidence_refs):
+        _event_fail(event, 'invalid-evidence-payload', 'evidence must be a tuple of identifiers')
     if event.collaboration is not None and not isinstance(event.collaboration, (RequestPayload, RequestAction, ArrivalPayload)):
         _event_fail(event, 'invalid-collaboration-payload', 'typed collaboration payload required')
     if event.reservation is not None and not isinstance(event.reservation, ScheduledEvent):
@@ -334,6 +345,9 @@ def _reduce_local_event(execution: ScenarioExecution, state: LocalState,
     if state.collaboration.consumed_slot is not None and event.kind not in {
         LocalEventKind.RESPONSE_ARRIVED, LocalEventKind.NOTICE_DELIVERED, LocalEventKind.REQUEST_EXPIRED, LocalEventKind.AVAILABILITY_CHANGED}:
         _event_fail(event, 'unfinished-async-effect', 'consumed async reservation requires its effect')
+    if state.submission_event_id is not None and (event.kind is not LocalEventKind.RUN_ENDED
+            or event.observed_result != 'submitted' or event.caused_by != (state.submission_event_id,)):
+        _event_fail(event, 'submission-terminal', 'validated submission must be followed immediately by its submitted ending')
     advanced = replace(state, logical_time=event.logical_time)
     if execution.timing is not None:
         if (len(state.scheduler.used_sequences) < len(initial_reservations(execution))
@@ -350,7 +364,7 @@ def _reduce_local_event(execution: ScenarioExecution, state: LocalState,
     if state.ready_candidate_id is not None and event.kind not in {
         LocalEventKind.DOCUMENT_READ, LocalEventKind.SEARCH, LocalEventKind.NAVIGATE,
         LocalEventKind.PATCH_APPLIED, LocalEventKind.PATCH_REJECTED,
-        LocalEventKind.PATCH_REVERTED, LocalEventKind.CHECK_EVALUATED, LocalEventKind.REQUESTED, LocalEventKind.AI_INTEGRATED,
+        LocalEventKind.PATCH_REVERTED, LocalEventKind.CHECK_EVALUATED, LocalEventKind.REQUESTED, LocalEventKind.AI_INTEGRATED, LocalEventKind.SUBMISSION_CREATED,
     }:
         _event_fail(event, "unfinished-completion", "consumed operation must apply its completion before another event")
 
@@ -377,6 +391,7 @@ def _reduce_local_event(execution: ScenarioExecution, state: LocalState,
         )
 
     expected_operation = {
+        LocalEventKind.SUBMISSION_CREATED: {'pr.create'},
         LocalEventKind.AI_INTEGRATED: {"ai.integrate"},
         LocalEventKind.REQUESTED: {"question.send", "ai.delegate"},
         LocalEventKind.DOCUMENT_READ: {"issue.read", "document.read"},
@@ -768,13 +783,18 @@ def _reduce_local_event(execution: ScenarioExecution, state: LocalState,
                        observations=state.observations + (observation,),
                        observed_messages=state.observed_messages + (expected,))
 
+    if event.kind is LocalEventKind.SUBMISSION_CREATED:
+        from lae_simulator.simulation.local_outcomes import validate_submission
+        validate_submission(execution, state, event)
+        return replace(advanced, submission_event_id=event.id)
+
     if event.kind is LocalEventKind.RUN_ENDED:
         if execution.timing is not None:
             at_deadline = (state.scheduler.last_consumed is not None
                            and state.scheduler.last_consumed.payload_kind == 'deadline'
                            and state.ready_event_id is not None)
             if any(row.due_tick <= state.logical_time and not (
-                at_deadline and state.scheduler.cursor is not None and
+                (at_deadline or state.submission_event_id is not None) and state.scheduler.cursor is not None and
                 (row.due_tick, row.priority, row.insertion_sequence, row.scheduled_id) > state.scheduler.cursor
             ) for row in state.scheduler.pending):
                 _event_fail(event, "pending-current-tick", "cannot hide unresolved current-tick reservations by ending the run")
@@ -783,10 +803,10 @@ def _reduce_local_event(execution: ScenarioExecution, state: LocalState,
                 or state.logical_time != execution.timing.deadline_tick
             ):
                 _event_fail(event, "deadline-causality", "deadline outcome must cite its consumption")
-            if event.caused_by and event.caused_by != (state.ready_event_id,):
+            if event.caused_by and event.caused_by not in {(state.ready_event_id,), (state.submission_event_id,)}:
                 _event_fail(event, "end-causality", "run end cites an unrelated event")
-        if event.observed_result != "incomplete":
-            _event_fail(event, "invalid-outcome", "G3 supports only a valid incomplete outcome")
+        from lae_simulator.simulation.local_outcomes import validate_end
+        validate_end(execution, state, event)
         return replace(advanced, outcome=event.observed_result or "incomplete")
     _event_fail(event, "unsupported-event", "event kind is unsupported")
 
@@ -798,7 +818,7 @@ def reduce_local_event(execution: ScenarioExecution, state: LocalState,
         LocalEventKind.DOCUMENT_READ, LocalEventKind.SEARCH, LocalEventKind.NAVIGATE,
         LocalEventKind.PATCH_APPLIED, LocalEventKind.PATCH_REJECTED,
         LocalEventKind.PATCH_REVERTED,
-        LocalEventKind.CHECK_EVALUATED, LocalEventKind.REQUESTED, LocalEventKind.AI_INTEGRATED,
+        LocalEventKind.CHECK_EVALUATED, LocalEventKind.REQUESTED, LocalEventKind.AI_INTEGRATED, LocalEventKind.SUBMISSION_CREATED,
     }:
         next_state = replace(
             next_state,

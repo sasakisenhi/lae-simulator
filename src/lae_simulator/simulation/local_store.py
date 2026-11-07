@@ -6,9 +6,9 @@ import base64
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
-from lae_simulator.simulation.canonical import project_verified, replay_history
+from lae_simulator.simulation.canonical import replay_history
 from lae_simulator.simulation.canonical_store import (
     canonical_json_bytes,
     content_digest,
@@ -45,9 +45,7 @@ from lae_simulator.simulation.local_model import (
     stable_run_id,
     workspace_digest,
 )
-from lae_simulator.simulation.local_reducer import (
-    initial_local_state,
-)
+from lae_simulator.simulation.local_validation import validate_local_result
 from lae_simulator.simulation.scheduler import (
     SCHEDULER_VERSION,
     SchedulerState,
@@ -128,6 +126,7 @@ def _state_from_dict(value: dict[str, Any]) -> LocalState:
             tuple((fact_id, SemanticTruth(truth))
                   for fact_id, truth in item["evaluated_facts"]),
         ) for item in value["check_results"]),
+        submission_event_id=value.get("submission_event_id"),
         observed_messages=tuple(value["observed_messages"]), outcome=value["outcome"],
         scheduler=(scheduler_from_dict(value["scheduler"]) if "scheduler" in value else SchedulerState()),
         ready_candidate_id=value.get("ready_candidate_id"),
@@ -157,21 +156,7 @@ def _public_from_dict(value: dict[str, Any]) -> LocalPublicRecord:
 
 
 def _validate_result(execution: ScenarioExecution, result: LocalRunResult) -> None:
-    if not execution.verified:
-        raise ValueError("local run storage requires a verified scenario execution")
-    if result.run_id != stable_run_id(execution):
-        raise ValueError("run identifier differs from the verified scenario")
-    if result.initial_state != initial_local_state(execution, result.run_id):
-        raise ValueError("initial state differs from the verified scenario")
-    if result.canonical_bytes != local_event_bytes(result.events):
-        raise ValueError("canonical event bytes differ from the event sequence")
-    replayed = replay_history(execution, result.initial_state, result.events)
-    if replayed != result.final_state:
-        raise ValueError("final state differs from canonical replay")
-    projected = cast(tuple[LocalPublicRecord, ...], project_verified(
-        execution, result.initial_state, result.events, result.final_state))
-    if projected != result.public_log:
-        raise ValueError("public projection differs from canonical history")
+    validate_local_result(execution, result)
 
 
 def save_local_run(execution: ScenarioExecution, result: LocalRunResult,
@@ -179,6 +164,7 @@ def save_local_run(execution: ScenarioExecution, result: LocalRunResult,
     try:
         _validate_result(execution, result)
         artifacts = {
+            "closure.json": canonical_json_bytes(validate_local_result(execution, result)),
             "scenario.json": execution.canonical_bytes,
             "initial-state.json": canonical_json_bytes(result.initial_state.as_dict()),
             "events.jsonl": result.canonical_bytes,
@@ -186,6 +172,7 @@ def save_local_run(execution: ScenarioExecution, result: LocalRunResult,
             "public-log.json": canonical_json_bytes([item.as_dict() for item in result.public_log]),
         }
         metadata = {
+            "closure_contract": "g6-closure-1",
             "definition_id": execution.content_id,
             "environment": execution_environment(),
             "guarantee_boundary": "synthetic deterministic local-work execution",
@@ -211,6 +198,9 @@ def save_local_run(execution: ScenarioExecution, result: LocalRunResult,
                 "randomness": "lae-keyed-sha256-v1",
                 "randomness_used": any(event.duration_draw is not None for event in result.events),
             }
+        report = validate_local_result(execution, result)
+        report['storage_context'] = {key: metadata[key] for key in ('environment', 'normalization', 'guarantee_boundary')}
+        artifacts['closure.json'] = canonical_json_bytes(report)
         return write_artifact_bundle(root, result.run_id, artifacts, metadata)
     except (OSError, TypeError, ValueError, SimulationError) as error:
         raise PersistenceError(FailureRecord(
@@ -223,9 +213,12 @@ def load_local_run(path: str | Path, execution: ScenarioExecution) -> StoredLoca
     try:
         if not execution.verified:
             raise ValueError("local run load requires a verified scenario execution")
-        manifest, artifacts = read_artifact_bundle(
-            run_path, _ARTIFACT_NAMES, LOCAL_STORE_SCHEMA_VERSION
-        )
+        preview = json.loads((run_path / 'manifest.json').read_bytes())
+        closure = preview.get('closure_contract')
+        if closure not in {None, 'g6-closure-1'}:
+            raise ValueError('unsupported closure contract')
+        names = _ARTIFACT_NAMES + (('closure.json',) if closure else ())
+        manifest, artifacts = read_artifact_bundle(run_path, names, LOCAL_STORE_SCHEMA_VERSION)
         if manifest.get("run_family") != "g3-local":
             raise ValueError("stored run is not a G3 local run")
         if manifest.get("definition_id") != execution.content_id:
@@ -290,6 +283,18 @@ def load_local_run(path: str | Path, execution: ScenarioExecution) -> StoredLoca
             manifest["run_id"], initial, events, final, artifacts["events.jsonl"],
             tuple(_public_from_dict(item) for item in json.loads(artifacts["public-log.json"])),
         )
+        if closure:
+            report = validate_local_result(execution, result)
+            report['storage_context'] = {key: manifest[key] for key in ('environment', 'normalization', 'guarantee_boundary')}
+            if manifest['normalization'] != 'canonical-json-v1/json-lines-v1' or manifest['guarantee_boundary'] != 'synthetic deterministic local-work execution':
+                raise ValueError('manifest storage contract metadata mismatch')
+            expected_closure = canonical_json_bytes(report)
+            if artifacts['closure.json'] != expected_closure:
+                raise ValueError('stored closure validation differs from canonical result')
+            if (artifacts['initial-state.json'] != canonical_json_bytes(result.initial_state.as_dict())
+                    or artifacts['final-state.json'] != canonical_json_bytes(result.final_state.as_dict())
+                    or artifacts['public-log.json'] != canonical_json_bytes([row.as_dict() for row in result.public_log])):
+                raise ValueError('stored derived artifacts are not canonical or contain unknown data')
     except (OSError, UnicodeError, KeyError, TypeError, ValueError, SimulationError) as error:
         raise PersistenceError(FailureRecord(
             "internal-error", "load-validation", str(run_path), str(error)

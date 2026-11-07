@@ -417,6 +417,19 @@ class LocalSession:
         self.events.append(event)
         return event
 
+    def submit(self, candidate_id: str, *, target_id: str, explanation: str,
+               check_event_ids: tuple[str, ...], coverage: str, limitations: str) -> LocalEvent:
+        self.select(candidate_id)
+        event = self.perform(kind=LocalEventKind.SUBMISSION_CREATED, candidate_id=candidate_id,
+            input_version=self.state.workspace_version, target_id=target_id, prediction_text=explanation,
+            evidence_refs=check_event_ids, coverage=coverage, limitations=limitations)
+        if event.kind is LocalEventKind.SUBMISSION_CREATED:
+            return self.emit(kind=LocalEventKind.RUN_ENDED, observed_result='submitted', caused_by=(event.id,))
+        return event
+
+    def cancel(self, reason: str) -> LocalEvent:
+        return self.emit(kind=LocalEventKind.RUN_ENDED, observed_result='cancelled', limitations=reason)
+
     def finish(self, outcome: str = "incomplete") -> LocalRunResult:
         if self.failure is not None:
             raise self.failure

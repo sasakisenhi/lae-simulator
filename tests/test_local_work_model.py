@@ -139,6 +139,9 @@ class LocalWorkModelTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = save_local_run(self.execution, result, directory)
             manifest = json.loads((path / "manifest.json").read_bytes())
+            manifest.pop('closure_contract')
+            manifest['artifacts'].pop('closure.json')
+            (path / 'closure.json').unlink()
             for name in ("initial-state.json", "final-state.json"):
                 value = json.loads((path / name).read_bytes())
                 value.pop("observations")
