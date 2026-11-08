@@ -45,6 +45,7 @@ from lae_simulator.simulation.local_model import (
     stable_run_id,
     workspace_digest,
 )
+from lae_simulator.simulation.local_projector import project_local_log
 from lae_simulator.simulation.local_validation import validate_local_result
 from lae_simulator.simulation.scheduler import (
     SCHEDULER_VERSION,
@@ -152,6 +153,13 @@ def _public_from_dict(value: dict[str, Any]) -> LocalPublicRecord:
         version=value["version"], outcome=value["outcome"],
         evidence_refs=tuple(value["evidence_refs"]), coverage=value["coverage"],
         limitations=value["limitations"],
+        source_class=value.get("source_class"),
+        assumed_source=value.get("assumed_source"),
+        acquisition_method=value.get("acquisition_method"),
+        available_fields=tuple(value.get("available_fields", ())),
+        query=value.get("query"), result_refs=tuple(value.get("result_refs", ())),
+        operation_id=value.get("operation_id"),
+        caused_by=tuple(value.get("caused_by", ())),
     )
 
 
@@ -171,7 +179,17 @@ def save_local_run(execution: ScenarioExecution, result: LocalRunResult,
             "final-state.json": canonical_json_bytes(result.final_state.as_dict()),
             "public-log.json": canonical_json_bytes([item.as_dict() for item in result.public_log]),
         }
+        from lae_simulator.simulation.fixed_evidence import (
+            _evidence_correspondence,
+            employee_package,
+            public_evidence,
+        )
+        artifacts['employee-package.json'] = employee_package(execution, result, actor_id=execution.actor_id)
+        artifacts['public-evidence.json'] = public_evidence(execution, result)
+        artifacts['audit-mapping.json'] = _evidence_correspondence(execution, result)
         metadata = {
+            "evidence_contract": "g7-fixed-1",
+            "projection_version": "g7-public-1",
             "closure_contract": "g6-closure-1",
             "definition_id": execution.content_id,
             "environment": execution_environment(),
@@ -199,7 +217,7 @@ def save_local_run(execution: ScenarioExecution, result: LocalRunResult,
                 "randomness_used": any(event.duration_draw is not None for event in result.events),
             }
         report = validate_local_result(execution, result)
-        report['storage_context'] = {key: metadata[key] for key in ('environment', 'normalization', 'guarantee_boundary')}
+        report['storage_context'] = {key: metadata[key] for key in ('environment', 'normalization', 'guarantee_boundary', 'projection_version', 'evidence_contract')}
         artifacts['closure.json'] = canonical_json_bytes(report)
         return write_artifact_bundle(root, result.run_id, artifacts, metadata)
     except (OSError, TypeError, ValueError, SimulationError) as error:
@@ -218,7 +236,16 @@ def load_local_run(path: str | Path, execution: ScenarioExecution) -> StoredLoca
         if closure not in {None, 'g6-closure-1'}:
             raise ValueError('unsupported closure contract')
         names = _ARTIFACT_NAMES + (('closure.json',) if closure else ())
+        contracts = (preview.get('projection_version'), preview.get('evidence_contract'))
+        if contracts not in {(None, None), ('g7-public-1', 'g7-fixed-1')}:
+            raise ValueError('inconsistent projection and evidence contracts')
+        if contracts != (None, None) and closure != 'g6-closure-1':
+            raise ValueError('G7 evidence requires closure validation')
+        if preview.get('evidence_contract'):
+            names += ('employee-package.json', 'public-evidence.json', 'audit-mapping.json')
         manifest, artifacts = read_artifact_bundle(run_path, names, LOCAL_STORE_SCHEMA_VERSION)
+        if manifest != preview:
+            raise ValueError("manifest changed during load")
         if manifest.get("run_family") != "g3-local":
             raise ValueError("stored run is not a G3 local run")
         if manifest.get("definition_id") != execution.content_id:
@@ -275,19 +302,28 @@ def load_local_run(path: str | Path, execution: ScenarioExecution) -> StoredLoca
         if (manifest.get("state_schema_version") != final.schema_version
                 or manifest.get("validity") != "valid"):
             raise ValueError("manifest state summary is inconsistent")
-        _validate_result(execution, LocalRunResult(
+        projection_version = manifest.get("projection_version", "g6-public-legacy")
+        if projection_version not in {"g6-public-legacy", "g7-public-1"}:
+            raise ValueError("unsupported projection version")
+        legacy_projection = projection_version == "g6-public-legacy"
+        validate_local_result(execution, LocalRunResult(
             manifest["run_id"], initial, events, final, artifacts["events.jsonl"],
             tuple(_public_from_dict(item) for item in json.loads(artifacts["public-log.json"])),
-        ))
+        ), legacy_projection=legacy_projection)
         result = LocalRunResult(
             manifest["run_id"], initial, events, final, artifacts["events.jsonl"],
             tuple(_public_from_dict(item) for item in json.loads(artifacts["public-log.json"])),
         )
         if closure:
-            report = validate_local_result(execution, result)
-            report['storage_context'] = {key: manifest[key] for key in ('environment', 'normalization', 'guarantee_boundary')}
+            report = validate_local_result(execution, result, legacy_projection=legacy_projection)
+            storage_context = {key: manifest[key] for key in ('environment', 'normalization', 'guarantee_boundary')}
             if manifest['normalization'] != 'canonical-json-v1/json-lines-v1' or manifest['guarantee_boundary'] != 'synthetic deterministic local-work execution':
                 raise ValueError('manifest storage contract metadata mismatch')
+            if 'projection_version' in manifest:
+                storage_context['projection_version'] = manifest['projection_version']
+            if 'evidence_contract' in manifest:
+                storage_context['evidence_contract'] = manifest['evidence_contract']
+            report['storage_context'] = storage_context
             expected_closure = canonical_json_bytes(report)
             if artifacts['closure.json'] != expected_closure:
                 raise ValueError('stored closure validation differs from canonical result')
@@ -299,4 +335,20 @@ def load_local_run(path: str | Path, execution: ScenarioExecution) -> StoredLoca
         raise PersistenceError(FailureRecord(
             "internal-error", "load-validation", str(run_path), str(error)
         )) from error
+    if legacy_projection:
+        safe = project_local_log(execution, initial, events, final)
+        result = LocalRunResult(result.run_id, initial, events, final, result.canonical_bytes, safe)
+    if manifest.get('evidence_contract'):
+        from lae_simulator.simulation.fixed_evidence import (
+            _evidence_correspondence,
+            employee_package,
+            public_evidence,
+        )
+        try:
+            if (artifacts['employee-package.json'] != employee_package(execution, result, actor_id=execution.actor_id)
+                    or artifacts['public-evidence.json'] != public_evidence(execution, result)
+                    or artifacts['audit-mapping.json'] != _evidence_correspondence(execution, result)):
+                raise ValueError('stored fixed evidence differs from replay')
+        except (ValueError, SimulationError) as error:
+            raise PersistenceError(FailureRecord('internal-error', 'load-validation', str(run_path), str(error))) from error
     return StoredLocalRun(run_path, manifest, result)

@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "/home/sengakuhisai/dev/lae-simulator/scripts/vb_acceptance.py", line 237, in <module>
+    worker(*sys.argv[2:])
+    ~~~~~~^^^^^^^^^^^^^^^
+  File "/home/sengakuhisai/dev/lae-simulator/scripts/vb_acceptance.py", line 53, in worker
+    execution = load_scenario_execution(path)
+  File "/home/sengakuhisai/dev/lae-simulator/src/lae_simulator/simulation/local_loader.py", line 62, in load_scenario_execution
+    bundle = load_scenario_bundle(scenario_path)
+  File "/home/sengakuhisai/dev/lae-simulator/src/lae_simulator/world/scenario.py", line 76, in load_scenario_bundle
+    return load_scenario_bundle_data(data, source.parent)
+  File "/home/sengakuhisai/dev/lae-simulator/src/lae_simulator/world/scenario.py", line 84, in load_scenario_bundle_data
+    raise WorldValidationError(validator.issues)
+lae_simulator.world.errors.WorldValidationError: $.candidates[2].operation [unavailable-operation] operation is absent from participant capabilities
+Traceback (most recent call last):
+  File "/home/sengakuhisai/dev/lae-simulator/scripts/vb_acceptance.py", line 239, in <module>
+    main()
+    ~~~~^^
+  File "/home/sengakuhisai/dev/lae-simulator/scripts/vb_acceptance.py", line 193, in main
+    subprocess.run(
+    ~~~~~~~~~~~~~~^
+        [sys.executable, __file__, "worker", case, arm, str(dest)],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        env={**os.environ, "PYTHONHASHSEED": seed},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        check=True,
+        ^^^^^^^^^^^
+    )
+    ^
+  File "/usr/lib64/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/home/sengakuhisai/dev/lae-simulator/.venv/bin/python', '/home/sengakuhisai/dev/lae-simulator/scripts/vb_acceptance.py', 'worker', 'tool', 'intervention', '/home/sengakuhisai/dev/lae-simulator/docs/vb-evidence/tool-intervention-1']' returned non-zero exit status 1.

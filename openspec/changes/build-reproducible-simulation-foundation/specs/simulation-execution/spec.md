@@ -207,3 +207,17 @@
 #### Scenario: Failure does not publish a valid run
 - **WHEN** 保存途中障害、再生不一致、または不正遷移を検出する
 - **THEN** 有効公開を停止し、既存の有効結果を変更せず、調査者向け取得から無効な部分結果を返さない
+
+### Requirement: SE23 Observed fixed search availability
+システムは固定検索障害を実操作時の業務失敗として観測し、本人が観測する前に障害を判断入力へ漏らしてはならない（MUST NOT）。
+
+#### Scenario: Observe search failure
+- **WHEN** 本人が固定条件で利用不能な検索を試行する
+- **THEN** 既存予約経路を使ってtool-unavailableを記録し、結果・知識を創作せず、観測後に候補を再評価し、保存とReplayが一致する
+
+### Requirement: SE24 Declared knowledge prerequisites
+システムは候補のrequired_claimsについて本人の保持・欠落・撤回をPolicyとReducerで同じ意味で検査しなければならない（SHALL）。
+
+#### Scenario: Initial knowledge changes feasibility
+- **WHEN** 必要claimを初期保持する条件と保持しない条件を与える
+- **THEN** 候補の前提充足差を記録でき、存在しない閲覧経験や検索結果を生成しない。実選択の差は別に評価する

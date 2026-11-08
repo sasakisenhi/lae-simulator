@@ -29,7 +29,7 @@ PREDICATES = frozenset({
     "all", "equals", "nonempty-url", "not", "one-of", "present",
     "recorded", "same-version", "type-allowed",
 })
-SUPPORTED_SCENARIO_VERSIONS = frozenset({"1.0.0", "1.1.0", "1.2.0"})
+SUPPORTED_SCENARIO_VERSIONS = frozenset({"1.0.0", "1.1.0", "1.2.0", "1.3.0"})
 
 
 class _DuplicateKeyError(ValueError):
@@ -160,11 +160,19 @@ class _Validator:
             "exercise_id", "extraction_history", "participant_profile", "patches", "references", "rules",
             "schema_version", "source_manifest", "world_claims",
         }
-        self.keys(self.root, "$", required, {"semantic_model", "timing", "collaboration"})
+        optional = {"semantic_model", "timing", "collaboration"}
+        if self.root.get('schema_version') == '1.3.0':
+            optional.add('tool_availability')
+        self.keys(self.root, "$", required, optional)
+        if 'tool_availability' in self.root:
+            tools = self.obj(self.root['tool_availability'], '$.tool_availability')
+            self.keys(tools, '$.tool_availability', {'code.search'})
+            if type(tools.get('code.search')) is not bool:
+                self.issue('$.tool_availability', 'invalid-value', 'search availability must be boolean')
         schema_version = self.text(self.root.get("schema_version"), "$.schema_version")
         if schema_version not in SUPPORTED_SCENARIO_VERSIONS:
-            self.issue("$.schema_version", "unsupported-version", "expected '1.0.0', '1.1.0', or '1.2.0'")
-        if schema_version in {"1.1.0", "1.2.0"} and "semantic_model" not in self.root:
+            self.issue("$.schema_version", "unsupported-version", "expected a supported Scenario version (1.0.0 through 1.3.0)")
+        if schema_version in {"1.1.0", "1.2.0", "1.3.0"} and "semantic_model" not in self.root:
             self.issue("$.semantic_model", "missing-field", "scenario requires a bounded semantic model")
         if schema_version == "1.0.0" and "semantic_model" in self.root:
             self.issue("$.semantic_model", "version-conflict", "semantic models require scenario 1.1.0")
@@ -175,6 +183,10 @@ class _Validator:
         self._validate_claims()
         self._validate_context()
         self._validate_participant_profile()
+        if schema_version == '1.3.0':
+            profile = self.root.get('participant_profile')
+            if isinstance(profile, dict):
+                self._knowledge_refs(profile.get('initial_claim_ids'), '$.participant_profile.initial_claim_ids')
         self._validate_candidates()
         if "timing" in self.root:
             from lae_simulator.world.timing import load_timing
@@ -387,6 +399,22 @@ class _Validator:
             if classification not in {"actor-private", "public-evidence"}:
                 self.issue(f"{path}.ai.input_classifications[{index}]", "visibility-conflict", "AI input exceeds actor-visible classifications")
 
+    def _knowledge_refs(self, value: Any, path: str) -> None:
+        rows = self.root.get('world_claims')
+        rows = rows if isinstance(rows, list) else []
+        claims = {row['id']: row for row in rows
+                  if isinstance(row, dict) and isinstance(row.get('id'), str)}
+        for identifier in self.strings(value, path):
+            claim = claims.get(identifier)
+            if claim is None:
+                self.issue(path, 'unknown-reference', 'knowledge claim is undefined')
+            elif (not isinstance(claim.get('source_ids'), list)
+                  or not claim.get('source_ids')
+                  or claim.get('classification') == 'administrative'
+                  or any(self.source_classes.get(source) == 'audit_only_comment'
+                         for source in claim.get('source_ids', []) if isinstance(source, str))):
+                self.issue(path, 'visibility-conflict', 'knowledge requires actor-eligible sources')
+
     def _validate_candidates(self) -> None:
         required = {
             "actor_visible_label", "availability", "duration_model", "effects", "evidence_refs",
@@ -396,8 +424,11 @@ class _Validator:
         for index, raw in enumerate(self.array(self.root.get("candidates"), "$.candidates")):
             path = f"$.candidates[{index}]"
             item = self.obj(raw, path)
-            self.keys(item, path, required, {"patch_ids"})
-            if (self.root.get("schema_version") == "1.2.0"
+            self.keys(item, path, required, {'patch_ids', 'required_claims'}
+                      if self.root.get('schema_version') == '1.3.0' else {'patch_ids'})
+            if 'required_claims' in item:
+                self._knowledge_refs(item['required_claims'], path + '.required_claims')
+            if (self.root.get("schema_version") in {"1.2.0", "1.3.0"}
                     and item.get("operation") == "patch.apply" and not item.get("patch_ids")):
                 self.issue(f"{path}.patch_ids", "missing-patch-targets", "patch.apply requires explicit targets")
             if "patch_ids" in item:

@@ -1,0 +1,442 @@
+diff --git a/openspec/changes/build-reproducible-simulation-foundation/tasks.md b/openspec/changes/build-reproducible-simulation-foundation/tasks.md
+index e5a2f6b..7fcfe20 100644
+--- a/openspec/changes/build-reproducible-simulation-foundation/tasks.md
++++ b/openspec/changes/build-reproducible-simulation-foundation/tasks.md
+@@ -37,10 +37,10 @@
+ 
+ ## 6. 証拠・本人情報・回答
+ 
+-- [ ] 6.1 公開ログ・画面状態・根拠投影を拡張する（EP01–EP03, EP06, EP11, EP14; D8）。成果物: 投影と対応表、固定役割上限、取得元/粒度の分類、再生照合とテスト。依存: 5.3。完了条件: 正準列へ追跡でき、tool-shapedも合成と表示する。不正allowlistでも管理原因/正解/未来予約を漏らさず、正当な公開操作と関連IDは保つ。参照IDが有効でも内容矛盾なら拒否する。
+-- [ ] 6.2 本人経験・認識・固定記憶を生成する（EP04, EP05; D4/D9）。成果物: 当人別パッケージ、保持/省略規則、根拠とテスト。依存: 6.1。完了条件: 未確認通知・他人の知識を入れず、直接経験/伝聞/誤認を区別する。過去エピソード・失われた理由を補わず、正準列からの派生一致を確認する。 LAE背景の保持と本人/同僚の知覚・調査者の閲覧可否を分け、企業資料や旧ケースの経験を本人パッケージへ自動全文投入しない。
++- [x] 6.1 公開ログ・画面状態・根拠投影を拡張する（EP01–EP03, EP06, EP11, EP14; D8）。成果物: 投影と対応表、固定役割上限、取得元/粒度の分類、再生照合とテスト。依存: 5.3。完了条件: 正準列へ追跡でき、tool-shapedも合成と表示する。不正allowlistでも管理原因/正解/未来予約を漏らさず、正当な公開操作と関連IDは保つ。参照IDが有効でも内容矛盾なら拒否する。
++- [x] 6.2 本人経験・認識・固定記憶を生成する（EP04, EP05; D4/D9）。成果物: 当人別パッケージ、保持/省略規則、根拠とテスト。依存: 6.1。完了条件: 未確認通知・他人の知識を入れず、直接経験/伝聞/誤認を区別する。過去エピソード・失われた理由を補わず、正準列からの派生一致を確認する。 LAE背景の保持と本人/同僚の知覚・調査者の閲覧可否を分け、企業資料や旧ケースの経験を本人パッケージへ自動全文投入しない。
+ - [ ] 6.3 インタビューと回答監査・再質問検査を実装する（EP06, EP08–EP10, EP15, EP16; D9）。成果物: 生成器アダプター、根拠取得、発言主張、回答監査、棄却/不能/UNKNOWN、質問テスト群。依存: 6.2。完了条件: 本人情報/根拠/生成器・プロンプト版/入力/回答/検査を追跡でき、誘導質問から新事実を作らない。再質問・言い換えの根拠なし矛盾を検出・抑止し、固定誤認・曖昧さ・不明・推測を許す。監査記録と公開禁止は別検査にし、固定応答自動試験と選定生成器で確認する。未接続はNOT READY、意味確認不足は受入INCONCLUSIVEで、逐語一致は不要。
+-- [ ] 6.4 公開上限内の検索・関連証拠取得を実装する（EP06, EP07, EP12, EP14; D8）。成果物: Issue/時刻/対象/公開IDからの取得、最小保持条件、ローカル利用説明とテスト。依存: 6.1。完了条件: 誤設定・未知役割・関連先の権限逸脱を防ぎ、本文/ID/件数/エラーから漏洩しない。重点範囲外の保持証拠は取得でき、欠落を創作しない。任意の保持規則エンジンを作らず、取得順で過去を変えない。
++- [x] 6.4 公開上限内の検索・関連証拠取得を実装する（EP06, EP07, EP12, EP14; D8）。成果物: Issue/時刻/対象/公開IDからの取得、最小保持条件、ローカル利用説明とテスト。依存: 6.1。完了条件: 誤設定・未知役割・関連先の権限逸脱を防ぎ、本文/ID/件数/エラーから漏洩しない。重点範囲外の保持証拠は取得でき、欠落を創作しない。任意の保持規則エンジンを作らず、取得順で過去を変えない。
+ - [ ] 6.5 ローカル縦断入口を拡張・文書化する（WD01, SE15, EP02, EP08, EP12; D1）。成果物: #1955の読込み/実行/検査/保存/公開取得/質問の入口と例。依存: 6.3, 6.4。完了条件: CF0入口を維持し、#1955を同じ手順で扱える。不正入力/内部失敗/取得拒否/回答不能を成功と混同せず、専用GUIや実GitHub操作を要求しない。
+ 
+ ## 7. 独立受入とMVP完成判定
+diff --git a/src/lae_simulator/simulation/local_model.py b/src/lae_simulator/simulation/local_model.py
+index 492800b..586ea56 100644
+--- a/src/lae_simulator/simulation/local_model.py
++++ b/src/lae_simulator/simulation/local_model.py
+@@ -496,9 +496,16 @@ class LocalPublicRecord:
+     evidence_refs: tuple[str, ...]
+     coverage: str | None = None
+     limitations: str | None = None
++    source_class: str | None = None
++    assumed_source: str | None = None
++    acquisition_method: str | None = None
++    available_fields: tuple[str, ...] = ()
++    query: str | None = None
++    result_refs: tuple[str, ...] = ()
++    operation_id: str | None = None
+ 
+     def as_dict(self) -> dict[str, Any]:
+-        return {
++        value = {
+             "actor_id": self.actor_id, "evidence_refs": list(self.evidence_refs),
+             "event_id": self.event_id, "kind": self.kind,
+             "coverage": self.coverage, "limitations": self.limitations,
+@@ -506,6 +513,20 @@ class LocalPublicRecord:
+             "target_id": self.target_id, "version": self.version,
+             "synthetic": True,
+         }
++        if self.query is not None:
++            value["query"] = self.query
++        if self.result_refs:
++            value["result_refs"] = list(self.result_refs)
++        if self.operation_id is not None:
++            value["operation_id"] = self.operation_id
++        if self.source_class is not None:
++            value.update({
++                "source_class": self.source_class,
++                "assumed_source": self.assumed_source,
++                "acquisition_method": self.acquisition_method,
++                "available_fields": list(self.available_fields),
++            })
++        return value
+ 
+ 
+ def _b64(value: bytes) -> str:
+diff --git a/src/lae_simulator/simulation/local_projector.py b/src/lae_simulator/simulation/local_projector.py
+index 974874c..72267ff 100644
+--- a/src/lae_simulator/simulation/local_projector.py
++++ b/src/lae_simulator/simulation/local_projector.py
+@@ -2,7 +2,10 @@
+ 
+ from __future__ import annotations
+ 
+-from lae_simulator.simulation.canonical import replay_history
++import hashlib
++from dataclasses import replace
++
++from lae_simulator.simulation.canonical import replay_history, transition
+ from lae_simulator.simulation.collaboration_model import (
+     ArrivalPayload,
+     RequestAction,
+@@ -29,6 +32,7 @@ _PUBLIC_KINDS = frozenset({
+     LocalEventKind.REQUEST_CANCELLED, LocalEventKind.WAIT_STARTED, LocalEventKind.WAIT_ENDED,
+     LocalEventKind.HUMAN_CANCELLED,
+ })
++_ROLE_PUBLIC_KINDS = _PUBLIC_KINDS
+ _PUBLIC_FAILURES = frozenset({
+     "document-unavailable", "stale-version", "target-mismatch",
+     "before-bytes-mismatch", "missing-target", "permission-denied",
+@@ -36,12 +40,24 @@ _PUBLIC_FAILURES = frozenset({
+     "precondition-failed",
+ })
+ 
++_TOOL_SHAPED_KINDS = frozenset({
++    LocalEventKind.DOCUMENT_READ, LocalEventKind.SEARCH, LocalEventKind.NAVIGATE,
++    LocalEventKind.PATCH_APPLIED, LocalEventKind.PATCH_REJECTED,
++    LocalEventKind.PATCH_REVERTED, LocalEventKind.CHECK_EVALUATED,
++    LocalEventKind.SUBMISSION_CREATED, LocalEventKind.REQUESTED,
++    LocalEventKind.APPROVAL_REQUESTED, LocalEventKind.NOTICE_DELIVERED,
++    LocalEventKind.NOTICE_ACKNOWLEDGED, LocalEventKind.RESPONSE_OBSERVED,
++    LocalEventKind.AI_INTEGRATED, LocalEventKind.AI_DISCARDED,
++    LocalEventKind.REQUEST_CANCELLED, LocalEventKind.HUMAN_CANCELLED,
++})
++
+ 
+-def project_local_log(
++def _project_local_log(
+     execution: ScenarioExecution,
+     initial: LocalState,
+     events: tuple[LocalEvent, ...],
+     final: LocalState,
++    *, correspondence: dict[str, str] | None = None,
+ ) -> tuple[LocalPublicRecord, ...]:
+     """Project only a run whose complete history reproduces its supplied state."""
+     if (not execution.verified or initial.run_id != stable_run_id(execution)
+@@ -50,8 +66,40 @@ def project_local_log(
+     if replay_history(execution, initial, events) != final or final.outcome is None:
+         raise PublicationError("invalid local history cannot be published")
+     records: list[LocalPublicRecord] = []
++    public_documents = {row.id for row in execution.documents
++                        if row.classification == 'public-evidence'
++                        and row.availability == 'available'
++                        and row.source_classification != 'audit_only_comment'}
++    public_references = {row.id for row in execution.references
++                         if row.source_classification != 'audit_only_comment'
++                         and row.source_id in {doc.source_id for doc in execution.documents
++                             if doc.id in public_documents}
++                         and (row.target_id is None or row.target_id in public_documents)}
++    public_event_ids: dict[str, str] = {}
++    occurrence: dict[str, int] = {}
++    public_request_ids: dict[str, str] = {}
++    states: dict[str, LocalState] = {}
++    replay_state = initial
++    for source_event in events:
++        next_state = transition(execution, replay_state, source_event, source_event.order)
++        if not isinstance(next_state, LocalState):
++            raise PublicationError("invalid local replay state")
++        replay_state = next_state
++        states[source_event.id] = replay_state
+     for event in events:
+-        if event.kind not in _PUBLIC_KINDS:
++        if event.kind not in (_PUBLIC_KINDS & _ROLE_PUBLIC_KINDS):
++            continue
++        target = event.target_id
++        if target is not None and target.startswith('reference:'):
++            if target.removeprefix('reference:') not in public_references:
++                continue
++        elif (target is not None and target in {row.id for row in execution.references} and target not in public_references
++              or target is not None and target in {row.id for row in execution.documents} and target not in public_documents):
++            continue
++        if any(ref.startswith('reference:') and ref.removeprefix('reference:') not in public_references
++               or ref in {row.id for row in execution.references} and ref not in public_references
++               or ref in {row.id for row in execution.documents} and ref not in public_documents
++               for ref in event.evidence_refs):
+             continue
+         outcome = event.observed_result
+         if event.kind is LocalEventKind.PATCH_REJECTED and outcome not in _PUBLIC_FAILURES:
+@@ -63,18 +111,97 @@ def project_local_log(
+         }:
+             raise ValueError("check mode or result is invalid for public projection")
+         target_id = event.target_id
++        if event.kind is LocalEventKind.SEARCH:
++            target_id = event.query
++        elif event.kind is LocalEventKind.CHECK_EVALUATED:
++            target_id = event.check_id
++        elif event.kind in {LocalEventKind.PATCH_APPLIED, LocalEventKind.PATCH_REVERTED}:
++            target_id = event.patch_id
++        if event.kind is LocalEventKind.PATCH_REJECTED:
++            # Rejection diagnostics may contain caller-supplied private target text.
++            target_id = None
+         payload = event.collaboration
+         if isinstance(payload, (RequestPayload, RequestAction)):
+-            target_id = payload.request_id
++            if payload.request_id not in public_request_ids:
++                public_request_ids[payload.request_id] = f'REQUEST-{len(public_request_ids) + 1}'
++            target_id = public_request_ids[payload.request_id]
+         elif isinstance(payload, ArrivalPayload):
+             # Arrival is intentionally absent from this metadata-only allowlist.
+             raise PublicationError('unobserved response cannot enter public log')
+-        records.append(LocalPublicRecord(
+-            event_id=event.id, logical_time=event.logical_time,
++        visible_search_results = tuple(
++            ref if ref in public_documents or ref in public_references
++            else f"workspace:{states[event.id].workspace_version}:{ref}"
++            for ref in states[event.id].search_result_refs
++            if (ref in public_documents or ref in public_references)
++            or ('#' in ref and ref.split('#', 1)[0] in {
++                file.path for file in states[event.id].workspace_files})
++        ) if event.kind is LocalEventKind.SEARCH else ()
++        record = LocalPublicRecord(
++            # Public identifiers follow the observable projection, not the
++            # canonical event ordinal (which can encode private reservations).
++            event_id="PUB-" + hashlib.sha256(
++                (event.kind.value + "\n" + str(event.logical_time) + "\n" + str(target_id)
++                 + "\n" + str(event.observed_result) + "\n" + str(event.query)
++                 + "\n" + str(tuple(ref for ref in event.evidence_refs if not ref.startswith('LEV-')))
++                 + "\n" + str(occurrence.get(event.kind.value + str(target_id), 0))).encode()
++            ).hexdigest()[:16], logical_time=event.logical_time,
+             kind=event.kind.value, actor_id=event.actor_id,
+             target_id=target_id,
+             version=event.output_version or event.input_version,
+-            outcome=outcome, evidence_refs=event.evidence_refs,
+-            coverage=event.coverage, limitations=event.limitations,
+-        ))
++            outcome=outcome, evidence_refs=tuple(
++                ("public:" + public_event_ids[ref] if ref.startswith('LEV-') and ref in public_event_ids else ref)
++                for ref in event.evidence_refs
++                if not ref.startswith('LEV-') or ref in public_event_ids
++            ),
++            coverage=event.coverage, limitations=(
++                event.limitations if event.kind not in {LocalEventKind.RUN_ENDED, LocalEventKind.SUBMISSION_CREATED} else None
++            ),
++            query=event.query if event.kind is LocalEventKind.SEARCH else None,
++            result_refs=visible_search_results,
++            operation_id=(event.check_id if event.kind is LocalEventKind.CHECK_EVALUATED else
++                          event.patch_id if event.kind in {LocalEventKind.PATCH_APPLIED, LocalEventKind.PATCH_REVERTED} else None),
++        )
++        occurrence_key = event.kind.value + str(target_id)
++        occurrence[occurrence_key] = occurrence.get(occurrence_key, 0) + 1
++        public_event_ids[event.id] = record.event_id
++        source_class = "tool-shaped" if event.kind in _TOOL_SHAPED_KINDS else "internal"
++        candidate = next(
++            (item for item in execution.candidates if item.id == event.candidate_id),
++            None,
++        )
++        if source_class == "internal":
++            assumed_source = "LAE simulator internal event"
++        elif candidate is not None:
++            assumed_source = f"simulated tool operation: {candidate.operation}"
++        elif isinstance(payload, (RequestPayload, RequestAction)):
++            assumed_source = "simulated collaboration interface"
++        else:
++            assumed_source = "simulated local work interface"
++        public_fields = tuple(
++            name for name, value in (
++                ("event_id", record.event_id), ("logical_time", record.logical_time),
++                ("kind", record.kind), ("actor_id", record.actor_id),
++                ("target_id", record.target_id), ("version", record.version),
++                ("outcome", record.outcome), ("evidence_refs", record.evidence_refs),
++                ("coverage", record.coverage), ("limitations", record.limitations),
++                ("query", record.query), ("result_refs", record.result_refs),
++                ("operation_id", record.operation_id),
++            ) if value is not None and value != ()
++        )
++        record = replace(
++            record, source_class=source_class,
++            assumed_source=assumed_source,
++            acquisition_method=(
++                   "synthetic event projection; real collection unverified"
++               ),
++            available_fields=public_fields,
++        )
++        records.append(record)
++    if correspondence is not None:
++        correspondence.update({public: canonical for canonical, public in public_event_ids.items()})
+     return tuple(records)
++
++
++def project_local_log(execution: ScenarioExecution, initial: LocalState,
++                      events: tuple[LocalEvent, ...], final: LocalState) -> tuple[LocalPublicRecord, ...]:
++    return _project_local_log(execution, initial, events, final)
+diff --git a/src/lae_simulator/simulation/local_store.py b/src/lae_simulator/simulation/local_store.py
+index baed9a2..d88f56d 100644
+--- a/src/lae_simulator/simulation/local_store.py
++++ b/src/lae_simulator/simulation/local_store.py
+@@ -45,6 +45,7 @@ from lae_simulator.simulation.local_model import (
+     stable_run_id,
+     workspace_digest,
+ )
++from lae_simulator.simulation.local_projector import project_local_log
+ from lae_simulator.simulation.local_validation import validate_local_result
+ from lae_simulator.simulation.scheduler import (
+     SCHEDULER_VERSION,
+@@ -152,6 +153,12 @@ def _public_from_dict(value: dict[str, Any]) -> LocalPublicRecord:
+         version=value["version"], outcome=value["outcome"],
+         evidence_refs=tuple(value["evidence_refs"]), coverage=value["coverage"],
+         limitations=value["limitations"],
++        source_class=value.get("source_class"),
++        assumed_source=value.get("assumed_source"),
++        acquisition_method=value.get("acquisition_method"),
++        available_fields=tuple(value.get("available_fields", ())),
++        query=value.get("query"), result_refs=tuple(value.get("result_refs", ())),
++        operation_id=value.get("operation_id"),
+     )
+ 
+ 
+@@ -171,7 +178,17 @@ def save_local_run(execution: ScenarioExecution, result: LocalRunResult,
+             "final-state.json": canonical_json_bytes(result.final_state.as_dict()),
+             "public-log.json": canonical_json_bytes([item.as_dict() for item in result.public_log]),
+         }
++        from lae_simulator.simulation.fixed_evidence import (
++            _evidence_correspondence,
++            employee_package,
++            public_evidence,
++        )
++        artifacts['employee-package.json'] = employee_package(execution, result, actor_id=execution.actor_id)
++        artifacts['public-evidence.json'] = public_evidence(execution, result)
++        artifacts['audit-mapping.json'] = _evidence_correspondence(execution, result)
+         metadata = {
++            "evidence_contract": "g7-fixed-1",
++            "projection_version": "g7-public-1",
+             "closure_contract": "g6-closure-1",
+             "definition_id": execution.content_id,
+             "environment": execution_environment(),
+@@ -199,7 +216,7 @@ def save_local_run(execution: ScenarioExecution, result: LocalRunResult,
+                 "randomness_used": any(event.duration_draw is not None for event in result.events),
+             }
+         report = validate_local_result(execution, result)
+-        report['storage_context'] = {key: metadata[key] for key in ('environment', 'normalization', 'guarantee_boundary')}
++        report['storage_context'] = {key: metadata[key] for key in ('environment', 'normalization', 'guarantee_boundary', 'projection_version', 'evidence_contract')}
+         artifacts['closure.json'] = canonical_json_bytes(report)
+         return write_artifact_bundle(root, result.run_id, artifacts, metadata)
+     except (OSError, TypeError, ValueError, SimulationError) as error:
+@@ -218,7 +235,16 @@ def load_local_run(path: str | Path, execution: ScenarioExecution) -> StoredLoca
+         if closure not in {None, 'g6-closure-1'}:
+             raise ValueError('unsupported closure contract')
+         names = _ARTIFACT_NAMES + (('closure.json',) if closure else ())
++        contracts = (preview.get('projection_version'), preview.get('evidence_contract'))
++        if contracts not in {(None, None), ('g7-public-1', 'g7-fixed-1')}:
++            raise ValueError('inconsistent projection and evidence contracts')
++        if contracts != (None, None) and closure != 'g6-closure-1':
++            raise ValueError('G7 evidence requires closure validation')
++        if preview.get('evidence_contract'):
++            names += ('employee-package.json', 'public-evidence.json', 'audit-mapping.json')
+         manifest, artifacts = read_artifact_bundle(run_path, names, LOCAL_STORE_SCHEMA_VERSION)
++        if manifest != preview:
++            raise ValueError("manifest changed during load")
+         if manifest.get("run_family") != "g3-local":
+             raise ValueError("stored run is not a G3 local run")
+         if manifest.get("definition_id") != execution.content_id:
+@@ -275,19 +301,28 @@ def load_local_run(path: str | Path, execution: ScenarioExecution) -> StoredLoca
+         if (manifest.get("state_schema_version") != final.schema_version
+                 or manifest.get("validity") != "valid"):
+             raise ValueError("manifest state summary is inconsistent")
+-        _validate_result(execution, LocalRunResult(
++        projection_version = manifest.get("projection_version", "g6-public-legacy")
++        if projection_version not in {"g6-public-legacy", "g7-public-1"}:
++            raise ValueError("unsupported projection version")
++        legacy_projection = projection_version == "g6-public-legacy"
++        validate_local_result(execution, LocalRunResult(
+             manifest["run_id"], initial, events, final, artifacts["events.jsonl"],
+             tuple(_public_from_dict(item) for item in json.loads(artifacts["public-log.json"])),
+-        ))
++        ), legacy_projection=legacy_projection)
+         result = LocalRunResult(
+             manifest["run_id"], initial, events, final, artifacts["events.jsonl"],
+             tuple(_public_from_dict(item) for item in json.loads(artifacts["public-log.json"])),
+         )
+         if closure:
+-            report = validate_local_result(execution, result)
+-            report['storage_context'] = {key: manifest[key] for key in ('environment', 'normalization', 'guarantee_boundary')}
++            report = validate_local_result(execution, result, legacy_projection=legacy_projection)
++            storage_context = {key: manifest[key] for key in ('environment', 'normalization', 'guarantee_boundary')}
+             if manifest['normalization'] != 'canonical-json-v1/json-lines-v1' or manifest['guarantee_boundary'] != 'synthetic deterministic local-work execution':
+                 raise ValueError('manifest storage contract metadata mismatch')
++            if 'projection_version' in manifest:
++                storage_context['projection_version'] = manifest['projection_version']
++            if 'evidence_contract' in manifest:
++                storage_context['evidence_contract'] = manifest['evidence_contract']
++            report['storage_context'] = storage_context
+             expected_closure = canonical_json_bytes(report)
+             if artifacts['closure.json'] != expected_closure:
+                 raise ValueError('stored closure validation differs from canonical result')
+@@ -299,4 +334,20 @@ def load_local_run(path: str | Path, execution: ScenarioExecution) -> StoredLoca
+         raise PersistenceError(FailureRecord(
+             "internal-error", "load-validation", str(run_path), str(error)
+         )) from error
++    if legacy_projection:
++        safe = project_local_log(execution, initial, events, final)
++        result = LocalRunResult(result.run_id, initial, events, final, result.canonical_bytes, safe)
++    if manifest.get('evidence_contract'):
++        from lae_simulator.simulation.fixed_evidence import (
++            _evidence_correspondence,
++            employee_package,
++            public_evidence,
++        )
++        try:
++            if (artifacts['employee-package.json'] != employee_package(execution, result, actor_id=execution.actor_id)
++                    or artifacts['public-evidence.json'] != public_evidence(execution, result)
++                    or artifacts['audit-mapping.json'] != _evidence_correspondence(execution, result)):
++                raise ValueError('stored fixed evidence differs from replay')
++        except (ValueError, SimulationError) as error:
++            raise PersistenceError(FailureRecord('internal-error', 'load-validation', str(run_path), str(error))) from error
+     return StoredLocalRun(run_path, manifest, result)
+diff --git a/src/lae_simulator/simulation/local_validation.py b/src/lae_simulator/simulation/local_validation.py
+index 680a27e..c8e66c7 100644
+--- a/src/lae_simulator/simulation/local_validation.py
++++ b/src/lae_simulator/simulation/local_validation.py
+@@ -11,7 +11,7 @@ from lae_simulator.simulation.local_reducer import initial_local_state
+ from lae_simulator.simulation.local_resources import human_time
+ 
+ 
+-def validate_local_result(execution: ScenarioExecution, result: LocalRunResult) -> dict[str, object]:
++def validate_local_result(execution: ScenarioExecution, result: LocalRunResult, *, legacy_projection: bool = False) -> dict[str, object]:
+     if not execution.verified or result.run_id != stable_run_id(execution):
+         raise ValueError('run is not bound to its verified input')
+     if result.initial_state != initial_local_state(execution, result.run_id):
+@@ -21,7 +21,13 @@ def validate_local_result(execution: ScenarioExecution, result: LocalRunResult)
+     state = replay_history(execution, result.initial_state, result.events)
+     if state != result.final_state or result.final_state.outcome is None:
+         raise ValueError('terminal state differs from canonical history')
+-    if project_verified(execution, result.initial_state, result.events, result.final_state) != result.public_log:
++    projection: tuple[object, ...]
++    if legacy_projection:
++        from lae_simulator.simulation._legacy_projection import _project_g6_log
++        projection = _project_g6_log(execution, result.initial_state, result.events, result.final_state)
++    else:
++        projection = project_verified(execution, result.initial_state, result.events, result.final_state)
++    if projection != result.public_log:
+         raise ValueError('public projection differs from canonical history')
+     return {'validity': 'valid', 'definition_id': execution.content_id,
+             'event_count': len(result.events), 'end_detail': result.events[-1].limitations, 'terminal': end_summary(result.final_state),
+diff --git a/tests/test_local_work_model.py b/tests/test_local_work_model.py
+index c6f26cf..f94a933 100644
+--- a/tests/test_local_work_model.py
++++ b/tests/test_local_work_model.py
+@@ -125,7 +125,7 @@ class LocalWorkModelTests(unittest.TestCase):
+         with self.assertRaises(TypeError):
+             transition(world, initial, event, 1)
+ 
+-    def test_legacy_local_snapshot_is_upgraded_by_replay(self) -> None:
++    def test_partial_g7_contract_downgrade_is_rejected(self) -> None:
+         from lae_simulator.simulation.canonical_store import (
+             canonical_json_bytes,
+             content_digest,
+@@ -139,6 +139,10 @@ class LocalWorkModelTests(unittest.TestCase):
+         with tempfile.TemporaryDirectory() as directory:
+             path = save_local_run(self.execution, result, directory)
+             manifest = json.loads((path / "manifest.json").read_bytes())
++            manifest.pop('evidence_contract')
++            for artifact in ('employee-package.json', 'public-evidence.json'):
++                manifest['artifacts'].pop(artifact)
++                (path / artifact).unlink()
+             manifest.pop('closure_contract')
+             manifest['artifacts'].pop('closure.json')
+             (path / 'closure.json').unlink()
+@@ -149,7 +153,8 @@ class LocalWorkModelTests(unittest.TestCase):
+                 (path / name).write_bytes(data)
+                 manifest["artifacts"][name] = content_digest(data)
+             (path / "manifest.json").write_bytes(canonical_json_bytes(manifest))
+-            self.assertEqual(load_local_run(path, self.execution).result, result)
++            with self.assertRaises(PersistenceError):
++                load_local_run(path, self.execution)
+ 
+     def test_forged_stale_selection_is_rejected_during_replay(self) -> None:
+         session = LocalSession.start(self.execution)

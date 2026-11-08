@@ -1,0 +1,9 @@
+{
+  "files_checked": 745,
+  "changed": [],
+  "archived_scripts_checked": {
+    "scripts/vb_acceptance.py": "docs/vb-reassessment/history/vb_acceptance-v1.py",
+    "scripts/vb_compare.py": "docs/vb-reassessment/history/vb_compare-v1.py"
+  },
+  "pass": true
+}

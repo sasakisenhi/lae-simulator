@@ -605,3 +605,11 @@ WD01は定義の集約、WD09は本人・ツール定義の内容として重複
 - 任意追加の確率的比較で使う安定乱数キーの具体構成。MVP主試験は決定的なので、未選定でも阻害しない。
 - EX03/EX04の本人claim・個別許可・相談役割・AI条件・合成時間値は各演習入力の固定までに明示する。企業draftは取得済みだが、実名・詳細経歴・全員配置・実勤務時間・全社認証・予算の追加設定は不要。校正値やより確定した資料を得たら別版で検証する。
 - 実VS Code再現、コンパイル、経験的行動妥当性、介入効果。今回の合格の前提にはしない。
+
+### VB補足: Scenario 1.3.0の最小契約
+対応: WD02/03/09/12、SE03/05/06/14/19/20、EP04/06/11。
+1.3.0はrootに任意のtool_availability={"code.search": boolean}を持つ。未指定および旧版は従来どおりavailable。これは固定World実状態で、Policy入力や候補一覧へ直接転記しない。capabilityと候補の静的妥当性は維持する。
+検索を既存の開始・予約・消費・完了経路で試行し、実可用性がfalseならSearchのobserved_result=tool-unavailableをReducerで検証する。状態のobserved_messagesへtool-unavailable:code.searchを記録し、候補のtool.search判定はcapabilityとこの観測だけを使う。検索結果・claim・閲覧経験を生成しない。失敗は有効な業務観測でありINVALIDではない。固定条件なので障害通知、復旧、generation、取消規則は増やさない。
+候補の任意required_claims配列をLocalCandidate.required_claimsへ接続する。全IDの存在・非管理区分・非audit-only出典を検査する。本人の保持状態がWITHDRAWNでない全必要claimを要求し、INITIAL/ACQUIRED/TENTATIVE/CONFIRMEDは本人の保持として認める。真実や正解の認定ではない。PolicyとReducerは同じ既存前提関数を使う。初期claimにも1.3.0では同じ出典上限を検査する。
+検索の既存coverage予備実験を新計画で行い、情報差とPolicy候補・操作差を分ける。coverageとtarget_idの整合変更は一つの意味的な参照収録介入とし、Workspace、クエリ、Policyを固定する。情報差しかなければVBの行動分岐PASSにしない。
+追加契約は1.3.0だけで受理する。旧版は新フィールドを拒否し、旧可用性・知識前提なしの意味を維持する。新たな保存artifact・イベント族・状態schemaは不要で、固定入力はscenario.json、観測は既存Searchとobserved_messagesに保持し、同じReducerで再生する。未知の不正失敗値は拒否する。旧保存物を再保存・改変しない。G7の本人IDは観測内容だけから導出し、未観測のWorld可用性を混ぜない。

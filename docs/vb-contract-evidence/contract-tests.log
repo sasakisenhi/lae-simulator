@@ -1,0 +1,14 @@
+test_bad_claim_sources_and_identifiers (test_intervention_contract.ContractTests.test_bad_claim_sources_and_identifiers) ... ok
+test_forged_failure_or_success_rejected (test_intervention_contract.ContractTests.test_forged_failure_or_success_rejected) ... ok
+test_hidden_availability_and_observed_failure (test_intervention_contract.ContractTests.test_hidden_availability_and_observed_failure) ... ok
+test_initial_audit_source_denied_without_prerequisite (test_intervention_contract.ContractTests.test_initial_audit_source_denied_without_prerequisite) ... ok
+test_invalid_tool_input (test_intervention_contract.ContractTests.test_invalid_tool_input) ... ok
+test_knowledge_missing_held_withdrawn (test_intervention_contract.ContractTests.test_knowledge_missing_held_withdrawn) ... ok
+test_malformed_or_empty_sources_rejected (test_intervention_contract.ContractTests.test_malformed_or_empty_sources_rejected) ... ok
+test_old_versions_reject_extensions (test_intervention_contract.ContractTests.test_old_versions_reject_extensions) ... ok
+test_retained_statuses_and_reducer_agree (test_intervention_contract.ContractTests.test_retained_statuses_and_reducer_agree) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.806s
+
+OK

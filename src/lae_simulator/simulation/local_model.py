@@ -496,9 +496,17 @@ class LocalPublicRecord:
     evidence_refs: tuple[str, ...]
     coverage: str | None = None
     limitations: str | None = None
+    source_class: str | None = None
+    assumed_source: str | None = None
+    acquisition_method: str | None = None
+    available_fields: tuple[str, ...] = ()
+    query: str | None = None
+    result_refs: tuple[str, ...] = ()
+    operation_id: str | None = None
+    caused_by: tuple[str, ...] = ()
 
     def as_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "actor_id": self.actor_id, "evidence_refs": list(self.evidence_refs),
             "event_id": self.event_id, "kind": self.kind,
             "coverage": self.coverage, "limitations": self.limitations,
@@ -506,6 +514,22 @@ class LocalPublicRecord:
             "target_id": self.target_id, "version": self.version,
             "synthetic": True,
         }
+        if self.query is not None:
+            value["query"] = self.query
+        if self.result_refs:
+            value["result_refs"] = list(self.result_refs)
+        if self.operation_id is not None:
+            value["operation_id"] = self.operation_id
+        if self.caused_by:
+            value["caused_by"] = list(self.caused_by)
+        if self.source_class is not None:
+            value.update({
+                "source_class": self.source_class,
+                "assumed_source": self.assumed_source,
+                "acquisition_method": self.acquisition_method,
+                "available_fields": list(self.available_fields),
+            })
+        return value
 
 
 def _b64(value: bytes) -> str:

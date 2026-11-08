@@ -1,0 +1,108 @@
+# Place at scripts/codex_loop.yaml in the LAE Simulator repository.
+# The OpenSpec tasks.md remains the source of truth; these groups only control execution.
+change: build-reproducible-simulation-foundation
+
+models:
+  implementer:
+    id: gpt-6-luna
+    reasoning_effort: medium
+  reviewer:
+    id: gpt-6.1-sol
+    reasoning_effort: high
+
+execution:
+  max_attempts_per_task: 3
+  max_no_progress_attempts: 2
+  max_review_cycles: 2
+  codex_timeout_seconds: 1200
+  check_timeout_seconds: 600
+  state_dir: ~/.local/state/lae-codex-loop
+
+# Commands are executed without a shell. Adjust these to match your project.
+# Group-level commands are mandatory for automatic group acceptance.
+checks:
+  task:
+    - [uv, run, python, -m, unittest, discover, -s, tests]
+    - [git, diff, --check]
+  group:
+    - [uv, run, python, -m, unittest, discover, -s, tests]
+    - [uv, run, --with, ruff, ruff, check, .]
+    - [uv, run, --with, mypy, mypy, --strict, src]
+    - [uv, run, python, -m, compileall, -q, src, tests]
+    - [uv, lock, --check]
+    - [openspec, validate, build-reproducible-simulation-foundation, --strict]
+    - [git, diff, --check]
+
+# G1..G8 are implementation groups; VA/VB/VC/VF are acceptance groups.
+# A human/independent_acceptance mode intentionally requires manual action.
+groups:
+  G1:
+    depends_on: []
+    tasks:
+      - {id: '2.1', depends_on: []}
+    review: human
+  G2:
+    depends_on: [G1]
+    tasks:
+      - {id: '2.2', depends_on: []}
+      - {id: '2.3', depends_on: ['2.2']}
+    review: independent_ai
+  G3:
+    depends_on: [G2]
+    tasks:
+      - {id: '2.4', depends_on: []}
+      - {id: '2.5', depends_on: ['2.4']}
+      - {id: '4.1', depends_on: ['2.4']}
+    review: independent_ai
+  G4:
+    depends_on: [G2]
+    tasks:
+      - {id: '3.1', depends_on: []}
+    review: human
+  G5:
+    depends_on: [G3, G4]
+    tasks:
+      - {id: '3.2', depends_on: []}
+      - {id: '3.3', depends_on: ['3.2']}
+      - {id: '4.2', depends_on: ['3.3']}
+    review: human
+  G6:
+    depends_on: [G3, G4, G5]
+    tasks:
+      - {id: '5.1', depends_on: []}
+      - {id: '5.2', depends_on: ['5.1']}
+      - {id: '5.3', depends_on: ['5.2']}
+    review: human
+  G7:
+    depends_on: [G6]
+    tasks:
+      - {id: '6.1', depends_on: []}
+      - {id: '6.2', depends_on: ['6.1']}
+      - {id: '6.4', depends_on: ['6.1']}
+    review: independent_ai
+  G8:
+    depends_on: [G7]
+    tasks:
+      - {id: '6.3', depends_on: []}
+      - {id: '6.5', depends_on: ['6.3']}
+    review: human
+  VA:
+    depends_on: [G7]
+    tasks:
+      - {id: '7.1', depends_on: []}
+    review: independent_acceptance
+  VB:
+    depends_on: [G6]
+    tasks:
+      - {id: '7.2', depends_on: []}
+    review: independent_acceptance
+  VC:
+    depends_on: [G8]
+    tasks:
+      - {id: '7.3', depends_on: []}
+    review: independent_acceptance
+  VF:
+    depends_on: [G8, VA, VB, VC]
+    tasks:
+      - {id: '7.4', depends_on: []}
+    review: human

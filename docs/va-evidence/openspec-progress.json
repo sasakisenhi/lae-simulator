@@ -1,0 +1,220 @@
+{
+  "changeName": "build-reproducible-simulation-foundation",
+  "changeDir": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation",
+  "schemaName": "spec-driven",
+  "contextFiles": {
+    "proposal": [
+      "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/proposal.md"
+    ],
+    "specs": [
+      "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/specs/evidence-projection/spec.md",
+      "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/specs/simulation-execution/spec.md",
+      "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/specs/world-definition/spec.md"
+    ],
+    "design": [
+      "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/design.md"
+    ],
+    "tasks": [
+      "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md"
+    ]
+  },
+  "progress": {
+    "total": 25,
+    "complete": 20,
+    "remaining": 5
+  },
+  "tasks": [
+    {
+      "id": "1",
+      "description": "1.1 ローカル実装・テスト環境を固定する（SE14, SE15; D1/D10/D12）。成果物: 言語・キュー・保存形式の選定理由、固定ランタイム/依存、起動/テスト入口と手順。依存: なし。完了条件: クリーンな対応環境で入口が動き、安定順序・論理時間・再生・役割上限を満たす実装方針を記録する。特定ライブラリを外部要件にしない。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 9
+    },
+    {
+      "id": "2",
+      "description": "1.2 最小入力契約とIssue非依存のconformance fixture CF0を用意する（WD01–WD05, WD09, WD11–WD13; D1/D3/D12）。成果物: 固定テキスト・Issue・本人一人・操作候補・決定的規則・有限期限・公開条件、入力検査、テスト。依存: 1.1。完了条件: 定義の受理と版/根拠/権限/操作の不正参照拒否を検証し、アクセス成否と参照収録範囲を区別する。CF0に#1955の名前・正解・修正専用規則を含めず、合成の適合試験教材と明示する。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 10
+    },
+    {
+      "id": "3",
+      "description": "1.3 CF0を読み込みから公開ログまで一貫して実行する（WD03, WD04, WD12, SE06, SE13–SE18, SE20–SE22, EP01–EP03, EP06; D4/D10/D12）。成果物: 最小Loader/Policy/reducer/キュー/Store/Projector、縦断入口、保存/再取得のテストと利用例。依存: 1.2。完了条件: 一つ以上の候補を選択し、状態変化と正準イベントを生成、SUBMITTEDまたは有効なINCOMPLETEで終了、履歴を保存・再取得、公開可能な合成ログを一件以上取得できる。初期状態と履歴から再生一致を確認し、状態改変・不正公開設定は有効公開しない。AI、詳細中断、複雑な変更、LLMを必須とせず、固定経路スクリプトや捨てる別実装にしない。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 11
+    },
+    {
+      "id": "4",
+      "description": "2.1 指定SHAの教材束を固定する（WD03, WD05, WD07; D2）。成果物: B0対象ファイル、Issue本文/後日コメント、E0/H0と各ライセンス、取得/検証manifest、参照表の種。依存: 1.3。完了条件: 指定SHA・Git blob/内容識別値を照合し、sharedリンク、版、公開時点、API仮定、報告環境の未確認事項を記録する。別refへ置換せず、実機再現済みと表示しない。 LAE企業資料6件のv0.2.0/draft原文も取得表現と識別値付きで固定し、D2の期待本文と照合する。異なる本文は暗黙置換せず、出典・節・状態と追加仮定を分離し、旧ケースA/B/Cは実行条件へ自動継承しない。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 15
+    },
+    {
+      "id": "5",
+      "description": "2.2 教材候補と行動規則を固定する（WD06, WD08, WD12; D3）。成果物: T01–T15と前提/効果/失敗/根拠、R-A–R-G、本人向け候補ビュー、抽出・確認履歴。依存: 2.1。完了条件: 候補に固定順序を持たせず、管理用正解を本人ビューへ含めない。根拠欠落・未対応演算を拒否し、問題発生を必須にしない定義を受理する。準備LLMの自動化は必須でない。 D3のcompany_context/team_profile/exercise_scenarioを固定入力として結び、EX01の業務目的・責任とEX02の演習管理/提出先を明示する。EX03/EX04の必須値を各試験入力の合成仮定として宣言し、未決定の知識・許可・相談先を会社の事実として補完しない。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 16
+    },
+    {
+      "id": "6",
+      "description": "2.3 仮想変更・チェックケースの教材束を作る（WD08, WD12, SE11, SE12; D6/D7）。成果物: P1–P4の限定バイト差分、変更なしP5、前後版、意味状態との対応、C01–C12の性質と限界。依存: 2.1, 2.2。完了条件: 差分をソースと照合し、P2副作用・P3型制限違反・cache条件を区別する。期待値は紙上のmodeled予定で、実行証拠ではないと明示する。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 17
+    },
+    {
+      "id": "7",
+      "description": "2.4 検索・参照移動・画面・Workspace操作を拡張する（SE04, SE06, SE11, WD11–WD13; D4/D6）。成果物: 同じreducer上の操作、実テキスト検索、有限参照移動、overlay適用/撤回、テスト。依存: 2.2, 2.3。完了条件: 存在する対象と版に操作が作用し、不適切でも可能な変更は許す。権限/版/対象不一致は無変更で拒否、影響参照は無効化し、収録外は不存在としない。CF0の縦断動作を維持する。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 18
+    },
+    {
+      "id": "8",
+      "description": "2.5 本人の認識と行動選択を拡張する（WD09, SE03, SE05; D3/D4/D11）。成果物: claim別の取得/解釈/確認/撤回、本人の予測、Policyと根拠、テスト。依存: 2.2, 2.4。完了条件: 閲覧と正しい理解を区別し、反例で再調査できる。隠れ情報だけを変えて同時刻・同じ観測接頭列の判断が変わらず、観測差が生じた後の行動差は許す。知識差とAI未使用方針を試す。 企業資料を保持していても本人/同僚の既知claimには自動追加されず、所属から技術知識・性格・管理権限を導かないことを確認する。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 19
+    },
+    {
+      "id": "9",
+      "description": "3.1 論理時計・予約履歴・時間モデルを拡張する（WD04, WD10, SE14, SE15, SE21; D5/D10）。成果物: 整数tick、安定順序、予約/消費/取消/失効、用途別乱数、根拠付き時間モデルとテスト。依存: 2.2。完了条件: 同時刻・期限・取消の順序と再生Qが一致し、ゼロ時間無限ループを検出する。決定的試験では乱数を使わず、合成値を別入力で変更できる。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 23
+    },
+    {
+      "id": "10",
+      "description": "3.2 資源・割り込み・待機・再開を拡張する（SE02, SE09, SE10, SE21; D4/D5）。成果物: 能動資源区間、残作業、取消完了イベント、時間分類と集計、テスト。依存: 2.5, 3.1。完了条件: 二重割当を拒否し、失効完了を再作用させず、再開読み直しを二重計上しない。環境の依存解除と本人の認知を区別し、停止/再開の因果を追跡できる。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 24
+    },
+    {
+      "id": "11",
+      "description": "3.3 AI・同僚の応答、通知、承認を実装する（SE02, SE07, SE08; D5）。成果物: 固定応答規則、依存/容量、通知状態、質問・承認待ちとテスト。依存: 2.5, 3.1, 3.2。完了条件: 条件から質問/承認が生じ、未承認変更を行わず、拒否・不能・期限後応答を扱う。到着/認知/対応、未観測の依存解除、独立作業と並列AIを区別し、実LLMの応答速度は使わない。 EX03/EX04で相談先の既知claim、承認可能範囲、AIへ渡せる資料、応答条件を明示する。固定の背景/初期許可と、実行中の承認・現在権限・相談状態を分離し、背景文書を書き換えない。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 25
+    },
+    {
+      "id": "12",
+      "description": "4.1 版付き模擬チェックを実装する（SE12, WD12; D7）。成果物: 限定述語評価器、C01–C12の根拠/mode/coverage付き出力、テスト。依存: 2.3, 2.4。完了条件: B0のC01 FAIL、P1の限定PASS、P2のC04 FAIL、P3のC02 FAILを性質から計算する。未知版はUNKNOWN、実行証拠のないC11/C12はexecuted/PASSにしない。CF0等の別教材にも専用エンジン分岐を不要とする。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 29
+    },
+    {
+      "id": "13",
+      "description": "4.2 AI成果の版確認・統合・競合処理を実装する（SE07, SE11; D6）。成果物: 基準版付きoverlay、統合/棄却/再委任結果、テスト。依存: 2.4, 3.3。完了条件: 許可された一致版の変更を統合し、古い版の競合は上書きせず保留する。未解決の競合を成功と表示しない。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 30
+    },
+    {
+      "id": "14",
+      "description": "5.1 提出と未完了の終了条件を拡張する（SE01, SE13; D10）。成果物: 仮想PR、SUBMITTED/INCOMPLETE/CANCELLED、理由・残依存・未処理予約、テスト。依存: 2.5, 3.1, 4.1, 4.2。完了条件: 限界を説明して提出でき、情報不足・中止・期限でPRを強制しない。提出・模擬PASSを実動作の正しさと区別する。 source_issue_refと演習作業/PR IDを分け、2026年演習の仮想提出先へだけ記録する。Microsoftのupstreamや実在GitHub Enterpriseへ送信する経路を作らず、2024年の教材日時を本人の作業日時として出力しない。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 34
+    },
+    {
+      "id": "15",
+      "description": "5.2 正準履歴と再生・派生状態の検査を拡張する（SE16, SE20, SE21; D4/D10）。成果物: reduceによる再生、予約/取消/消費検査、保存状態と派生情報の比較、異常注入テスト。依存: 3.2, 3.3, 4.1, 4.2, 5.1。完了条件: 不正遷移、参照・版・時刻・資源違反と、最終状態/Q/Workspace/知覚の再生不一致をINVALIDにする。IDが存在するだけの誤った投影も検出対象へ渡す。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 35
+    },
+    {
+      "id": "16",
+      "description": "5.3 固定保存・失敗報告・無効公開防止を拡張する（WD03, SE15, SE17, SE18, SE22; D10）。成果物: 初期状態/規則/履歴/派生結果/manifestの保存、独立した管理用失敗報告、公開ゲート、障害テスト。依存: 5.1, 5.2。完了条件: 保存・再生・検査障害を報告する義務と、有効公開しない義務を別々に検証する。既存結果を保持し、別条件は別実行にする。保存不能でも標準エラー等で失敗を通知する。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 36
+    },
+    {
+      "id": "17",
+      "description": "6.1 公開ログ・画面状態・根拠投影を拡張する（EP01–EP03, EP06, EP11, EP14; D8）。成果物: 投影と対応表、固定役割上限、取得元/粒度の分類、再生照合とテスト。依存: 5.3。完了条件: 正準列へ追跡でき、tool-shapedも合成と表示する。不正allowlistでも管理原因/正解/未来予約を漏らさず、正当な公開操作と関連IDは保つ。参照IDが有効でも内容矛盾なら拒否する。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 40
+    },
+    {
+      "id": "18",
+      "description": "6.2 本人経験・認識・固定記憶を生成する（EP04, EP05; D4/D9）。成果物: 当人別パッケージ、保持/省略規則、根拠とテスト。依存: 6.1。完了条件: 未確認通知・他人の知識を入れず、直接経験/伝聞/誤認を区別する。過去エピソード・失われた理由を補わず、正準列からの派生一致を確認する。 LAE背景の保持と本人/同僚の知覚・調査者の閲覧可否を分け、企業資料や旧ケースの経験を本人パッケージへ自動全文投入しない。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 41
+    },
+    {
+      "id": "19",
+      "description": "6.3 インタビューと回答監査・再質問検査を実装する（EP06, EP08–EP10, EP15, EP16; D9）。成果物: 生成器アダプター、根拠取得、発言主張、回答監査、棄却/不能/UNKNOWN、質問テスト群。依存: 6.2。完了条件: 本人情報/根拠/生成器・プロンプト版/入力/回答/検査を追跡でき、誘導質問から新事実を作らない。再質問・言い換えの根拠なし矛盾を検出・抑止し、固定誤認・曖昧さ・不明・推測を許す。監査記録と公開禁止は別検査にし、固定応答自動試験と選定生成器で確認する。未接続はNOT READY、意味確認不足は受入INCONCLUSIVEで、逐語一致は不要。",
+      "done": false,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 42
+    },
+    {
+      "id": "20",
+      "description": "6.4 公開上限内の検索・関連証拠取得を実装する（EP06, EP07, EP12, EP14; D8）。成果物: Issue/時刻/対象/公開IDからの取得、最小保持条件、ローカル利用説明とテスト。依存: 6.1。完了条件: 誤設定・未知役割・関連先の権限逸脱を防ぎ、本文/ID/件数/エラーから漏洩しない。重点範囲外の保持証拠は取得でき、欠落を創作しない。任意の保持規則エンジンを作らず、取得順で過去を変えない。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 43
+    },
+    {
+      "id": "21",
+      "description": "6.5 ローカル縦断入口を拡張・文書化する（WD01, SE15, EP02, EP08, EP12; D1）。成果物: #1955の読込み/実行/検査/保存/公開取得/質問の入口と例。依存: 6.3, 6.4。完了条件: CF0入口を維持し、#1955を同じ手順で扱える。不正入力/内部失敗/取得拒否/回答不能を成功と混同せず、専用GUIや実GitHub操作を要求しない。",
+      "done": false,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 44
+    },
+    {
+      "id": "22",
+      "description": "7.1 A: 技術的整合性を独立に受入検証する（WD03, SE14–SE18, SE20–SE22, EP01, EP06, EP11, EP17; D10/D13）。成果物: 独立2実行・再生・投影比較、改変/保存障害/公開設定の異常注入、A判定。依存: 5.3, 6.2。完了条件: 同一条件で正準列/最終状態/決定的投影が一致し、予約取消・派生不一致・無効公開停止を確認する。LLMやB/Cの結果を前提にせず、必要証拠なしはNOT READY、実施後判定不能はINCONCLUSIVEとする。",
+      "done": true,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 48
+    },
+    {
+      "id": "23",
+      "description": "7.2 B: 決定的な一変数反応性と別扱いの経路デモを検証する（SE03–SE13, SE19, WD06, EP17; D11/D13）。成果物: 知識/取得情報/アクセス/AI応答/同僚応答/ツールの一変数対、最初の分岐・根拠、別の3経路デモ、B判定。依存: 2.5, 3.3, 4.1, 4.2, 5.1。完了条件: 主試験は乱数を無効化し、他入力が等しい証拠と変更変数に対応する最初の差を示す。A/Cの結果に依存しない。正常・誤判断/撤回・AI未使用・未完了は共通エンジンから生成し、デモを一変数試験の代替にしない。追加確率試験は抽選対応と限界を別記する。",
+      "done": false,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 49
+    },
+    {
+      "id": "24",
+      "description": "7.3 C: ブラインド条件で調査可能性を独立に検証する（EP08–EP18, WD06; D13）。成果物: 公開証拠・取得/質問手段、事前手順、評価主体の隔離記録、封印した仮説/競合説明/追加調査/更新記録、事後照合、C判定。依存: 6.3, 6.4。完了条件: A/Bの合格や7.2デモを待たず実施する。真因・内部状態・正解経路を見ない別評価主体が少なくとも一回の追加取得/質問と判断再評価を行い、封印後に検証者が照合する。実人間は必須でないが管理情報既読の同一コンテキストや生成器の自己採点で代替しない。手段不足はNOT READY、違反観測はFAIL、手続き成立を判定できなければINCONCLUSIVE、根拠ある保留・改善不要の調査結論は手続き確認ができればPASS。実利用者への効果実証とは扱わない。",
+      "done": false,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 50
+    },
+    {
+      "id": "25",
+      "description": "7.4 必須要件・タスク・A/B/Cの完成判定を集約する（全WD/SE/EP、特にEP17, EP18; D13）。成果物: 要件→設計→タスク→試験/証拠の対応、独立判定と総合結果、延期範囲、レビュー対応証拠。依存: 6.5, 7.1, 7.2, 7.3。完了条件: 必須要件/タスクとA/B/CがすべてPASSのときだけMVP完成とする。FAIL/NOT READY/INCONCLUSIVE/未確認は阻害要件と証拠不足を残し、形式検証で代替しない。実機C11/C12、経験的妥当性、介入効果は対象外UNKNOWNと別記する。",
+      "done": false,
+      "sourcePath": "/home/sengakuhisai/dev/lae-simulator/openspec/changes/build-reproducible-simulation-foundation/tasks.md",
+      "line": 51
+    }
+  ],
+  "taskTrackingConfigured": true,
+  "state": "ready",
+  "instruction": "Read context files, work through pending tasks, mark complete as you go.\nPause if you hit blockers or need clarification.",
+  "operationGuidance": [
+    "Do not mark non-trivial work complete merely because code was written. Obtain the verification evidence defined by the task, requirement, scenario, contract, or design before claiming completion.",
+    "If required evidence is unavailable or legitimately inconclusive, report UNKNOWN, INVALID, UNAVAILABLE, or the applicable unresolved state instead of claiming PASS.",
+    "When implementation reveals an upstream inconsistency, first classify whether it is semantic and whether more than one reasonable interpretation exists.",
+    "If the inconsistency materially changes required behavior, acceptance conditions, safety, external contracts, or architectural responsibility, pause only the affected work, identify the canonical owning artifact, and correct or clarify that artifact before continuing.",
+    "If multiple reasonable interpretations exist, do not choose one implicitly through implementation. Surface the alternatives and obtain an explicit upstream decision before continuing the affected work.",
+    "If the inconsistency is minor, non-semantic, and has one clear correction, record or correct it in the canonical artifact through the appropriate workflow, revalidate the affected portion, and continue.",
+    "Unaffected work may continue when doing so does not depend on or conceal the unresolved upstream issue.",
+    "Do not resolve a material upstream defect by inventing an implementation workaround unless the governing artifacts explicitly authorize that behavior."
+  ],
+  "root": {
+    "path": "/home/sengakuhisai/dev/lae-simulator",
+    "source": "nearest"
+  }
+}

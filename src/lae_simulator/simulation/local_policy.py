@@ -190,7 +190,8 @@ def _field_value(field: str, execution: ScenarioExecution,
         available = document.availability == "available" and (document_id, "read") in execution.permissions
         return "available" if available else "unavailable"
     if field == "tool.search":
-        return "code.search" in execution.operation_capabilities
+        return ("code.search" in execution.operation_capabilities
+                and "tool-unavailable:code.search" not in state.observed_messages)
     if field == "workspace.version":
         if state.workspace_version == "B0" or state.workspace_files == execution.base_files:
             return "B0"

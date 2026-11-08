@@ -1,0 +1,89 @@
+[
+  {
+    "case": "tool",
+    "other_inputs_equal": true,
+    "workspace_equal": true,
+    "actual_actions_control": [
+      [
+        "T03",
+        "search",
+        null,
+        null
+      ],
+      [
+        "T04",
+        "navigate",
+        "R01",
+        null
+      ]
+    ],
+    "actual_actions_intervention": [
+      [
+        "T03",
+        "search",
+        null,
+        "tool-unavailable"
+      ],
+      [
+        "T02",
+        "document-read",
+        "D02",
+        null
+      ]
+    ]
+  },
+  {
+    "case": "knowledge",
+    "other_inputs_equal": true,
+    "workspace_equal": true,
+    "actual_actions_control": [
+      [
+        "T03",
+        "search",
+        null,
+        null
+      ]
+    ],
+    "actual_actions_intervention": [
+      [
+        "T02",
+        "document-read",
+        "D02",
+        null
+      ]
+    ]
+  },
+  {
+    "case": "coverage",
+    "other_inputs_equal": true,
+    "workspace_equal": true,
+    "actual_actions_control": [
+      [
+        "T03",
+        "search",
+        null,
+        null
+      ],
+      [
+        "T04",
+        "navigate",
+        "R01",
+        null
+      ]
+    ],
+    "actual_actions_intervention": [
+      [
+        "T03",
+        "search",
+        null,
+        null
+      ],
+      [
+        "T04",
+        "navigate",
+        "R01",
+        null
+      ]
+    ]
+  }
+]

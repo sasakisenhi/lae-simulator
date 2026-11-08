@@ -1,0 +1,198 @@
+[
+  {
+    "name": "independent-all-artifacts",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": "{\"audit-mapping.json\": true, \"closure.json\": true, \"employee-package.json\": true, \"events.jsonl\": true, \"final-state.json\": true, \"initial-state.json\": true, \"public-evidence.json\": true, \"public-log.json\": true, \"scenario.json\": true, \"manifest.json\": true}"
+  },
+  {
+    "name": "replay-state-queue-resources",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "stored-package-reconstruction",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "hidden-internal-selection-noninterference",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "no-canonical-id-in-package",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "event-edit-load-and-public-gate",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": "artifact digest refreshed for semantic mutations"
+  },
+  {
+    "name": "event-delete-load-and-public-gate",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": "artifact digest refreshed for semantic mutations"
+  },
+  {
+    "name": "event-reorder-load-and-public-gate",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": "artifact digest refreshed for semantic mutations"
+  },
+  {
+    "name": "final-state-load-and-public-gate",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": "artifact digest refreshed for semantic mutations"
+  },
+  {
+    "name": "public-log-load-and-public-gate",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": "artifact digest refreshed for semantic mutations"
+  },
+  {
+    "name": "employee-package-load-and-public-gate",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": "artifact digest refreshed for semantic mutations"
+  },
+  {
+    "name": "audit-mapping-load-and-public-gate",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": "artifact digest refreshed for semantic mutations"
+  },
+  {
+    "name": "manifest-load-and-public-gate",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": "artifact digest refreshed for semantic mutations"
+  },
+  {
+    "name": "missing-load-and-public-gate",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": "artifact digest refreshed for semantic mutations"
+  },
+  {
+    "name": "catalog-denied",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "employee-denied",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "public-denied",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "private-denied",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "unknown-role-denied",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "mid-write-failure-cleanup",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": "writes attempted=3"
+  },
+  {
+    "name": "control-0-cancelled",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": "SchedulerState(pending=(ScheduledEvent(due_tick=30, priority=90, insertion_sequence=1, scheduled_id='LSCH-000001', created_by_event_id='LEV-000001', payload_kind='deadline', candidate_id=None),), retired=(('LSCH-000002', 'consumed'), ('LSCH-000003', 'cancelled')), used_sequences=(1, 2, 3), cursor=(0, 20, 2), same_tick_consumptions=1, candidate_attempts=(('T03', 1),), last_consumed=ScheduledEvent(due_tick=0, priority=20, insertion_sequence=2, scheduled_id='LSCH-000002', created_by_event_id='LEV-000002', payload_kind='control:CTRL', candidate_id=None))"
+  },
+  {
+    "name": "control-0-invalidated",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": "SchedulerState(pending=(ScheduledEvent(due_tick=30, priority=90, insertion_sequence=1, scheduled_id='LSCH-000001', created_by_event_id='LEV-000001', payload_kind='deadline', candidate_id=None),), retired=(('LSCH-000002', 'consumed'), ('LSCH-000003', 'invalidated')), used_sequences=(1, 2, 3), cursor=(0, 20, 2), same_tick_consumptions=1, candidate_attempts=(('T03', 1),), last_consumed=ScheduledEvent(due_tick=0, priority=20, insertion_sequence=2, scheduled_id='LSCH-000002', created_by_event_id='LEV-000002', payload_kind='control:CTRL', candidate_id=None))"
+  },
+  {
+    "name": "control-1-invalidated",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": "SchedulerState(pending=(ScheduledEvent(due_tick=30, priority=90, insertion_sequence=1, scheduled_id='LSCH-000001', created_by_event_id='LEV-000001', payload_kind='deadline', candidate_id=None),), retired=(('LSCH-000003', 'consumed'), ('LSCH-000002', 'consumed')), used_sequences=(1, 2, 3), cursor=(1, 20, 2), same_tick_consumptions=2, candidate_attempts=(('T03', 1),), last_consumed=ScheduledEvent(due_tick=1, priority=20, insertion_sequence=2, scheduled_id='LSCH-000002', created_by_event_id='LEV-000002', payload_kind='control:CTRL', candidate_id=None))"
+  },
+  {
+    "name": "audit-source-relabel-denied",
+    "expected": true,
+    "actual": true,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "audit-source-absent-catalog",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "legacy-cancelled",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "legacy-repeated",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "legacy-submitted",
+    "expected": false,
+    "actual": false,
+    "status": "PASS",
+    "detail": ""
+  }
+]

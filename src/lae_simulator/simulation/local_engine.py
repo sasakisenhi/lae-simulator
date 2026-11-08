@@ -356,6 +356,10 @@ class LocalSession:
                 known = any(item.claim_id == "reference:" + reference.id for item in self.state.claims)
                 if known:
                     observed_result = "reference-" + reference.coverage
+        if kind is LocalEventKind.SEARCH:
+            from lae_simulator.simulation.tool_availability import search_available
+            if not search_available(self.execution):
+                observed_result = 'tool-unavailable'
         if kind is LocalEventKind.CHECK_EVALUATED and check_id is not None:
             check = next((item for item in self.execution.checks if item.id == check_id), None)
             if check is not None:

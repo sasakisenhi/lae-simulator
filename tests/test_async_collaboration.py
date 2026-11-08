@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -11,11 +12,29 @@ from lae_simulator.simulation.local import (
     LocalSession,
     load_scenario_execution,
 )
+from lae_simulator.simulation.fixed_evidence import related_evidence, search_evidence
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class AsyncCollaborationTests(unittest.TestCase):
+    def test_related_request_follows_public_parent_cause(self) -> None:
+        execution = load_scenario_execution(ROOT / "fixtures/g2/scenario-collaboration.json")
+        session = LocalSession.start(execution)
+        session.select("T01")
+        session.perform(kind=LocalEventKind.DOCUMENT_READ, candidate_id="T01",
+                        target_id="D01", input_version="B0")
+        session.select("T07")
+        request = session.request(candidate_id="T07", rule_id="PEER-ANSWER", input_ids=("D01",))
+        assert isinstance(request.collaboration, RequestPayload)
+        waiting = session.wait_for(request.collaboration.request_id, 1)
+        result = session.finish()
+        rows = json.loads(search_evidence(execution, result, role="researcher"))
+        waiting_row = next(row for row in rows if row["operation"] == "collaboration-wait-started")
+        related = json.loads(related_evidence(execution, result, role="researcher",
+                                               evidence_id=waiting_row["id"]))
+        self.assertTrue(any(row["operation"] == "collaboration-requested" for row in related))
+
     def test_reply_arrival_and_delivery_do_not_imply_observation(self) -> None:
         execution = load_scenario_execution(
             ROOT / "fixtures/g2/scenario-collaboration.json"
@@ -360,7 +379,9 @@ class AsyncAcceptanceTests(unittest.TestCase):
             s.integrate(rid, 2, "T12")
             self.assertEqual(s.state.collaboration.requests[-1].status, "integrated")
             self.assertFalse(s.execution.ai_can_edit)
-            s.finish()
+            result = s.finish()
+            self.assertIn("approve", {row.outcome for row in result.public_log
+                                       if row.kind == LocalEventKind.RESPONSE_OBSERVED})
 
     def test_approval_denied_does_not_grant_scope(self) -> None:
         data = definition()
@@ -377,6 +398,9 @@ class AsyncAcceptanceTests(unittest.TestCase):
             self.assertFalse(s.state.collaboration.grants)
             self.assertEqual(s.state.collaboration.requests[1].disposition, "deny")
             self.assertEqual(s.state.workspace_version, "B0")
+            result = s.finish()
+            self.assertIn("deny", {row.outcome for row in result.public_log
+                                    if row.kind == LocalEventKind.RESPONSE_OBSERVED})
 
     def test_missing_input_produces_question_and_explicit_answer_generation(
         self,

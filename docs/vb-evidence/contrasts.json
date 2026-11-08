@@ -1,0 +1,1374 @@
+[
+  {
+    "case": "knowledge",
+    "scenario_differences": [
+      {
+        "path": "/actor_view/initial_claim_ids/6",
+        "control": null,
+        "intervention": "PEER-NOTE"
+      },
+      {
+        "path": "/participant_profile/initial_claim_ids/6",
+        "control": null,
+        "intervention": "PEER-NOTE"
+      }
+    ],
+    "policy_control": [
+      "T01",
+      "T01"
+    ],
+    "policy_intervention": [
+      "T01",
+      "T01"
+    ],
+    "observation_differences": [
+      {
+        "path": "/claims/5/0",
+        "control": "TEAM-ASSIGNMENT",
+        "intervention": "PEER-NOTE"
+      },
+      {
+        "path": "/claims/5/2",
+        "control": "The participant is assigned to the Developer Tools exercise role without inferred ESLint expertise or administrative authority.",
+        "intervention": "The peer suggests investigating metadata capture before making a conclusion."
+      },
+      {
+        "path": "/claims/6",
+        "control": null,
+        "intervention": [
+          "TEAM-ASSIGNMENT",
+          "initial",
+          "The participant is assigned to the Developer Tools exercise role without inferred ESLint expertise or administrative authority."
+        ]
+      }
+    ],
+    "first_event_difference": null,
+    "times": [
+      0,
+      0
+    ],
+    "outcomes": [
+      "incomplete",
+      "incomplete"
+    ],
+    "replay_and_storage": true
+  },
+  {
+    "case": "information",
+    "scenario_differences": [],
+    "policy_control": [
+      "T01",
+      "T04"
+    ],
+    "policy_intervention": [
+      "T01",
+      "T03"
+    ],
+    "observation_differences": [
+      {
+        "path": "/active_view_id",
+        "control": "R01",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/evidence_refs/2",
+        "control": "R10",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/id",
+        "control": "T04",
+        "intervention": "T05"
+      },
+      {
+        "path": "/available_candidates/3/label",
+        "control": "Open a discovered file or symbol",
+        "intervention": "Read fixed ESLint API documents"
+      },
+      {
+        "path": "/available_candidates/3/operation",
+        "control": "symbol.navigate",
+        "intervention": "document.read"
+      },
+      {
+        "path": "/available_candidates/3/target_refs/1",
+        "control": "R02",
+        "intervention": "R06"
+      },
+      {
+        "path": "/available_candidates/3/target_refs/2",
+        "control": "R03",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/3",
+        "control": "R04",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/4",
+        "control": "R05",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/5",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/6",
+        "control": "R07",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/7",
+        "control": "R08",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/8",
+        "control": "R09",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/9",
+        "control": "R10",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/10",
+        "control": "R11",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/11",
+        "control": "R12",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/target_refs/12",
+        "control": "R13",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/4/evidence_refs/0",
+        "control": "R01",
+        "intervention": "R14"
+      },
+      {
+        "path": "/available_candidates/4/evidence_refs/1",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/4/id",
+        "control": "T05",
+        "intervention": "T06"
+      },
+      {
+        "path": "/available_candidates/4/label",
+        "control": "Read fixed ESLint API documents",
+        "intervention": "Read the fixed URL-less rule example"
+      },
+      {
+        "path": "/available_candidates/4/target_refs/0",
+        "control": "R01",
+        "intervention": "R14"
+      },
+      {
+        "path": "/available_candidates/4/target_refs/1",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/5/evidence_refs/0",
+        "control": "R14",
+        "intervention": "R-UNKNOWN"
+      },
+      {
+        "path": "/available_candidates/5/id",
+        "control": "T06",
+        "intervention": "T07"
+      },
+      {
+        "path": "/available_candidates/5/label",
+        "control": "Read the fixed URL-less rule example",
+        "intervention": "Ask the known peer role"
+      },
+      {
+        "path": "/available_candidates/5/operation",
+        "control": "document.read",
+        "intervention": "question.send"
+      },
+      {
+        "path": "/available_candidates/5/target_refs/0",
+        "control": "R14",
+        "intervention": "R-UNKNOWN"
+      },
+      {
+        "path": "/available_candidates/6/id",
+        "control": "T07",
+        "intervention": "T08"
+      },
+      {
+        "path": "/available_candidates/6/label",
+        "control": "Ask the known peer role",
+        "intervention": "Delegate a bounded investigation if AI is allowed"
+      },
+      {
+        "path": "/available_candidates/6/operation",
+        "control": "question.send",
+        "intervention": "ai.delegate"
+      },
+      {
+        "path": "/available_candidates/7/evidence_refs/0",
+        "control": "R-UNKNOWN",
+        "intervention": "R02"
+      },
+      {
+        "path": "/available_candidates/7/evidence_refs/1",
+        "control": null,
+        "intervention": "R06"
+      },
+      {
+        "path": "/available_candidates/7/id",
+        "control": "T08",
+        "intervention": "T10"
+      },
+      {
+        "path": "/available_candidates/7/label",
+        "control": "Delegate a bounded investigation if AI is allowed",
+        "intervention": "Apply or revert a selected virtual patch"
+      },
+      {
+        "path": "/available_candidates/7/operation",
+        "control": "ai.delegate",
+        "intervention": "patch.apply"
+      },
+      {
+        "path": "/available_candidates/7/target_refs/0",
+        "control": "R-UNKNOWN",
+        "intervention": "R02"
+      },
+      {
+        "path": "/available_candidates/7/target_refs/1",
+        "control": null,
+        "intervention": "R06"
+      },
+      {
+        "path": "/available_candidates/8/evidence_refs/2",
+        "control": null,
+        "intervention": "R10"
+      },
+      {
+        "path": "/available_candidates/8/id",
+        "control": "T10",
+        "intervention": "T11"
+      },
+      {
+        "path": "/available_candidates/8/label",
+        "control": "Apply or revert a selected virtual patch",
+        "intervention": "Run a modeled check"
+      },
+      {
+        "path": "/available_candidates/8/operation",
+        "control": "patch.apply",
+        "intervention": "check.model"
+      },
+      {
+        "path": "/available_candidates/8/target_refs/2",
+        "control": null,
+        "intervention": "R10"
+      },
+      {
+        "path": "/available_candidates/9/evidence_refs/0",
+        "control": "R02",
+        "intervention": "R-UNKNOWN"
+      },
+      {
+        "path": "/available_candidates/9/evidence_refs/1",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/9/evidence_refs/2",
+        "control": "R10",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/9/id",
+        "control": "T11",
+        "intervention": "T15"
+      },
+      {
+        "path": "/available_candidates/9/label",
+        "control": "Run a modeled check",
+        "intervention": "Defer or cancel with unresolved items"
+      },
+      {
+        "path": "/available_candidates/9/operation",
+        "control": "check.model",
+        "intervention": "run.defer"
+      },
+      {
+        "path": "/available_candidates/9/target_refs/0",
+        "control": "R02",
+        "intervention": "R-UNKNOWN"
+      },
+      {
+        "path": "/available_candidates/9/target_refs/1",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/9/target_refs/2",
+        "control": "R10",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/10",
+        "control": {
+          "evidence_refs": [
+            "R-UNKNOWN"
+          ],
+          "id": "T15",
+          "label": "Defer or cancel with unresolved items",
+          "operation": "run.defer",
+          "target_refs": [
+            "R-UNKNOWN"
+          ]
+        },
+        "intervention": null
+      },
+      {
+        "path": "/claims/9/0",
+        "control": "search:4873317f2c375847",
+        "intervention": "search:1520a1995a110e33"
+      },
+      {
+        "path": "/claims/9/2",
+        "control": "Search result was recorded for metadata.",
+        "intervention": "Search result was recorded for VA-NO-SUCH-TOKEN-94821."
+      },
+      {
+        "path": "/observations/0/claim_id",
+        "control": "search:4873317f2c375847",
+        "intervention": "search:1520a1995a110e33"
+      },
+      {
+        "path": "/observations/0/result/0",
+        "control": "R01",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/1",
+        "control": "R02",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/2",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/3",
+        "control": "R10",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/4",
+        "control": "server/src/eslint.ts#121",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/5",
+        "control": "server/src/eslint.ts#1211",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/6",
+        "control": "server/src/eslint.ts#1223",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/7",
+        "control": "server/src/eslint.ts#1228",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/8",
+        "control": "server/src/eslint.ts#1229",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/9",
+        "control": "server/src/eslint.ts#128",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/10",
+        "control": "server/src/eslint.ts#130",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/11",
+        "control": "server/src/eslint.ts#131",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/12",
+        "control": "server/src/eslint.ts#133",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/13",
+        "control": "server/src/eslint.ts#141",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/14",
+        "control": "server/src/eslint.ts#144",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/15",
+        "control": "server/src/eslint.ts#150",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/16",
+        "control": "server/src/eslint.ts#153",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/17",
+        "control": "server/src/eslint.ts#155",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/18",
+        "control": "server/src/eslint.ts#158",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/19",
+        "control": "server/src/eslint.ts#259",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/20",
+        "control": "server/src/eslint.ts#326",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/21",
+        "control": "server/src/eslint.ts#330",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/22",
+        "control": "server/src/eslint.ts#368",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/23",
+        "control": "server/src/eslint.ts#372",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/24",
+        "control": "server/src/eslint.ts#640",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/25",
+        "control": "server/src/eslintServer.ts#25",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/26",
+        "control": "server/src/eslintServer.ts#295",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/27",
+        "control": "server/src/eslintServer.ts#661",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/28",
+        "control": "server/src/eslintServer.ts#693",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/result/29",
+        "control": "server/src/eslintServer.ts#824",
+        "intervention": null
+      },
+      {
+        "path": "/observations/0/statement",
+        "control": "Search result was recorded for metadata.",
+        "intervention": "Search result was recorded for VA-NO-SUCH-TOKEN-94821."
+      },
+      {
+        "path": "/observations/0/subject",
+        "control": "metadata",
+        "intervention": "VA-NO-SUCH-TOKEN-94821"
+      },
+      {
+        "path": "/observed_messages/0",
+        "control": null,
+        "intervention": "no-match-in-fixed-corpus"
+      },
+      {
+        "path": "/search_query",
+        "control": "metadata",
+        "intervention": "VA-NO-SUCH-TOKEN-94821"
+      },
+      {
+        "path": "/search_result_refs/0",
+        "control": "R01",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/1",
+        "control": "R02",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/2",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/3",
+        "control": "R10",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/4",
+        "control": "server/src/eslint.ts#121",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/5",
+        "control": "server/src/eslint.ts#1211",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/6",
+        "control": "server/src/eslint.ts#1223",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/7",
+        "control": "server/src/eslint.ts#1228",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/8",
+        "control": "server/src/eslint.ts#1229",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/9",
+        "control": "server/src/eslint.ts#128",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/10",
+        "control": "server/src/eslint.ts#130",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/11",
+        "control": "server/src/eslint.ts#131",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/12",
+        "control": "server/src/eslint.ts#133",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/13",
+        "control": "server/src/eslint.ts#141",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/14",
+        "control": "server/src/eslint.ts#144",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/15",
+        "control": "server/src/eslint.ts#150",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/16",
+        "control": "server/src/eslint.ts#153",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/17",
+        "control": "server/src/eslint.ts#155",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/18",
+        "control": "server/src/eslint.ts#158",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/19",
+        "control": "server/src/eslint.ts#259",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/20",
+        "control": "server/src/eslint.ts#326",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/21",
+        "control": "server/src/eslint.ts#330",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/22",
+        "control": "server/src/eslint.ts#368",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/23",
+        "control": "server/src/eslint.ts#372",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/24",
+        "control": "server/src/eslint.ts#640",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/25",
+        "control": "server/src/eslintServer.ts#25",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/26",
+        "control": "server/src/eslintServer.ts#295",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/27",
+        "control": "server/src/eslintServer.ts#661",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/28",
+        "control": "server/src/eslintServer.ts#693",
+        "intervention": null
+      },
+      {
+        "path": "/search_result_refs/29",
+        "control": "server/src/eslintServer.ts#824",
+        "intervention": null
+      }
+    ],
+    "first_event_difference": {
+      "path": "/8/query",
+      "control": "metadata",
+      "intervention": "VA-NO-SUCH-TOKEN-94821"
+    },
+    "times": [
+      2,
+      2
+    ],
+    "outcomes": [
+      "incomplete",
+      "incomplete"
+    ],
+    "replay_and_storage": true
+  },
+  {
+    "case": "access",
+    "scenario_differences": [
+      {
+        "path": "/participant_profile/permissions/1/resource_id",
+        "control": "D02",
+        "intervention": "D03"
+      },
+      {
+        "path": "/participant_profile/permissions/2/resource_id",
+        "control": "D03",
+        "intervention": "D04"
+      },
+      {
+        "path": "/participant_profile/permissions/3/resource_id",
+        "control": "D04",
+        "intervention": "D05"
+      },
+      {
+        "path": "/participant_profile/permissions/4/resource_id",
+        "control": "D05",
+        "intervention": "D06"
+      },
+      {
+        "path": "/participant_profile/permissions/5/action",
+        "control": "read",
+        "intervention": "virtual-edit"
+      },
+      {
+        "path": "/participant_profile/permissions/5/resource_id",
+        "control": "D06",
+        "intervention": "B0-WORKSPACE"
+      },
+      {
+        "path": "/participant_profile/permissions/6/action",
+        "control": "virtual-edit",
+        "intervention": "create"
+      },
+      {
+        "path": "/participant_profile/permissions/6/resource_id",
+        "control": "B0-WORKSPACE",
+        "intervention": "SIMULATED-SUBMISSION"
+      },
+      {
+        "path": "/participant_profile/permissions/7",
+        "control": {
+          "action": "create",
+          "resource_id": "SIMULATED-SUBMISSION"
+        },
+        "intervention": null
+      }
+    ],
+    "policy_control": [
+      "T01",
+      "T02"
+    ],
+    "policy_intervention": [
+      "T01",
+      "T05"
+    ],
+    "observation_differences": [
+      {
+        "path": "/available_candidates/1/evidence_refs/0",
+        "control": "R12",
+        "intervention": "R02"
+      },
+      {
+        "path": "/available_candidates/1/evidence_refs/1",
+        "control": null,
+        "intervention": "R06"
+      },
+      {
+        "path": "/available_candidates/1/id",
+        "control": "T02",
+        "intervention": "T03"
+      },
+      {
+        "path": "/available_candidates/1/label",
+        "control": "Read project documentation and settings",
+        "intervention": "Search the fixed source"
+      },
+      {
+        "path": "/available_candidates/1/operation",
+        "control": "document.read",
+        "intervention": "code.search"
+      },
+      {
+        "path": "/available_candidates/1/target_refs/0",
+        "control": "R12",
+        "intervention": "R02"
+      },
+      {
+        "path": "/available_candidates/1/target_refs/1",
+        "control": null,
+        "intervention": "R06"
+      },
+      {
+        "path": "/available_candidates/2/evidence_refs/0",
+        "control": "R02",
+        "intervention": "R01"
+      },
+      {
+        "path": "/available_candidates/2/id",
+        "control": "T03",
+        "intervention": "T05"
+      },
+      {
+        "path": "/available_candidates/2/label",
+        "control": "Search the fixed source",
+        "intervention": "Read fixed ESLint API documents"
+      },
+      {
+        "path": "/available_candidates/2/operation",
+        "control": "code.search",
+        "intervention": "document.read"
+      },
+      {
+        "path": "/available_candidates/2/target_refs/0",
+        "control": "R02",
+        "intervention": "R01"
+      },
+      {
+        "path": "/available_candidates/3/evidence_refs/0",
+        "control": "R01",
+        "intervention": "R14"
+      },
+      {
+        "path": "/available_candidates/3/evidence_refs/1",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/3/id",
+        "control": "T05",
+        "intervention": "T06"
+      },
+      {
+        "path": "/available_candidates/3/label",
+        "control": "Read fixed ESLint API documents",
+        "intervention": "Read the fixed URL-less rule example"
+      },
+      {
+        "path": "/available_candidates/3/target_refs/0",
+        "control": "R01",
+        "intervention": "R14"
+      },
+      {
+        "path": "/available_candidates/3/target_refs/1",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/4/evidence_refs/0",
+        "control": "R14",
+        "intervention": "R-UNKNOWN"
+      },
+      {
+        "path": "/available_candidates/4/id",
+        "control": "T06",
+        "intervention": "T07"
+      },
+      {
+        "path": "/available_candidates/4/label",
+        "control": "Read the fixed URL-less rule example",
+        "intervention": "Ask the known peer role"
+      },
+      {
+        "path": "/available_candidates/4/operation",
+        "control": "document.read",
+        "intervention": "question.send"
+      },
+      {
+        "path": "/available_candidates/4/target_refs/0",
+        "control": "R14",
+        "intervention": "R-UNKNOWN"
+      },
+      {
+        "path": "/available_candidates/5/id",
+        "control": "T07",
+        "intervention": "T08"
+      },
+      {
+        "path": "/available_candidates/5/label",
+        "control": "Ask the known peer role",
+        "intervention": "Delegate a bounded investigation if AI is allowed"
+      },
+      {
+        "path": "/available_candidates/5/operation",
+        "control": "question.send",
+        "intervention": "ai.delegate"
+      },
+      {
+        "path": "/available_candidates/6/evidence_refs/0",
+        "control": "R-UNKNOWN",
+        "intervention": "R02"
+      },
+      {
+        "path": "/available_candidates/6/evidence_refs/1",
+        "control": null,
+        "intervention": "R06"
+      },
+      {
+        "path": "/available_candidates/6/id",
+        "control": "T08",
+        "intervention": "T10"
+      },
+      {
+        "path": "/available_candidates/6/label",
+        "control": "Delegate a bounded investigation if AI is allowed",
+        "intervention": "Apply or revert a selected virtual patch"
+      },
+      {
+        "path": "/available_candidates/6/operation",
+        "control": "ai.delegate",
+        "intervention": "patch.apply"
+      },
+      {
+        "path": "/available_candidates/6/target_refs/0",
+        "control": "R-UNKNOWN",
+        "intervention": "R02"
+      },
+      {
+        "path": "/available_candidates/6/target_refs/1",
+        "control": null,
+        "intervention": "R06"
+      },
+      {
+        "path": "/available_candidates/7/evidence_refs/2",
+        "control": null,
+        "intervention": "R10"
+      },
+      {
+        "path": "/available_candidates/7/id",
+        "control": "T10",
+        "intervention": "T11"
+      },
+      {
+        "path": "/available_candidates/7/label",
+        "control": "Apply or revert a selected virtual patch",
+        "intervention": "Run a modeled check"
+      },
+      {
+        "path": "/available_candidates/7/operation",
+        "control": "patch.apply",
+        "intervention": "check.model"
+      },
+      {
+        "path": "/available_candidates/7/target_refs/2",
+        "control": null,
+        "intervention": "R10"
+      },
+      {
+        "path": "/available_candidates/8/evidence_refs/0",
+        "control": "R02",
+        "intervention": "R-UNKNOWN"
+      },
+      {
+        "path": "/available_candidates/8/evidence_refs/1",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/8/evidence_refs/2",
+        "control": "R10",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/8/id",
+        "control": "T11",
+        "intervention": "T15"
+      },
+      {
+        "path": "/available_candidates/8/label",
+        "control": "Run a modeled check",
+        "intervention": "Defer or cancel with unresolved items"
+      },
+      {
+        "path": "/available_candidates/8/operation",
+        "control": "check.model",
+        "intervention": "run.defer"
+      },
+      {
+        "path": "/available_candidates/8/target_refs/0",
+        "control": "R02",
+        "intervention": "R-UNKNOWN"
+      },
+      {
+        "path": "/available_candidates/8/target_refs/1",
+        "control": "R06",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/8/target_refs/2",
+        "control": "R10",
+        "intervention": null
+      },
+      {
+        "path": "/available_candidates/9",
+        "control": {
+          "evidence_refs": [
+            "R-UNKNOWN"
+          ],
+          "id": "T15",
+          "label": "Defer or cancel with unresolved items",
+          "operation": "run.defer",
+          "target_refs": [
+            "R-UNKNOWN"
+          ]
+        },
+        "intervention": null
+      },
+      {
+        "path": "/visible_documents/1",
+        "control": "D02",
+        "intervention": "D03"
+      },
+      {
+        "path": "/visible_documents/2",
+        "control": "D03",
+        "intervention": "D04"
+      },
+      {
+        "path": "/visible_documents/3",
+        "control": "D04",
+        "intervention": "D05"
+      },
+      {
+        "path": "/visible_documents/4",
+        "control": "D05",
+        "intervention": "D06"
+      },
+      {
+        "path": "/visible_documents/5",
+        "control": "D06",
+        "intervention": null
+      }
+    ],
+    "first_event_difference": null,
+    "times": [
+      2,
+      2
+    ],
+    "outcomes": [
+      "incomplete",
+      "incomplete"
+    ],
+    "replay_and_storage": true
+  },
+  {
+    "case": "tool",
+    "verdict": "NOT EVALUATED",
+    "reason": "Intervention rejected before run creation",
+    "failure": {
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/home/sengakuhisai/dev/lae-simulator/scripts/vb_acceptance.py\", line 256, in <module>\n    worker(*sys.argv[2:])\n    ~~~~~~^^^^^^^^^^^^^^^\n  File \"/home/sengakuhisai/dev/lae-simulator/scripts/vb_acceptance.py\", line 53, in worker\n    execution = load_scenario_execution(path)\n  File \"/home/sengakuhisai/dev/lae-simulator/src/lae_simulator/simulation/local_loader.py\", line 62, in load_scenario_execution\n    bundle = load_scenario_bundle(scenario_path)\n  File \"/home/sengakuhisai/dev/lae-simulator/src/lae_simulator/world/scenario.py\", line 76, in load_scenario_bundle\n    return load_scenario_bundle_data(data, source.parent)\n  File \"/home/sengakuhisai/dev/lae-simulator/src/lae_simulator/world/scenario.py\", line 84, in load_scenario_bundle_data\n    raise WorldValidationError(validator.issues)\nlae_simulator.world.errors.WorldValidationError: $.candidates[2].operation [unavailable-operation] operation is absent from participant capabilities\n"
+    }
+  },
+  {
+    "case": "peer",
+    "scenario_differences": [
+      {
+        "path": "/collaboration/rules/0/delay_ticks",
+        "control": 2,
+        "intervention": 45
+      }
+    ],
+    "policy_control": [
+      "T01",
+      "T03"
+    ],
+    "policy_intervention": [
+      "T01",
+      "T03"
+    ],
+    "observation_differences": [
+      {
+        "path": "/claims/5/0",
+        "control": "PEER-NOTE",
+        "intervention": "TEAM-ASSIGNMENT"
+      },
+      {
+        "path": "/claims/5/1",
+        "control": "acquired",
+        "intervention": "initial"
+      },
+      {
+        "path": "/claims/5/2",
+        "control": "The peer suggests investigating metadata capture before making a conclusion.",
+        "intervention": "The participant is assigned to the Developer Tools exercise role without inferred ESLint expertise or administrative authority."
+      },
+      {
+        "path": "/claims/6/0",
+        "control": "TEAM-ASSIGNMENT",
+        "intervention": "knowledge.issue"
+      },
+      {
+        "path": "/claims/6/1",
+        "control": "initial",
+        "intervention": "acquired"
+      },
+      {
+        "path": "/claims/6/2",
+        "control": "The participant is assigned to the Developer Tools exercise role without inferred ESLint expertise or administrative authority.",
+        "intervention": "Participant information: knowledge.issue."
+      },
+      {
+        "path": "/claims/7/0",
+        "control": "knowledge.issue",
+        "intervention": "reference:R-UNKNOWN"
+      },
+      {
+        "path": "/claims/7/2",
+        "control": "Participant information: knowledge.issue.",
+        "intervention": "Reference R-UNKNOWN: outside-finite-index; coverage=unresolved; target=unresolved"
+      },
+      {
+        "path": "/claims/8",
+        "control": [
+          "reference:R-UNKNOWN",
+          "acquired",
+          "Reference R-UNKNOWN: outside-finite-index; coverage=unresolved; target=unresolved"
+        ],
+        "intervention": null
+      },
+      {
+        "path": "/logical_time",
+        "control": 5,
+        "intervention": 8
+      },
+      {
+        "path": "/observations/0/logical_time",
+        "control": 5,
+        "intervention": 8
+      },
+      {
+        "path": "/observations/0/result/0",
+        "control": "answer",
+        "intervention": "timeout"
+      },
+      {
+        "path": "/observations/0/statement",
+        "control": "Fixed exercise response: metadata",
+        "intervention": "Request timed out."
+      },
+      {
+        "path": "/task_states/0/2",
+        "control": "responded",
+        "intervention": "timedout"
+      }
+    ],
+    "first_event_difference": {
+      "path": "/9/reservation/due_tick",
+      "control": 4,
+      "intervention": 47
+    },
+    "times": [
+      5,
+      8
+    ],
+    "outcomes": [
+      "incomplete",
+      "incomplete"
+    ],
+    "replay_and_storage": true
+  },
+  {
+    "case": "ai",
+    "scenario_differences": [
+      {
+        "path": "/collaboration/rules/2/delay_ticks",
+        "control": 3,
+        "intervention": 45
+      }
+    ],
+    "policy_control": [
+      "T01",
+      "T03"
+    ],
+    "policy_intervention": [
+      "T01",
+      "T03"
+    ],
+    "observation_differences": [
+      {
+        "path": "/available_candidates/9/id",
+        "control": "T12",
+        "intervention": "T15"
+      },
+      {
+        "path": "/available_candidates/9/label",
+        "control": "Review and integrate a completed delegated result",
+        "intervention": "Defer or cancel with unresolved items"
+      },
+      {
+        "path": "/available_candidates/9/operation",
+        "control": "ai.integrate",
+        "intervention": "run.defer"
+      },
+      {
+        "path": "/available_candidates/10",
+        "control": {
+          "evidence_refs": [
+            "R-UNKNOWN"
+          ],
+          "id": "T15",
+          "label": "Defer or cancel with unresolved items",
+          "operation": "run.defer",
+          "target_refs": [
+            "R-UNKNOWN"
+          ]
+        },
+        "intervention": null
+      },
+      {
+        "path": "/claims/0/0",
+        "control": "AI-SUGGESTION",
+        "intervention": "EX01"
+      },
+      {
+        "path": "/claims/0/1",
+        "control": "acquired",
+        "intervention": "initial"
+      },
+      {
+        "path": "/claims/0/2",
+        "control": "A fixed AI suggestion is tentative and may fail a modeled check.",
+        "intervention": "Investigate the fixed issue and public specifications, optionally make a limited virtual change and modeled check, then submit or defer with evidence and limits; no particular improvement is required."
+      },
+      {
+        "path": "/claims/1/0",
+        "control": "EX01",
+        "intervention": "EX02"
+      },
+      {
+        "path": "/claims/1/2",
+        "control": "Investigate the fixed issue and public specifications, optionally make a limited virtual change and modeled check, then submit or defer with evidence and limits; no particular improvement is required.",
+        "intervention": "The submission target is a simulated exercise repository with no external URL; upstream is reference-only."
+      },
+      {
+        "path": "/claims/2/0",
+        "control": "EX02",
+        "intervention": "EX03"
+      },
+      {
+        "path": "/claims/2/2",
+        "control": "The submission target is a simulated exercise repository with no external URL; upstream is reference-only.",
+        "intervention": "The exercise participant may ask ROLE-PEER for information and ROLE-APPROVER for scoped approval. These are exercise assumptions only."
+      },
+      {
+        "path": "/claims/3/0",
+        "control": "EX03",
+        "intervention": "EX04"
+      },
+      {
+        "path": "/claims/3/2",
+        "control": "The exercise participant may ask ROLE-PEER for information and ROLE-APPROVER for scoped approval. These are exercise assumptions only.",
+        "intervention": "This separate synthetic G5 exercise permits fixed AI assistance; one AI task at a time; all response durations are uncalibrated synthetic ticks."
+      },
+      {
+        "path": "/claims/4/0",
+        "control": "EX04",
+        "intervention": "OSS-FACT"
+      },
+      {
+        "path": "/claims/4/2",
+        "control": "This separate synthetic G5 exercise permits fixed AI assistance; one AI task at a time; all response durations are uncalibrated synthetic ticks.",
+        "intervention": "B0, E0, H0 and the issue are fixed real-OSS materials, but no reporter environment or real VS Code execution is established."
+      },
+      {
+        "path": "/claims/5/0",
+        "control": "OSS-FACT",
+        "intervention": "TEAM-ASSIGNMENT"
+      },
+      {
+        "path": "/claims/5/2",
+        "control": "B0, E0, H0 and the issue are fixed real-OSS materials, but no reporter environment or real VS Code execution is established.",
+        "intervention": "The participant is assigned to the Developer Tools exercise role without inferred ESLint expertise or administrative authority."
+      },
+      {
+        "path": "/claims/6/0",
+        "control": "TEAM-ASSIGNMENT",
+        "intervention": "knowledge.issue"
+      },
+      {
+        "path": "/claims/6/1",
+        "control": "initial",
+        "intervention": "acquired"
+      },
+      {
+        "path": "/claims/6/2",
+        "control": "The participant is assigned to the Developer Tools exercise role without inferred ESLint expertise or administrative authority.",
+        "intervention": "Participant information: knowledge.issue."
+      },
+      {
+        "path": "/claims/7/0",
+        "control": "knowledge.issue",
+        "intervention": "reference:R-UNKNOWN"
+      },
+      {
+        "path": "/claims/7/2",
+        "control": "Participant information: knowledge.issue.",
+        "intervention": "Reference R-UNKNOWN: outside-finite-index; coverage=unresolved; target=unresolved"
+      },
+      {
+        "path": "/claims/8",
+        "control": [
+          "reference:R-UNKNOWN",
+          "acquired",
+          "Reference R-UNKNOWN: outside-finite-index; coverage=unresolved; target=unresolved"
+        ],
+        "intervention": null
+      },
+      {
+        "path": "/logical_time",
+        "control": 6,
+        "intervention": 10
+      },
+      {
+        "path": "/observations/0/logical_time",
+        "control": 6,
+        "intervention": 10
+      },
+      {
+        "path": "/observations/0/result/0",
+        "control": "answer",
+        "intervention": "timeout"
+      },
+      {
+        "path": "/observations/0/statement",
+        "control": "Fixed exercise response: review-metadata",
+        "intervention": "Request timed out."
+      },
+      {
+        "path": "/task_states/0/2",
+        "control": "responded",
+        "intervention": "timedout"
+      }
+    ],
+    "first_event_difference": {
+      "path": "/9/reservation/due_tick",
+      "control": 5,
+      "intervention": 47
+    },
+    "times": [
+      6,
+      10
+    ],
+    "outcomes": [
+      "incomplete",
+      "incomplete"
+    ],
+    "replay_and_storage": true
+  },
+  {
+    "case": "negative",
+    "scenario_differences": [],
+    "policy_control": [
+      "T01",
+      "T01"
+    ],
+    "policy_intervention": [
+      "T01",
+      "T01"
+    ],
+    "observation_differences": [],
+    "first_event_difference": {
+      "path": "/1/candidate_id",
+      "control": null,
+      "intervention": "T15"
+    },
+    "times": [
+      0,
+      0
+    ],
+    "outcomes": [
+      "incomplete",
+      "incomplete"
+    ],
+    "replay_and_storage": true
+  }
+]

@@ -500,8 +500,11 @@ def _reduce_local_event(execution: ScenarioExecution, state: LocalState,
             _event_fail(event, "unexpected-observation", "successful read cannot carry a failure")
         claim_updates = tuple(
             ClaimKnowledge(item.id, ClaimStatus.ACQUIRED, (doc.id,), event.logical_time)
+            # A document read establishes only claims explicitly classified
+            # as public source facts. Actor-private communication claims must
+            # be acquired through observed communication provenance instead.
             for item in execution.claims if doc.source_id in item.source_ids
-            and item.classification != "administrative"
+            and item.classification == "public-evidence"
         )
         merged = {item.claim_id: item for item in state.claims}
         for item in claim_updates:
@@ -532,6 +535,16 @@ def _reduce_local_event(execution: ScenarioExecution, state: LocalState,
             if event.observed_result != "precondition-failed":
                 _event_fail(event, "missing-failure-observation", "failed search precondition must be observed")
             return replace(advanced, observed_messages=state.observed_messages + ("precondition-failed",))
+        from lae_simulator.simulation.tool_availability import (
+            SEARCH_UNAVAILABLE,
+            search_available,
+        )
+        if not event.query or not event.query.strip():
+            _event_fail(event, 'empty-search', 'search query must not be empty')
+        if not search_available(execution):
+            if event.observed_result != 'tool-unavailable':
+                _event_fail(event, 'tool-result-mismatch', 'unavailable search requires failure observation')
+            return replace(advanced, observed_messages=state.observed_messages + (SEARCH_UNAVAILABLE,))
         if event.observed_result is not None:
             _event_fail(event, "unexpected-observation", "successful search cannot carry a failure")
         if not event.query or not event.query.strip():

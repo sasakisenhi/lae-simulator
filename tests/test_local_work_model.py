@@ -125,7 +125,7 @@ class LocalWorkModelTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             transition(world, initial, event, 1)
 
-    def test_legacy_local_snapshot_is_upgraded_by_replay(self) -> None:
+    def test_partial_g7_contract_downgrade_is_rejected(self) -> None:
         from lae_simulator.simulation.canonical_store import (
             canonical_json_bytes,
             content_digest,
@@ -139,6 +139,10 @@ class LocalWorkModelTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = save_local_run(self.execution, result, directory)
             manifest = json.loads((path / "manifest.json").read_bytes())
+            manifest.pop('evidence_contract')
+            for artifact in ('employee-package.json', 'public-evidence.json'):
+                manifest['artifacts'].pop(artifact)
+                (path / artifact).unlink()
             manifest.pop('closure_contract')
             manifest['artifacts'].pop('closure.json')
             (path / 'closure.json').unlink()
@@ -149,7 +153,8 @@ class LocalWorkModelTests(unittest.TestCase):
                 (path / name).write_bytes(data)
                 manifest["artifacts"][name] = content_digest(data)
             (path / "manifest.json").write_bytes(canonical_json_bytes(manifest))
-            self.assertEqual(load_local_run(path, self.execution).result, result)
+            with self.assertRaises(PersistenceError):
+                load_local_run(path, self.execution)
 
     def test_forged_stale_selection_is_rejected_during_replay(self) -> None:
         session = LocalSession.start(self.execution)

@@ -1,0 +1,11 @@
+[
+  "uv run --locked python scripts/vb_acceptance.py",
+  "uv run --locked python scripts/vb_compare.py",
+  "uv run --locked python -m unittest discover -s tests -v",
+  "uvx --from ruff==0.17.4 ruff check .",
+  "uvx --from mypy==2.4.1 mypy --strict src tests",
+  "uv run --locked python -m compileall -q src tests scripts/vb_acceptance.py scripts/vb_compare.py",
+  "uv lock --check",
+  "openspec validate build-reproducible-simulation-foundation --type change --strict --no-interactive",
+  "git diff --check"
+]

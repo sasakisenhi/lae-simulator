@@ -123,7 +123,7 @@ def load_scenario_execution(path: str | Path) -> ScenarioExecution:
              else str(expr["value"]))
             for expr in item["preconditions"] if expr["field"].startswith("permission.")
         ), None),
-        required_claims=(),
+        required_claims=tuple(item.get("required_claims", ())),
         availability=tuple(LocalExpression(expr["field"], expr["operator"], expr["value"])
                            for expr in item["availability"]),
         preconditions=tuple(LocalExpression(expr["field"], expr["operator"], expr["value"])

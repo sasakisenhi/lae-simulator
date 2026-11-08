@@ -108,3 +108,21 @@
 #### Scenario: A relationship is outside the index
 - **WHEN** 定義済み参照IDの収録範囲外または未解決の関係を問い合わせる
 - **THEN** 対象外またはUNKNOWNを示し、関係が存在しないとは断定しない
+
+### Requirement: WD14 Minimal intervention input contract
+システムはScenario 1.3.0で、静的capabilityと独立した固定検索可用性を受理しなければならない（SHALL）。
+
+#### Scenario: Independent fixed tool availability
+- **WHEN** 同じ候補・capabilityに異なる固定検索可用性を与える
+- **THEN** 両定義を受理し、可用性を固定入力として識別できる
+
+#### Scenario: Legacy input
+- **WHEN** 旧Scenario版を読み込む
+- **THEN** 新フィールドは受理せず、既存定義の従来動作を維持する
+
+### Requirement: WD15 Validated knowledge prerequisite inputs
+システムはScenario 1.3.0の候補required_claimsと初期知識について、全IDと出典を検証し、未知claim・空出典・管理区分・監査専用出典を拒否しなければならない（SHALL）。
+
+#### Scenario: Protected knowledge prerequisite
+- **WHEN** 必要claimまたは初期claimが未定義か本人に許可されない出典を持つ
+- **THEN** 対象を示して入力拒否し、本人情報へ混入させない

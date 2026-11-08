@@ -1,0 +1,12 @@
+test_aggregate_worker_failure_and_false_replay (test_vb_harness.HarnessTests.test_aggregate_worker_failure_and_false_replay) ... ok
+test_existing_summary_cannot_skip_execution (test_vb_harness.HarnessTests.test_existing_summary_cannot_skip_execution) ... ok
+test_required_flags_and_worker_exit (test_vb_harness.HarnessTests.test_required_flags_and_worker_exit) ... ok
+test_status_exit_codes (test_vb_harness.HarnessTests.test_status_exit_codes) ... ok
+test_two_sided_file_sets_and_bytes (test_vb_harness.HarnessTests.test_two_sided_file_sets_and_bytes) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.006s
+
+OK
+{"status": "FAIL", "exit_code": 1, "output": "/tmp/tmpumelqz3e/out"}
+{"status": "FAIL", "exit_code": 1, "output": "/tmp/tmpiafqk9lb/out"}
