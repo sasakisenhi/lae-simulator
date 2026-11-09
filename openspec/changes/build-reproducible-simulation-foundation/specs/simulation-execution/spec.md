@@ -31,6 +31,10 @@
 - **WHEN** 非公開の原因または将来応答時刻だけを変え、比較時点の論理時刻・本人が観測したイベント列・本人情報が同一である
 - **THEN** その共通観測区間の行動選択に隠れた情報を使わない。応答到着や観測できる待機経過によって観測条件が異なった後の行動差は禁止しない
 
+#### Scenario: Unobserved search profile does not guide action
+- **WHEN** Scenario 1.4.0の固定検索範囲だけが異なり、検索結果をまだ観測しておらず、同時刻・同じ観測接頭列・同じ初期本人情報で比較する
+- **THEN** 本人向け情報・利用可能候補・Policy選択が一致し、未観測のパス集合やprofile digestを判断に使わない。検索結果の観測差が生じた後の候補・選択・実操作差は、その観測に追跡可能であれば許容する
+
 ### Requirement: SE04 Action feasibility separation
 システムは、操作前提を満たすが目的に不適切な行動を、正解でないことだけを理由に拒否してはならない（MUST NOT）。
 
@@ -63,6 +67,10 @@
 #### Scenario: Tool availability changes the route
 - **WHEN** 定義元移動機能がなくテキスト検索だけ利用できる
 - **THEN** 利用不能な移動を成功させず、検索等の実行可能な候補から次の操作を選ぶ
+
+#### Scenario: Scoped search information reaches completed work
+- **WHEN** 固定検索範囲に応じて取得情報が変わり、本人の観測に基づいて検索または参照移動を選択する
+- **THEN** 取得情報・本人認識・利用可能候補・Policy選択・実操作完了を順に追跡でき、選択イベントだけを操作完了の証拠として扱わない
 
 ### Requirement: SE07 Async collaboration
 システムは、AI・同僚の応答を、タスク・質問・依存・権限・応答規則に基づく非同期結果として扱わなければならない（SHALL）。
@@ -194,6 +202,10 @@
 - **WHEN** 保存された最終状態の版、知識、終了理由、またはキューを改変して再生状態と照合する
 - **THEN** 不一致を対象付きで検出し、その実行を有効結果と判定しない
 
+#### Scenario: Replay preserves versioned search semantics
+- **WHEN** 旧Scenario 1.0〜1.3の保存済み検索履歴、またはScenario 1.4.0の固定範囲を持つ検索履歴を再生する
+- **THEN** 保存されたScenario版の入力と検索意味で結果を再計算する。旧版へ新版の範囲・参照照合・無ヒット表現を適用せず、旧保存物を再解釈・再保存しない。結果と保存済み派生状態の不一致はINVALIDとする
+
 ### Requirement: SE21 Scheduled event lifecycle
 システムは、イベント予約・取消・失効とその順序を再生可能な正準記録として保持しなければならない（SHALL）。
 
@@ -221,3 +233,18 @@
 #### Scenario: Initial knowledge changes feasibility
 - **WHEN** 必要claimを初期保持する条件と保持しない条件を与える
 - **THEN** 候補の前提充足差を記録でき、存在しない閲覧経験や検索結果を生成しない。実選択の差は別に評価する
+
+### Requirement: SE25 Workspace scope bounded search results
+システムはScenario 1.4.0の検索結果を、対象版Workspaceの検索範囲内にある実バイトへの一致から計算しなければならない（SHALL）。
+
+#### Scenario: Search verified paths at the current version
+- **WHEN** 本人が有効な固定範囲を持つ現在版Workspaceを検索する
+- **THEN** 範囲内ファイルの実際の一致箇所と版を返す。参照IDは検証済みの完全Workspaceパス・根拠行範囲に対応する一致からのみ取得し、範囲外・監査専用・無効化済みの参照を追加しない。結果の直接上書き入力を使わない
+
+#### Scenario: No match within the search scope
+- **WHEN** 利用可能な検索を実行して対象範囲内に一致がない
+- **THEN** 正常な検索完了と空の取得結果を記録し、検索範囲内での無ヒットを本人へ示す。範囲外の不存在、ツール障害、既知の所在、正しい理解を自動認定しない
+
+#### Scenario: Apply and replay the same scoped search
+- **WHEN** 同じ固定入力・対象Workspace版・検索語の検索を通常実行と正準履歴の再生で処理する
+- **THEN** 同じ範囲・実バイト・参照対応から同じ取得情報と本人認識を復元し、別の結果生成器やPolicy再選択で再生を代替しない

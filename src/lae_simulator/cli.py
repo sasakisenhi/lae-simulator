@@ -10,6 +10,7 @@ from pathlib import Path
 
 from lae_simulator import __version__
 from lae_simulator.provenance import ProvenanceValidationError, verify_provenance_bundle
+from lae_simulator.scenario_cli import add_scenario_commands, scenario_main
 from lae_simulator.simulation import (
     PersistenceError,
     PublicationError,
@@ -72,11 +73,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="保存済みrunを再検査し、調査者向け合成ログを取得する",
     )
     public_log.add_argument("run_path", type=Path)
+    add_scenario_commands(subcommands)
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command in {"run-scenario", "evidence", "prepare-interview", "interview"}:
+        return scenario_main(args)
     report: dict[str, object]
     if args.command == "doctor":
         return _doctor()

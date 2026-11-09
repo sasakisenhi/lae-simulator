@@ -8,3 +8,7 @@ dist/
 build/
 *.egg-info/
 
+# Local remote credentials, approvals, and interview audit sidecars
+.env
+.env.*
+.lae-runs/

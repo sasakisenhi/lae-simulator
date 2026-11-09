@@ -1,0 +1,7 @@
+{
+  "commands": [
+    {"candidate_id": "T01", "target_id": "D01"},
+    {"candidate_id": "T03", "query": "metadata"},
+    {"candidate_id": "T04", "target_id": "R01"}
+  ]
+}

@@ -68,6 +68,14 @@
 - **WHEN** 許可された操作記録に質問、承認、AI再開の時刻と公開可能な関連IDがある
 - **THEN** 記録と関係を取得でき、調査者が因果仮説を推論できることだけを理由に秘匿しない
 
+#### Scenario: Hidden search profile before observation
+- **WHEN** 固定検索範囲だけが異なるScenario 1.4.0の実行を、検索前の同時刻・同じ本人観測と公開可能な接頭履歴で比較する
+- **THEN** 本人パッケージと公開証拠が本文・ID・digest・件数・メタデータ・エラーを含め一致する。未観測のプロファイルやそのdigestを転記せず、本人・公開IDの材料にも使わない
+
+#### Scenario: Irrelevant search scope change
+- **WHEN** 一致を持たないファイルだけを検索範囲へ追加し、同時刻の取得結果・本人観測・公開可能な履歴が同一である
+- **THEN** 本人・公開出力の内容と識別子が一致する。検索範囲を資料公開権限や調査者用の証拠検索範囲へ流用せず、管理用の入力識別値やprofile digestを公開しない
+
 ### Requirement: EP07 Retention bounded historical access
 システムは、調査の重点範囲と参照可能範囲を分離し、固定入力で定義した最小の保持条件と権限に基づいて過去記録を提供しなければならない（SHALL）。任意の保持規則を実行する汎用ポリシー機構は要求しない。
 
@@ -123,6 +131,10 @@
 - **WHEN** 根拠イベントIDは存在するが、投影の対象版・操作内容が再生状態と矛盾する
 - **THEN** 派生情報の不一致を検出して公開を止め、参照IDが解決するだけで有効としない
 
+#### Scenario: Forged scoped search evidence
+- **WHEN** 検索の派生状態または投影に、対象範囲の実バイトと検証済み参照対応から得られない結果を混入する
+- **THEN** 正準再生との不一致を検出し、有効公開を停止する。artifact digestの再計算や有効な参照IDの存在だけで受理しない
+
 ### Requirement: EP12 Investigable evidence retrieval
 システムは、調査者がIssue、時刻、操作、成果物を起点に許可された関連証拠を追加取得できなければならない（SHALL）。
 
@@ -151,6 +163,10 @@
 #### Scenario: Unmodeled GUI details
 - **WHEN** 記録していないメニュー操作や心理的負担について質問する
 - **THEN** 操作結果から詳細や負担を断定せず、モデル外または根拠不足と示す
+
+#### Scenario: Scoped no hit is not global absence
+- **WHEN** 固定検索範囲で無ヒットだった記録を本人情報または公開証拠として取得する
+- **THEN** 記録した検索範囲内での結果という限界を示し、Workspace全体や実在OSSでの不存在へ拡張しない。非公開の範囲パス集合・件数・digestで限界を説明しない
 
 ### Requirement: EP15 Rejected interview publication prevention
 システムは、検出した根拠なしの具体的発言、情報漏洩、固定本人情報では説明できない回答矛盾を有効回答として提供してはならない（MUST NOT）。

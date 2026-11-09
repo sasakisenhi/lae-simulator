@@ -7,12 +7,12 @@ import unittest
 from pathlib import Path
 
 from lae_simulator.simulation.collaboration_model import RequestPayload
+from lae_simulator.simulation.fixed_evidence import related_evidence, search_evidence
 from lae_simulator.simulation.local import (
     LocalEventKind,
     LocalSession,
     load_scenario_execution,
 )
-from lae_simulator.simulation.fixed_evidence import related_evidence, search_evidence
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -27,7 +27,7 @@ class AsyncCollaborationTests(unittest.TestCase):
         session.select("T07")
         request = session.request(candidate_id="T07", rule_id="PEER-ANSWER", input_ids=("D01",))
         assert isinstance(request.collaboration, RequestPayload)
-        waiting = session.wait_for(request.collaboration.request_id, 1)
+        session.wait_for(request.collaboration.request_id, 1)
         result = session.finish()
         rows = json.loads(search_evidence(execution, result, role="researcher"))
         waiting_row = next(row for row in rows if row["operation"] == "collaboration-wait-started")
@@ -69,7 +69,6 @@ class AsyncCollaborationTests(unittest.TestCase):
 
 
 # Each variation is a separately fixed synthetic input; the baseline is unchanged.
-import json
 import os
 import shutil
 import subprocess

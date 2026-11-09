@@ -142,7 +142,7 @@ MVPの検索は固定コーパスの実テキスト検索、移動はこの有�
 対応: world-definition/WD08, WD09, WD12、simulation-execution/SE03, SE04, SE06。
 
 物理形式を問わない入力契約:
-- Scenario: schema_version、exercise_id、source_manifest、Issue、references/documents、actors、tools、policies、candidates、patches、checks、time_models、response_models、timeline、disclosure/retention。
+- Scenario: schema_version、exercise_id、source_manifest、Issue、references/documents、actors、tools、policies、candidates、patches、checks、time_models、response_models、timeline、disclosure/retention。1.4.0の任意search_profile.pathsと版別の受理・検索意味はD14で固定する。
 - Candidate: id、goal、actor_visible_label、required_information、availability条件、operation、target_refs、operation_preconditions、expected_information、on_success、on_failure、knowledge_effects、next_goal_options、duration_model、evidence_refs。
 - LLM抽出履歴: 入力版、モデル・設定、生成出力、検証者・検証結果。LLM生成そのものの再現は保証せず、検証済み出力を固定する。
 - 前提・効果は、型付きの有限な演算（比較、集合、参照、状態更新、タスク生成等）で表す。任意スクリプトの実行やIssue IDによる分岐は行わない。未対応の演算はLoaderが拒否する。
@@ -196,7 +196,7 @@ EX01/EX02は演習の既定、EX03/EX04の具体値はTasks 2.2/2.5/3.3で各試
 
 ### D4. 最小状態と知識更新を明示する
 
-対応: simulation-execution/SE03–SE06, SE09, SE11, SE20, SE21。
+対応: simulation-execution/SE03–SE06, SE09, SE11, SE20, SE21, SE25。
 
 作業用状態 S=(t,W,K,G,U,J,Q,N,Z)。正準履歴Lは別の追記専用記録であり、各状態へ履歴全体を埋め込まない。
 - W: 不変の教材基準版、仮想Workspace版、文書・参照表の有効範囲。
@@ -413,6 +413,94 @@ MVPのCは独立した実人間を必須にしない。管理情報を含まな�
 
 Task 7.4で全必須WD/SE/EP、全追跡タスク、A/B/Cを集約する。必須要件のFAIL/NOT READY/INCONCLUSIVE/未確認があればMVP完了は不可。C11/C12の実機確認、実人間への経験的妥当性、介入効果は明示した非対象であり、UNKNOWNのまま別欄へ記録する。形式検証PASSはこれら動作受入やMVP完成の代わりではない。
 
+### D14. 固定検索プロファイルをScenario版で分離する
+
+対応: world-definition/WD02, WD03, WD09, WD12, WD14–WD16、simulation-execution/SE03, SE05, SE06, SE14, SE15, SE19, SE20, SE23–SE25、evidence-projection/EP04, EP06, EP11, EP14, EP17。
+
+#### 根拠と変更境界
+
+`docs/vb-contract-evidence/report.md`のC予備実験はR02のcoverageで取得参照の差を確認したが、同じWorkspaceの行ヒットが残り、候補・Policy・R01への移動は同一だった。`local_reducer.py`は行ヒットと参照IDの和集合を返し、`local_policy.py`は結果の非空性からT04を利用可能・優先にする。この接続へ範囲内の所在情報の差を届けるため、結果上書きadapterではなく、現在版Workspaceへ適用する固定範囲を追加する。
+
+この節は2026-11-08に承認された計画である。1.4.0の実装・新試験・受入判定は未実施で、静的予測をPASSと扱わない。旧C予備実験・旧VA/VB証拠・失敗試行を保持し、Task 7.2の正式条件、Policyの選択規則・優先順位、候補カタログを変更しない。動的索引、障害復旧、再試行、教材固有分岐、外部送信、G8/VC/VFは本追補の対象外である。
+
+#### 入力schemaと検証済み参照対応（D3/D6）
+
+Scenario 1.4.0のrootへ任意の`search_profile`を追加する。指定時は`{"paths": ["server/src/is.ts"]}`のようにpathsだけを持つobjectとする。pathsは文字列の非空配列で、検証済みWorkspaceに存在する正規化済み相対POSIXパスを重複なく指定する。集合の意味は列挙順に依存しない。未知キー、null、不正型、空配列、重複、絶対パス、空要素、`.`/`..`、非正規化の区切り、globは入力拒否する。保存用rawパスや`.b64`名を実行時Workspaceパスへ暗黙変換しない。
+
+未指定は全Workspace検索であり、明示範囲の検証失敗を全範囲へフォールバックさせない。profileはファイルの存在・内容・版、参照coverage、権限、capability、ツール実可用性を変更しない。旧1.3.0のtool_availability、required_claims、初期知識の出典上限は1.4.0にも継承する。版判定を拡張した際に、初期知識検査やpatch_idsの必須条件を落とさない。
+
+1.4.0では、検索へ付加可能な収録済みWorkspace参照の既存evidenceを、検証済み出典・完全Workspaceパス・根拠行範囲へ実行前に対応付ける。新しい参照入力フィールドは増やさない。evidenceの完全パスは検証済みWorkspaceと完全一致させ、既存の短いファイル名は同じ出典のWorkspace全体で一意に解決できる場合だけ完全パスへ確定する。行範囲は1始まりの包含区間で、既存の`file:line`、`file:first-last`、カンマ区切りの区間を検証する。後続区間にfile指定がなければ直前のfileを継承し、現行R10の`eslintServer.ts:692-700,823-827`も一つの完全パスへの2区間として解釈する。行範囲の構文・正の境界・対象バイト内の範囲も検証する。対応先の欠落、出典不一致、同名ファイルによる曖昧さは入力拒否する。検索範囲に片方だけを含めても曖昧な参照は正当化しない。外部出典や未収録・未解決参照をWorkspace参照へ昇格させない。
+
+入力検証ではmanifest由来のWorkspaceパスとの対応を確認し、実行LoaderではG1検証後に構築したbase_filesとの一致を再検査する。対応付けは固定入力から導出する検証済みデータで、根拠なしのファイル名末尾照合は1.4.0の検索に使わない。旧版の参照入力や解決規則へこの追加検査を遡及適用しない。
+
+#### 通常実行・知覚・Replay（D4/D6/D10）
+
+既存の開始・予約・消費・完了経路を維持する。固定検索可用性がfalseなら従来のtool-unavailable観測となり、範囲内無ヒットと区別する。利用可能な検索では、完了時のinput_versionと現在版を検査し、現在版Workspaceの対象パス内の実バイトだけへ既存のcasefold文字列検索を適用する。基準版バイトの再読込みや実行中の外部I/Oは行わない。
+
+参照IDは、上で確定した完全パス・根拠行範囲に含まれる行ヒットから導出し、監査専用出典と無効化済み参照を除く。行ヒットと参照IDを既存の安定した文字列順で統合する。版・検索語・一致・根拠を既存Search、LocalObservationRecord、claimの根拠へ反映する。取得と正しい理解を区別し、無ヒットから実在する所在や確認済み知識を生成しない。候補条件knowledge.locationsは既存どおり実際のsearch_result_refsに基づき、汎用のknowledge効果claim名が存在することだけで所在取得と判定しない。
+
+1.4.0の無ヒット観測は`no-match-in-search-scope`とし、profile省略時にも同じ表現を使う。これにより、同じ有効範囲・結果に対してprofileフィールドの有無が追加の知覚差にならない。意味はその操作の検索範囲内での無ヒットに限り、Workspace全体や実在OSSの不存在を推論しない。旧版の`no-match-in-fixed-corpus`はそのまま維持する。
+
+公開側は1.4.0のSearchへ、既存limitations欄で「当該検索範囲内の結果であり、範囲外の不存在を示さない」という共通の説明を投影する。検索結果の有無やprofileの省略/指定にかかわらず同じ説明を使い、範囲パス・件数・digestを開示しない。旧版の公開投影へこの説明を遡及追加しない。
+
+通常実行とReplayは同じReducerから同じ固定範囲・現在版バイト・検証済み対応を使う。結果リスト・任意state_deltaの注入、新しい結果生成器、Replay中のPolicy再選択を追加しない。既存のscenario.json、初期状態、正準履歴、派生状態で閉じ、新しい保存artifact・状態schema・イベント族は設けない。
+
+入力content IDがprofileを含めて固定性を担保する。比較監査用のprofile digestは、`workspace-search-scope-1`という検索規則版とソート済み有効パス集合のcanonical JSONからSHA-256で導出し、入力で別途要求しない。検索時Workspace digest・Scenario版と併記し、同じ範囲でも現在バイトが異なる条件を区別する。これら管理値は本人・公開IDへ混ぜない。新評価のmanifestにコードhash・規則版・環境を固定する。Schedulerの順序・時間規則は変更せず、検索意味の切替えをScenario版で識別する。
+
+#### G7の非干渉性（D8）
+
+profileのパス集合・件数・digestはWorldの管理条件に留め、Policy入力、候補の事前絞込み、本人パッケージ、公開証拠カタログへ転記しない。ActorObservation.searchable_filesは従来のWorkspaceファイル一覧を保ち、検索索引への収録を保証する一覧とは解釈しない。有効範囲への置換は検索前に介入情報を渡すため禁止する。候補の可用性は既存の本人知識と観測だけから得る。
+
+同時刻・同じ観測接頭列における、検索前の本人情報・候補・選択・本人パッケージ・公開証拠の一致を検証する。検索後も結果と公開可能な履歴が同じなら、本文・識別子・digest・件数・メタデータ・エラーを含め出力を一致させる。実際の取得差に由来する経験・行動差だけを許容する。公開IDと本人IDは引き続き観測内容から導出し、入力content ID、管理用run ID、profile digestを材料へ追加しない。
+
+本人のcode.searchとG7のsearch_evidenceは別の境界である。profileで調査者用カタログや資料公開権限を変更しない。プロファイルそのものへの直接取得要求も既存の非公開・未知対象と同じ安全な拒否とし、公開上限は拡張しない。
+
+#### 正式なVB事前登録: VB-C-search-profile-1（D11/D13）
+
+本計画を新C試験の事前登録とする。ここでいうCはVB内の取得情報試験であり、Task 7.3のVCではない。計画版は`VB-C-search-profile-1`、承認日は2026-11-08。以下の条件・予測・操作窓を結果観測後に変更しない。将来別仮説を試す場合は、旧結果と失敗理由を保持した独立の計画・入力・実行に分け、本試験の成功例への差替えにしない。
+
+共通入力は`fixtures/g2/scenario-collaboration.json`を基にしたScenario 1.4.0、固定B0、同じ候補・Policy・初期知識・権限・capability・公開条件・時間/応答モデルとする。検索可用性は全条件で利用可能（未指定の既定値）、検索語は全検索で`metadata`、意味的seedは0、時間は既存の定数モデル、乱数抽選は無効とする。変更可能なのは次表のsearch_profile.pathsだけで、arm名をexercise_idや本人情報へ埋め込まない。
+
+| 対・arm | search_profile.pathsの集合 | 介入 | 事前予測 |
+|---|---|---|---|
+| 主試験C0 | {server/src/is.ts} | 対照 | 初回検索は空。次のPolicy選択はT03で、metadataの再検索を完了する |
+| 主試験C1 | {server/src/is.ts, server/src/eslint.ts} | eslint.tsを1パス追加 | 初回検索は非空。次のPolicy選択はT04で、観測済みR01への移動を完了する |
+| 負の対照N0 | {server/src/is.ts, server/src/eslint.ts} | 対照 | C1と同じ検索・候補・選択・操作を予測する |
+| 負の対照N1 | {server/src/is.ts, server/src/eslint.ts, README.md} | README.mdを1パス追加 | N0と取得情報・本人認識・候補・Policy選択・実操作・本人/公開出力が一致する |
+
+固定B0の静的照合ではmetadataはeslint.tsに21行、is.tsとREADME.mdには0行である。これは事前予測の根拠であり、1.4.0の実行証拠ではない。行ヒットと有効参照を計算したC1の先頭結果はR01を予測する。期待する結果・参照IDをエンジンへ直接与えない。
+
+実施手順:
+1. 2.6/2.7の実装を別段階で完了し、試験開始前に本計画のdigest、入力全値とファイル別hash、Policyを含む対象コードhash、環境・依存・規則版、時間モデルを新しい管理manifestへ固定する。6.6のG7/VA影響判定とは独立に実施し、そのPASSをVBの実施・合格の前提にしない。旧VA/VB証拠を対象一覧として固定し、終了後に不変を照合する。
+2. 対照と介入で、search_profile.paths以外の全入力が一致し、全Workspaceのパス・実バイト・digestが等しいことを機械監査する。profile digest・入力content ID・管理用run IDの差は介入の識別結果として記録し、観測や行動の最初の分岐とは数えない。
+3. 全armでT01によるD01閲覧を同じ共通準備として行う。この準備操作を自律選択の証拠に数えない。以降は既存select_by_policyで2回選択し、選択された操作を完了させる。T03のパラメータはmetadata、T04はその時点の観測済み検索結果の先頭とし、armや隠れたprofileをパラメータ束縛に使わない。
+4. 初回検索の選択・開始・完了前まで、同じ論理時刻で本人向け情報・候補・選択・公開可能な接頭履歴を比較する。本人パッケージも同じ履歴境界で比較し、後続の異なる終了時点を検索前比較へ混入させない。
+5. 初回検索完了時から、取得情報（行ヒット・参照・版）、本人認識（検索観測・claim状態と根拠）、利用可能候補、次のPolicy選択、実操作完了を順に記録する。selection_event_idから開始・予約/消費・completed_event_id、検索語または移動先まで追跡する。候補差や選択だけで完了としない。
+6. 主試験の最初の観測差は初回検索完了であり、その後のT04可用性、T03/T04選択、再検索/参照移動を観測差の下流として位置付ける。Searchイベントpayloadに結果配列を増やす必要はなく、再生状態と投影でも差を照合する。後続の所要時間差があれば選択操作のコスト差として記録し、時間モデルへの介入と混同しない。
+7. 主試験と負の対照の各armを独立2プロセス、別一時入力・別保存先、PYTHONHASHSEED=2/71で生成する（2対×2arm×2反復=8run。C1/N0も独立生成）。各runでReplay・保存再取得、同条件反復で全artifact集合とbytesを比較する。有限2選択の操作窓後は既存の有効なINCOMPLETEとして閉じ、Issue全体の自律解決や提出を主張しない。
+
+判定規則:
+- 主試験で取得差から候補・選択・完了操作まで予測した分岐が追跡でき、負の対照・非干渉性・反復・保存/Replayの証拠が揃った場合だけ、この取得情報試験をPASSにできる。Task 7.2全体の判定は他の必須対・デモの証拠適用範囲と独立に集約する。
+- 有効な試験で情報差があっても行動分岐の証拠が得られなければINCONCLUSIVE等の未充足判定とし、その実行・予測不一致・原因を保持する。検索語、対象パス、候補、Policy、時間、シード、操作窓の事後変更で救済しない。
+- 入力契約違反の受理、未観測情報漏洩、範囲外結果、負の対照での非干渉性違反、Replay不整合は対応義務のFAILとして記録する。worker/評価器の障害は評価上の失敗として保存し、事業上のINCOMPLETEと区別する。実装・手段がなく未実施ならNOT READYとする。
+- この文書の承認・strict validationだけで新CやVBをPASSにしない。Task 7.2のチェックは維持し、現在のVB総合INCONCLUSIVEと旧判定は上書きしない。
+
+#### 対象モジュールと検証責務
+
+| 対象 | 予定する変更・検証 | 要求・タスク |
+|---|---|---|
+| world/scenario.py、新規world/search_profile.py（純粋な検証・正規化）、simulation/local_loader.py | profileの型・キー・版・パス、検証済み完全パス/出典/行範囲、曖昧な同名参照の入力拒否。旧版は追加検査対象にしない | WD02/03/14/15/16、2.6 |
+| simulation/local_reducer.py | 現在版の範囲内実バイト検索、完全パスによる参照照合、安定順、無ヒット・障害の区別、版別意味、既存知覚と同じReducer/Replay。Domain CoreにI/Oを追加しない | SE03/05/06/20/23/24/25、2.7 |
+| simulation/local_projector.py | 1.4.0のSearchに既存limitations欄で共通の範囲限定説明を投影する。旧版bytesと公開上限は維持する | EP06/14、2.7/6.6 |
+| tests/test_search_profile_contract.py（新規予定）、test_scenario_contract.py、test_intervention_contract.py | 省略・全範囲・部分範囲・順序不変・不正入力・曖昧/誤出典/範囲外参照・旧版新フィールド拒否・1.4継承・変更後Workspace・反復・障害・版不一致 | WD02/14–16、SE23–25、2.6/2.7 |
+| tests/test_g7_privacy.py、test_g7_repair.py、test_fixed_evidence.py、G6実保存物・CF0回帰、独立VA評価器 | profile未観測の本人/公開bytes不変、同結果の負対照、ID/digest/件数/エラー、再ハッシュした結果・投影改変の拒否、旧入力/旧保存/旧Replay | SE14/15/20、EP04/06/11/14、6.6 |
+| 新しいVB評価器・新規証拠ディレクトリ | VB-C-search-profile-1の固定manifest、入力監査、8run、段階別比較、selectionから完了までの追跡、失敗試行・旧証拠の保持 | SE19、EP17、7.2 |
+| docs/scenario-contract.md | 1.4の入力例、現在版検索と全範囲既定、無ヒットの意味、版別検証/Replayと公開境界 | 2.6/2.7 |
+
+既存の`local_model`、`local_engine`、`local_store`、`employee_evidence`、`local_projector`、`fixed_evidence`は新しい保存形式や開示項目を予定しないが、6.6で影響を再検証する。検索schema領域の追加に合わせて小さな純粋検証を分離し、worldからsimulationへの逆依存・循環importを作らない。行数だけを理由に既存Loader/Reducerを全面分割しない。
+
+結果差替えadapter、query変更、可用性変更は今回の範囲介入を表せないため採らない。内容意味を読むPolicy拡張も対象外とする。所在の有無への反応性を検証する最小モデルであり、意味理解、修正の適切性、実開発者の効果は依然として保証しない。新しいschema・状態・イベント・公開上限が必要になった場合は、実装で決めず影響と選択肢を報告する。
+
 ### 要件・設計・主タスクの対応
 
 番号は各capabilityの安定ID。下表は主要な実装先であり、全件の最終証拠はTask 7.4で集約する。区間表記に隠れた対応漏れを避けるため各要件を列挙する。
@@ -420,8 +508,8 @@ Task 7.4で全必須WD/SE/EP、全追跡タスク、A/B/Cを集約する。必�
 | 要件 | 設計 | 主タスク |
 |---|---|---|
 | WD01 | D1/D3/D12 | 1.2, 1.3 |
-| WD02 | D1/D3/D12 | 1.2, 1.3 |
-| WD03 | D2/D10/D12 | 1.2, 1.3, 5.3 |
+| WD02 | D1/D3/D12/D14 | 1.2, 1.3, 2.6 |
+| WD03 | D2/D10/D12/D14 | 1.2, 1.3, 2.6, 5.3 |
 | WD04 | D5/D12 | 1.2, 1.3, 3.1 |
 | WD05 | D2/D12 | 1.2, 2.1 |
 | WD06 | D3/D11 | 2.2, 7.2, 7.3 |
@@ -432,12 +520,15 @@ Task 7.4で全必須WD/SE/EP、全追跡タスク、A/B/Cを集約する。必�
 | WD11 | D2/D3 | 1.2, 2.4 |
 | WD12 | D1/D3/D6/D7/D12 | 1.2, 1.3, 2.2, 2.4, 4.1 |
 | WD13 | D2/D3 | 1.2, 2.4 |
+| WD14 | D3/D4/D14 | 2.2, 2.4, 2.6 |
+| WD15 | D3/D4/D14 | 2.2, 2.5, 2.6 |
+| WD16 | D3/D6/D14 | 2.6 |
 | SE01 | D10 | 5.1 |
 | SE02 | D5 | 3.2, 3.3 |
-| SE03 | D3/D4/D11 | 2.5, 7.2 |
+| SE03 | D3/D4/D11/D14 | 2.5, 2.7, 6.6, 7.2 |
 | SE04 | D3/D4 | 2.4 |
 | SE05 | D4 | 2.5 |
-| SE06 | D3/D4/D6/D12 | 1.3, 2.4 |
+| SE06 | D3/D4/D6/D12/D14 | 1.3, 2.4, 2.7, 7.2 |
 | SE07 | D5 | 3.3, 4.2 |
 | SE08 | D5 | 3.3 |
 | SE09 | D4/D5 | 3.2 |
@@ -445,35 +536,42 @@ Task 7.4で全必須WD/SE/EP、全追跡タスク、A/B/Cを集約する。必�
 | SE11 | D6 | 2.3, 2.4, 4.2 |
 | SE12 | D7 | 2.3, 4.1 |
 | SE13 | D10/D12 | 1.3, 5.1 |
-| SE14 | D5/D10/D12 | 1.1, 1.3, 3.1, 7.1 |
-| SE15 | D10/D12 | 1.1, 1.3, 3.1, 5.3 |
+| SE14 | D5/D10/D12/D14 | 1.1, 1.3, 3.1, 6.6, 7.1 |
+| SE15 | D10/D12/D14 | 1.1, 1.3, 3.1, 5.3, 6.6 |
 | SE16 | D7/D10/D12 | 1.3, 5.2 |
 | SE17 | D8/D9/D10/D12 | 1.3, 5.3, 7.1 |
 | SE18 | D10/D12 | 1.3, 5.3 |
-| SE19 | D11/D13 | 7.2 |
-| SE20 | D4/D10/D12 | 1.3, 5.2, 5.3 |
+| SE19 | D11/D13/D14 | 7.2 |
+| SE20 | D4/D10/D12/D14 | 1.3, 2.7, 5.2, 5.3, 6.6 |
 | SE21 | D4/D5/D12 | 1.3, 3.1, 3.2, 5.2 |
 | SE22 | D10/D12 | 1.3, 5.3 |
+| SE23 | D4/D14 | 2.4, 2.7, 6.6 |
+| SE24 | D3/D4/D14 | 2.5, 2.7, 6.6 |
+| SE25 | D4/D6/D14 | 2.7, 6.6, 7.2 |
 | EP01 | D8/D12 | 1.3, 6.1 |
 | EP02 | D8/D12 | 1.3, 6.1, 6.5 |
 | EP03 | D8/D12 | 1.3, 6.1 |
 | EP04 | D8/D9 | 6.2 |
 | EP05 | D9 | 6.2 |
-| EP06 | D8/D9/D12 | 1.3, 6.1, 6.3, 6.4 |
+| EP06 | D8/D9/D12/D14 | 1.3, 6.1, 6.3, 6.4, 6.6 |
 | EP07 | D8 | 6.4 |
 | EP08 | D9 | 6.3, 6.5 |
 | EP09 | D9 | 6.3 |
 | EP10 | D9 | 6.3 |
-| EP11 | D7/D8 | 6.1, 7.1 |
+| EP11 | D7/D8/D14 | 6.1, 6.6, 7.1 |
 | EP12 | D8 | 6.4, 6.5 |
 | EP13 | D13 | 7.3 |
-| EP14 | D8 | 6.1, 6.4, 7.3 |
+| EP14 | D8/D14 | 6.1, 6.4, 6.6, 7.3 |
 | EP15 | D9 | 6.3 |
 | EP16 | D9 | 6.3 |
 | EP17 | D13 | 7.1, 7.2, 7.3, 7.4 |
 | EP18 | D13 | 7.4 |
 
 ## Risks / Trade-offs
+
+- [1.4.0の範囲指定やdigestが検索前の判断・公開IDへ混入する] → D14の管理条件/観測の分離と6.6の非干渉性検証を必須にする。
+- [同名ファイルを使った参照の誤対応、旧保存物への新照合規則の遡及] → 1.4.0では完全パスの検証済み対応を使い曖昧さを入力拒否し、旧版はMigration Planの意味で再生する。
+- [検索有無の単純な反応を意味理解や現実の効果と過大評価する] → VB-C-search-profile-1は所在情報に対する有限操作窓の試験と限定し、差がなければ未充足判定と失敗原因を保持する。
 
 - [整合性を現実妥当性と誤認] → 三種類の受入を分離し、現実行動の実証はUNKNOWN。合成ログと合成回答の一致は独立証拠ではない。
 - [候補に正解が埋まり本人へ漏れる] → actor viewと教材の結果規則を分離し、隠れ情報変更で判断が不変なテストを行う。
@@ -486,6 +584,22 @@ Task 7.4で全必須WD/SE/EP、全追跡タスク、A/B/Cを集約する。必�
 - [調査可能な問題が生じない] → 改善不要・判断保留を許容。追加調査が不可能なら受入上の不足を報告し、課題を後付けしない。
 
 ## Migration Plan
+
+### Scenario 1.4.0の検索意味と旧証拠の保持
+
+| 入力・保存対象 | 受理・検索・Replay規則 |
+|---|---|
+| Scenario 1.0〜1.2 | search_profile、tool_availability、候補required_claimsを拒否する。従来の全Workspace検索・参照照合・無ヒット表現を維持する |
+| Scenario 1.3.0 | search_profileを拒否し、既存の可用性・知識前提・出典検査を維持する。検索は全Workspace、参照照合と無ヒット表現は旧意味のまま |
+| Scenario 1.4.0、profile省略 | 1.3.0の機能を継承し、全Workspaceを検索する。1.4.0の完全パス対応検証と範囲限定無ヒット表現を適用する |
+| Scenario 1.4.0、profile指定 | 検証済みパス集合で現在版Workspaceを絞り、1.4.0の検索規則を適用する |
+| 旧保存物・旧正準履歴 | 保存されたScenario版に応じた既存規則で読み取り・再生検証する。schemaの書換え、profileの補完、新検索意味での再解釈、再保存を行わない。既存の旧投影互換処理も維持する |
+| 新保存物・新正準履歴 | 固定scenario.jsonと既存Searchイベントから同じReducerで再生し、保存状態・本人情報・投影の不一致を拒否する |
+| 旧VA/VBの報告・run・失敗試行 | ファイルを保持し、新対象のPASSへ読み替えない。新manifest・新保存先で影響再検証とD14の試験を記録する |
+
+この改訂で入力schemaは増えるが、Store/状態/イベントschemaの移行は予定しない。旧版・新版の分岐はScenario版を正本とし、profileフィールドの有無だけで旧版へ新意味を適用しない。新仕様の利用を取りやめる場合は旧版入力と対応する実装版を使った別実行とし、新版の既存runを旧版へ変換しない。
+
+Task 2.6→2.7を別段階で実装・検証し、その後に6.6の影響再検証とTask 7.2の新C試験を独立に実施する。従来の完了20件は旧対象の記録として維持し、追加3件は未完了で追跡する。G7/VA判定とVB判定を相互の実施・合格の前提にしない。実装に新たな契約判断・不変条件との衝突が必要なら、影響と選択肢を報告して当該作業を停止する。
 
 ### 旧要件からの対応
 
@@ -606,10 +720,10 @@ WD01は定義の集約、WD09は本人・ツール定義の内容として重複
 - EX03/EX04の本人claim・個別許可・相談役割・AI条件・合成時間値は各演習入力の固定までに明示する。企業draftは取得済みだが、実名・詳細経歴・全員配置・実勤務時間・全社認証・予算の追加設定は不要。校正値やより確定した資料を得たら別版で検証する。
 - 実VS Code再現、コンパイル、経験的行動妥当性、介入効果。今回の合格の前提にはしない。
 
-### VB補足: Scenario 1.3.0の最小契約
+### VB補足: Scenario 1.3.0の最小契約と1.4.0への継承
 対応: WD02/03/09/12、SE03/05/06/14/19/20、EP04/06/11。
 1.3.0はrootに任意のtool_availability={"code.search": boolean}を持つ。未指定および旧版は従来どおりavailable。これは固定World実状態で、Policy入力や候補一覧へ直接転記しない。capabilityと候補の静的妥当性は維持する。
 検索を既存の開始・予約・消費・完了経路で試行し、実可用性がfalseならSearchのobserved_result=tool-unavailableをReducerで検証する。状態のobserved_messagesへtool-unavailable:code.searchを記録し、候補のtool.search判定はcapabilityとこの観測だけを使う。検索結果・claim・閲覧経験を生成しない。失敗は有効な業務観測でありINVALIDではない。固定条件なので障害通知、復旧、generation、取消規則は増やさない。
 候補の任意required_claims配列をLocalCandidate.required_claimsへ接続する。全IDの存在・非管理区分・非audit-only出典を検査する。本人の保持状態がWITHDRAWNでない全必要claimを要求し、INITIAL/ACQUIRED/TENTATIVE/CONFIRMEDは本人の保持として認める。真実や正解の認定ではない。PolicyとReducerは同じ既存前提関数を使う。初期claimにも1.3.0では同じ出典上限を検査する。
-検索の既存coverage予備実験を新計画で行い、情報差とPolicy候補・操作差を分ける。coverageとtarget_idの整合変更は一つの意味的な参照収録介入とし、Workspace、クエリ、Policyを固定する。情報差しかなければVBの行動分岐PASSにしない。
-追加契約は1.3.0だけで受理する。旧版は新フィールドを拒否し、旧可用性・知識前提なしの意味を維持する。新たな保存artifact・イベント族・状態schemaは不要で、固定入力はscenario.json、観測は既存Searchとobserved_messagesに保持し、同じReducerで再生する。未知の不正失敗値は拒否する。旧保存物を再保存・改変しない。G7の本人IDは観測内容だけから導出し、未観測のWorld可用性を混ぜない。
+1.3.0段階のcoverage予備実験ではcoverageとtarget_idの整合変更を一つの意味的な参照収録介入とし、Workspace、クエリ、Policyを固定した。旧報告の情報差とPolicy候補・操作差を区別し、情報差だけの結果を行動分岐PASSにしない。旧結果を保持し、追加承認された範囲介入はD14の別計画で扱う。
+可用性・required_claims・初期知識出典検査は1.3.0及び1.4.0で受理し、1.0〜1.2は当該新フィールドを拒否して従来意味を維持する。search_profileは1.4.0だけで受理する。新たな保存artifact・イベント族・状態schemaは不要で、固定入力はscenario.json、観測は既存Searchとobserved_messagesに保持し、同じReducerで再生する。未知の不正失敗値は拒否する。旧保存物を再保存・改変しない。G7の本人IDは観測内容だけから導出し、未観測のWorld可用性・検索範囲・profile digestを混ぜない。

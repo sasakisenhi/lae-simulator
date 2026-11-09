@@ -1,0 +1,5 @@
+{
+  "mode": "single",
+  "generators": [{"provider":"fixed","model":"fixture"}],
+  "budget": {"max_requests":1,"max_request_tokens":2000000,"max_total_tokens":2000000,"max_estimated_cost_usd":"0"}
+}

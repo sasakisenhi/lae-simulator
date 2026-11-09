@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "scope": "new interview/application modules; all import depths",
+  "graph": {
+    "lae_simulator.interview_evaluation": [
+      "lae_simulator.adapters.interview_budget",
+      "lae_simulator.adapters.interview_config",
+      "lae_simulator.adapters.interview_remote",
+      "lae_simulator.simulation.interview"
+    ],
+    "lae_simulator.scenario_cli": [
+      "lae_simulator.adapters.interview_config",
+      "lae_simulator.interview_evaluation"
+    ],
+    "lae_simulator.simulation.interview": [
+      "lae_simulator.simulation.interview_contract",
+      "lae_simulator.simulation.interview_validation"
+    ],
+    "lae_simulator.simulation.interview_contract": [],
+    "lae_simulator.simulation.interview_validation": [
+      "lae_simulator.simulation.interview_contract"
+    ],
+    "lae_simulator.adapters.interview_config": [
+      "lae_simulator.simulation.interview_contract"
+    ],
+    "lae_simulator.adapters.interview_budget": [
+      "lae_simulator.adapters.interview_config",
+      "lae_simulator.simulation.interview_contract"
+    ],
+    "lae_simulator.adapters.interview_remote": [
+      "lae_simulator.adapters.interview_budget",
+      "lae_simulator.adapters.interview_config",
+      "lae_simulator.simulation.interview_contract",
+      "lae_simulator.simulation.interview_validation"
+    ]
+  }
+}

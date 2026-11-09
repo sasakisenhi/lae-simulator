@@ -8,7 +8,11 @@ version = "0.1.0"
 description = "Reproducible synthetic issue simulation foundation"
 readme = "README.md"
 requires-python = "==3.14.8"
-dependencies = []
+dependencies = [
+    "google-genai==3.0.0",
+    "openai==3.46.0",
+    "pydantic==2.14.3",
+]
 
 [project.scripts]
 lae-sim = "lae_simulator.cli:main"
@@ -16,3 +20,6 @@ lae-sim = "lae_simulator.cli:main"
 [tool.uv]
 package = true
 
+
+[tool.mypy]
+python_executable = ".venv/bin/python"

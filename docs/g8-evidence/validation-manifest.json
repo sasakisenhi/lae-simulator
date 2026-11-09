@@ -1,0 +1,81 @@
+{
+  "schema": "g8-offline-validation-1",
+  "date": "2026-11-08",
+  "basis_commit": "dc53444",
+  "tests_passed": 306,
+  "va_regression_cases_passed": 28,
+  "independent_review": "all reported findings resolved; no new major findings",
+  "live_api_test": false,
+  "acceptance": {
+    "6.3": "NOT READY",
+    "6.5": "NOT READY",
+    "semantic_evaluation": "INCONCLUSIVE",
+    "VB": "INCONCLUSIVE",
+    "VC": "not started",
+    "VF": "not started"
+  },
+  "commands": {
+    "sync": {
+      "command": "uv sync --locked",
+      "exit_code": 0,
+      "log": "sync.log"
+    },
+    "lock": {
+      "command": "uv lock --check",
+      "exit_code": 0,
+      "log": "lock.log"
+    },
+    "unittest": {
+      "command": "uv run --locked python -m unittest discover -s tests -v",
+      "exit_code": 0,
+      "log": "unittest.log"
+    },
+    "ruff": {
+      "command": "uvx --from ruff==0.17.4 ruff check .",
+      "exit_code": 0,
+      "log": "ruff.log"
+    },
+    "mypy": {
+      "command": "uvx --from mypy==2.4.1 mypy --strict src tests",
+      "exit_code": 0,
+      "log": "mypy.log"
+    },
+    "compileall": {
+      "command": "uv run --locked python -m compileall -q src tests",
+      "exit_code": 0,
+      "log": "compileall.log"
+    },
+    "openspec": {
+      "command": "openspec validate build-reproducible-simulation-foundation --type change --strict --no-interactive",
+      "exit_code": 0,
+      "log": "openspec.log"
+    },
+    "diff": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "log": "diff.log"
+    }
+  },
+  "source_digests": {
+    "fixtures/g8/commands.json": "sha256:4dc8e0539643b533edf1124c8032da4f6c33c5dc65af16cede569495e3136b3f",
+    "fixtures/g8/comparative.json": "sha256:1015fb7d9add41f2ef28802980c428db435e566477951f54abadb52f0701241a",
+    "fixtures/g8/fixed.json": "sha256:9381df54b131c9b6836cf1bb92f14844c4a89e066a988b3f8e22401fec5108e4",
+    "fixtures/g8/gemini.json": "sha256:2c536ff58c89b9ccd681da0ee0a0f9b36e101324cea7345d6be82d2707f5018a",
+    "fixtures/g8/openai.json": "sha256:16aed0241e90346b04346e8891944dba35659c3a0717fdafe12333b0204e3b9c",
+    "fixtures/g8/questions.json": "sha256:c71ec3cae05a6febd09b19b9ceca16ff298398df5b6560bb003b23b033e92a96",
+    "pyproject.toml": "sha256:68a17735be76beb960e5980adffadc7f0b184eeb7b514b77713702ebaf1b5206",
+    "src/lae_simulator/adapters/interview_budget.py": "sha256:5543eacc4169fa4c30ac8b23d325fe2bc44b99b8422a4905eae91b98d9de5676",
+    "src/lae_simulator/adapters/interview_config.py": "sha256:d8f8df48f664e0f0cde7db008d94bd454d96c57854536c47c528dcf57fb603a7",
+    "src/lae_simulator/adapters/interview_remote.py": "sha256:41db011253a9966407d542c32f326517811180a59e88cf8e29db74fdfb9631bd",
+    "src/lae_simulator/cli.py": "sha256:20a32a3c7f392b626c27720892c09b360b04709fb3820c23b82388550359b9a0",
+    "src/lae_simulator/interview_evaluation.py": "sha256:d9eace4d084349023872a47c27ae30bfa339f0ce03ee2c51ee362a0aedec40bc",
+    "src/lae_simulator/scenario_cli.py": "sha256:0a61fd21fc4716df17578f1adc1650ebadd98c97d50cd1828a5ae12a3f1d5d1a",
+    "src/lae_simulator/simulation/interview.py": "sha256:85e741ef423f637d82e64f75b5146acea5cd771a9f44c6b381dacdaa5bf93a06",
+    "src/lae_simulator/simulation/interview_contract.py": "sha256:93240573c7c6756dddae35d578743a04538557332f877b8b3f28864f09b8c4f0",
+    "src/lae_simulator/simulation/interview_validation.py": "sha256:9a4ff38d2eb3cc31925f1ce211bd170250babf3a91f1fceca5dda2cd3bf1cea2",
+    "tests/test_g8_cli.py": "sha256:36bd9a40bba021d99d7b4afef8186585597e249b2107ede076bcce687d0ff8c1",
+    "tests/test_interview.py": "sha256:0c0930eb55f4bf507016ff787e1994cd8175676818d1eb376c9233d51a072f57",
+    "tests/test_interview_remote.py": "sha256:2fbfb42fef9445f45e961d00ea882a91a7e14ef021b5937760811e49ebbc15b1",
+    "uv.lock": "sha256:95c1eb5376de2abd8a4ef8fca686a3f6baa907765d251482abbe48d9ffb66da6"
+  }
+}

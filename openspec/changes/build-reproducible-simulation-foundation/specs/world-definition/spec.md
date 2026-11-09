@@ -24,12 +24,24 @@
 - **WHEN** 非対応の定義版を入力する
 - **THEN** 暗黙に変換せず拒否する
 
+#### Scenario: Invalid fixed search profile
+- **WHEN** Scenario 1.4.0のsearch_profileがpaths以外のフィールド、不正な型、空配列、重複、未知パス、絶対パス、非正規化パス、親参照またはglobを含む
+- **THEN** 実行前に対象と理由を示して拒否し、全Workspace検索へのフォールバックや返却結果の直接指定を受け付けない
+
+#### Scenario: Ambiguous workspace reference binding
+- **WHEN** Scenario 1.4.0の収録済みWorkspace参照を、検証済み出典・完全Workspaceパス・根拠行範囲へ対応付けられない、または同名ファイルによって対応が曖昧になる
+- **THEN** 実行前に対象参照と理由を示して拒否し、選択された検索範囲やファイルの列挙順で曖昧さを解消しない。未収録・未解決参照やWorkspace外の出典を有効なWorkspace参照へ補完しない
+
 ### Requirement: WD03 Identifiable frozen inputs
 システムは、実行に使用する全入力と規則を内容識別可能なスナップショットとして固定しなければならない（SHALL）。
 
 #### Scenario: Changed preparation output
 - **WHEN** 実行後に元資料やLLMの候補抽出結果が変更される
 - **THEN** 保存済み実行は使用時の入力を保持し、新しい入力と区別できる
+
+#### Scenario: Frozen search scope
+- **WHEN** Scenario 1.4.0で検索対象範囲を指定して実行する
+- **THEN** 指定パス集合を実行入力の内容識別に含めて固定し、別範囲は別入力・別実行として識別する。元の入力・保存物を更新しない
 
 ### Requirement: WD04 Predetermined study timeline
 システムは、実行開始・終了条件と調査対象期間を結果確認前に固定しなければならない（SHALL）。
@@ -110,19 +122,34 @@
 - **THEN** 対象外またはUNKNOWNを示し、関係が存在しないとは断定しない
 
 ### Requirement: WD14 Minimal intervention input contract
-システムはScenario 1.3.0で、静的capabilityと独立した固定検索可用性を受理しなければならない（SHALL）。
+システムはScenario 1.3.0及び1.4.0で、静的capabilityと独立した固定検索可用性を受理しなければならない（SHALL）。
 
 #### Scenario: Independent fixed tool availability
 - **WHEN** 同じ候補・capabilityに異なる固定検索可用性を与える
 - **THEN** 両定義を受理し、可用性を固定入力として識別できる
 
 #### Scenario: Legacy input
-- **WHEN** 旧Scenario版を読み込む
-- **THEN** 新フィールドは受理せず、既存定義の従来動作を維持する
+- **WHEN** Scenario 1.0〜1.2を読み込む
+- **THEN** tool_availabilityと候補required_claimsは受理せず、既存定義の従来動作を維持する
 
 ### Requirement: WD15 Validated knowledge prerequisite inputs
-システムはScenario 1.3.0の候補required_claimsと初期知識について、全IDと出典を検証し、未知claim・空出典・管理区分・監査専用出典を拒否しなければならない（SHALL）。
+システムはScenario 1.3.0及び1.4.0の候補required_claimsと初期知識について、全IDと出典を検証し、未知claim・空出典・管理区分・監査専用出典を拒否しなければならない（SHALL）。
 
 #### Scenario: Protected knowledge prerequisite
 - **WHEN** 必要claimまたは初期claimが未定義か本人に許可されない出典を持つ
 - **THEN** 対象を示して入力拒否し、本人情報へ混入させない
+
+### Requirement: WD16 Validated fixed search profile inputs
+システムはScenario 1.4.0で、検証済みWorkspaceの正規化済みパスの非空集合を、任意のsearch_profile.pathsとして受理しなければならない（SHALL）。
+
+#### Scenario: Explicit workspace search scope
+- **WHEN** 管理者が検証済みWorkspaceに存在するパスを重複なくsearch_profile.pathsへ指定する
+- **THEN** その集合を固定検索対象として受理し、Workspaceの内容・版・権限・capability・Policyを変更しない
+
+#### Scenario: Omitted search profile
+- **WHEN** Scenario 1.4.0でsearch_profileを指定しない
+- **THEN** 検索対象を全Workspaceとし、プロファイルの省略を入力不備として扱わない
+
+#### Scenario: Search profile on legacy versions
+- **WHEN** Scenario 1.0〜1.3へsearch_profileを追加する
+- **THEN** 非対応フィールドとして拒否する。旧版で同フィールドを省略した既存入力の全Workspace検索と版別の参照解決を維持する
