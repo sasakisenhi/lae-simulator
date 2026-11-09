@@ -29,6 +29,11 @@ from lae_simulator.simulation.local_model import (
 from lae_simulator.world.collaboration import collaboration_scopes, load_collaboration
 from lae_simulator.world.errors import ValidationIssue, WorldValidationError
 from lae_simulator.world.scenario import load_scenario_bundle
+from lae_simulator.world.search_profile import (
+    WorkspaceReference,
+    normalize_search_paths,
+    resolve_workspace_references,
+)
 from lae_simulator.world.timing import load_timing
 
 
@@ -220,6 +225,15 @@ def load_scenario_execution(path: str | Path) -> ScenarioExecution:
         target = target.removesuffix(".b64")
         digest_by_target[target] = "sha256:" + record["sha256"]
     workspace = [replace(item, digest=digest_by_target.get(item.path, item.digest)) for item in workspace]
+    search_paths = None
+    workspace_references: tuple[WorkspaceReference, ...] = ()
+    if bundle.schema_version == "1.4.0":
+        workspace_by_path = {item.path: item.content for item in workspace}
+        # G2 checks the fixed manifest; this second check binds its resolution
+        # to the Workspace created only after G1 provenance verification.
+        if "search_profile" in data:
+            search_paths = normalize_search_paths(data["search_profile"], tuple(workspace_by_path))
+        workspace_references = resolve_workspace_references(data["references"], workspace_by_path)
     execution = ScenarioExecution(
         schema_version=bundle.schema_version, exercise_id=bundle.exercise_id,
         content_id=bundle.content_id, canonical_bytes=canonical,
@@ -245,6 +259,7 @@ def load_scenario_execution(path: str | Path) -> ScenarioExecution:
         collaboration=(load_collaboration(data["collaboration"], *collaboration_scopes(
             data, {item['id']: item['classification'] for item in manifest['sources']}),
             {item.id for item in patches_list}) if "collaboration" in data else None),
+        search_paths=search_paths, workspace_references=workspace_references,
     )
     return mark_scenario_verified(execution)
 

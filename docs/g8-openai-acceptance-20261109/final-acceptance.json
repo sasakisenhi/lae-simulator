@@ -1,0 +1,41 @@
+{
+  "schema": "g8-final-human-acceptance-1",
+  "change": "build-reproducible-simulation-foundation",
+  "scope": [
+    "6.3",
+    "6.5"
+  ],
+  "verdict": "PASS",
+  "selected_generator": {
+    "provider": "openai",
+    "model": "gpt-6.1-terra",
+    "prompt": "employee-interview-v2"
+  },
+  "live_questions": 11,
+  "complete_questions": 11,
+  "structured_claims": 26,
+  "independent_findings": {
+    "SUPPORTED": 24,
+    "UNCERTAIN": 2
+  },
+  "human_adjudication": {
+    "verdict": "Both remaining responses acceptable",
+    "source": "human-adjudication.json",
+    "sha256": "1640792510d89c7db90ba78193e864a6ad055a287aa7f103858d764615903dc3"
+  },
+  "independent_review_sha256": "af14c4681804ba572707ee0c05af358e64abeab4efc59203cb721a5d2952d785",
+  "independent_uncertainty_preserved": true,
+  "unanimity_claimed": false,
+  "automatic_publication_changed": false,
+  "prior_results_rewritten": false,
+  "new_api_calls_this_adjudication": 0,
+  "prompt_v3": "NOT_REQUIRED_NOT_IMPLEMENTED_NOT_SENT",
+  "validation": {
+    "unittest": 342,
+    "ruff": "PASS",
+    "mypy_strict_files": 87,
+    "compileall": "PASS",
+    "openspec_and_diff": "checked again after task updates"
+  },
+  "limits": "Fixed G8 fixtures and selected generator; no general semantic correctness or empirical effectiveness guarantee."
+}

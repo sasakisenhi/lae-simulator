@@ -1,0 +1,38 @@
+[
+  {
+    "path": ".lae-runs/g8-live-comparison-20261109-approved/evaluation.json",
+    "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109-approved",
+    "reserved_requests": 22,
+    "acceptance": "INCONCLUSIVE"
+  },
+  {
+    "path": ".lae-runs/g8-live-comparison-20261109-repeat-1/evaluation.json",
+    "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109-repeat-1",
+    "reserved_requests": 22,
+    "acceptance": "INCONCLUSIVE"
+  },
+  {
+    "path": ".lae-runs/g8-live-comparison-20261109/evaluation.json",
+    "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109",
+    "reserved_requests": 0,
+    "acceptance": "NOT READY"
+  },
+  {
+    "path": "docs/g8-live-results-20261109/evaluation.json",
+    "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109",
+    "reserved_requests": 0,
+    "acceptance": "NOT READY"
+  },
+  {
+    "path": "docs/g8-live-review/live-results-20261109-repeat-1/evaluation.json",
+    "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109-repeat-1",
+    "reserved_requests": 22,
+    "acceptance": "INCONCLUSIVE"
+  },
+  {
+    "path": "docs/g8-live-review/live-results-20261109/evaluation.json",
+    "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109-approved",
+    "reserved_requests": 22,
+    "acceptance": "INCONCLUSIVE"
+  }
+]

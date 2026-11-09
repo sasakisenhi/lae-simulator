@@ -279,7 +279,7 @@ class RemoteReviewRegressionTests(RemoteTestSupport):
 class SDKFailureTests(unittest.TestCase):
     def test_sdk_error_categories_never_expose_error_text(self) -> None:
         for code, expected in ((401,"authentication-failed"), (403,"authentication-failed"),
-                               (429,"rate-limit"), (503,"provider-unavailable"), (400,"provider-error")):
+                               (429,"rate-limit-unknown"), (503,"provider-unavailable"), (400,"provider-error")):
             error = RuntimeError("secret URL key=forbidden-key")
             error.status_code = code  # type: ignore[attr-defined]
             for provider, transport, target, call in (

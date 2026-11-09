@@ -1,0 +1,155 @@
+[
+  {
+    "run": "g8-live-comparison-20261109-approved",
+    "provider": "provider-1",
+    "question": "Q01",
+    "status": "rejected",
+    "support_fails": 8,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-approved",
+    "provider": "provider-1",
+    "question": "Q02",
+    "status": "rejected",
+    "support_fails": 7,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-approved",
+    "provider": "provider-1",
+    "question": "Q03",
+    "status": "inconclusive",
+    "support_fails": 0,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-approved",
+    "provider": "provider-1",
+    "question": "Q04",
+    "status": "rejected",
+    "support_fails": 3,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-approved",
+    "provider": "provider-1",
+    "question": "Q05",
+    "status": "inconclusive",
+    "support_fails": 0,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-approved",
+    "provider": "provider-1",
+    "question": "Q06",
+    "status": "rejected",
+    "support_fails": 2,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-approved",
+    "provider": "provider-1",
+    "question": "Q07",
+    "status": "inconclusive",
+    "support_fails": 0,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-1",
+    "question": "Q02",
+    "status": "rejected",
+    "support_fails": 7,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-1",
+    "question": "Q03",
+    "status": "inconclusive",
+    "support_fails": 0,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-1",
+    "question": "Q04",
+    "status": "rejected",
+    "support_fails": 6,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-1",
+    "question": "Q05",
+    "status": "inconclusive",
+    "support_fails": 0,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-1",
+    "question": "Q06",
+    "status": "rejected",
+    "support_fails": 2,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-1",
+    "question": "Q07",
+    "status": "inconclusive",
+    "support_fails": 0,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-1",
+    "question": "Q10",
+    "status": "inconclusive",
+    "support_fails": 0,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-2",
+    "question": "Q01",
+    "status": "rejected",
+    "support_fails": 2,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-2",
+    "question": "Q02",
+    "status": "rejected",
+    "support_fails": 7,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  },
+  {
+    "run": "g8-live-comparison-20261109-repeat-1",
+    "provider": "provider-2",
+    "question": "Q03",
+    "status": "accepted",
+    "support_fails": 0,
+    "disclosure_fails": 0,
+    "cross_fails": 0
+  }
+]

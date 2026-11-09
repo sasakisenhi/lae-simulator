@@ -1,0 +1,89 @@
+{
+  "schema": "g8-independent-review-check-1",
+  "integrity": "PASS",
+  "context_isolation": {
+    "fresh_cli_session": true,
+    "sandbox": "read-only",
+    "project_directory_not_used": true,
+    "input_only_anonymized_packet": true,
+    "tools_called": 0,
+    "primary_scores_supplied": false,
+    "provider_mapping_supplied": false,
+    "limitation": "Read-only prevents writes; absence of tools in transcript, rather than sandbox alone, supports no outside-file reads."
+  },
+  "coverage": {
+    "rows": 44,
+    "complete": 17,
+    "incomplete": 2,
+    "missing": 25,
+    "structured_statement_reviews": 58,
+    "visible_incomplete_statement_reviews": 17
+  },
+  "reviewer_finding_counts_statement_units_including_incomplete": {
+    "SUPPORTED": 56,
+    "UNSUPPORTED": 15,
+    "UNCERTAIN": 4
+  },
+  "required_unknown": {
+    "source_denominator": 20,
+    "findings": {
+      "APPROPRIATE": 6,
+      "INAPPROPRIATE_EPISTEMIC_KIND": 2,
+      "MISSING": 12
+    },
+    "disputed_epistemic_kind_findings": [
+      "run-X/candidate-B/Q04",
+      "run-Y/candidate-B/Q04"
+    ]
+  },
+  "aggregate_corrections": [
+    {
+      "field": "coverage",
+      "reviewer_raw": {
+        "records_reviewed": 44,
+        "complete": 16,
+        "incomplete": 2,
+        "missing": 26
+      },
+      "source_verified": {
+        "records_reviewed": 44,
+        "complete": 17,
+        "incomplete": 2,
+        "missing": 25
+      }
+    },
+    {
+      "field": "required_unknown_questions.total",
+      "reviewer_raw": 24,
+      "source_verified": 20
+    }
+  ],
+  "do_not_infer": [
+    "Counts of statement-level findings are not the original atomic concrete-claim rate.",
+    "No missing or incomplete response is counted as successful UNKNOWN.",
+    "No overall G8 PASS or candidate ranking."
+  ],
+  "disputed_findings": [
+    {
+      "kind": "privacy",
+      "issue": "Role labels ROLE-PEER/ROLE-APPROVER and known material/version names B0/E0/H0 are participant-visible labels, not automatically private support IDs; no G7 ceiling expansion is authorized.",
+      "treatment": "Retain original flags; require adjudication against disclosure rules. Private PER IDs in incomplete prose remain a substantiated concern."
+    },
+    {
+      "kind": "abstention",
+      "issue": "Original rubric permits unknown, denial or not-remembered when information is absent. Reviewer categorically penalized not_remembered on Q04.",
+      "treatment": "Retain original opinion as disputed, not definitive failure; review the actual wording and original rubric."
+    }
+  ],
+  "task_6_3": "INCONCLUSIVE",
+  "task_6_5": "INCOMPLETE",
+  "primary_user_scoring": "NOT RECORDED",
+  "usage": {
+    "input_tokens": 37733,
+    "cached_input_tokens": 12288,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 10216,
+    "reasoning_output_tokens": 197
+  },
+  "live_generator_requests_added": 0
+}

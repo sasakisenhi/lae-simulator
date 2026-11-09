@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import re
@@ -10,6 +11,10 @@ from pathlib import Path
 from typing import Any, Never
 
 from lae_simulator.world.errors import ValidationIssue, WorldValidationError
+from lae_simulator.world.search_profile import (
+    normalize_search_paths,
+    resolve_workspace_references,
+)
 
 JsonObject = dict[str, Any]
 SHA256 = re.compile(r"sha256:[0-9a-f]{64}\Z")
@@ -29,7 +34,7 @@ PREDICATES = frozenset({
     "all", "equals", "nonempty-url", "not", "one-of", "present",
     "recorded", "same-version", "type-allowed",
 })
-SUPPORTED_SCENARIO_VERSIONS = frozenset({"1.0.0", "1.1.0", "1.2.0", "1.3.0"})
+SUPPORTED_SCENARIO_VERSIONS = frozenset({"1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.4.0"})
 
 
 class _DuplicateKeyError(ValueError):
@@ -95,6 +100,7 @@ class _Validator:
         self.sources: set[str] = set()
         self.source_digests: dict[str, set[str]] = {}
         self.source_classes: dict[str, str] = {}
+        self.source_files: dict[str, list[JsonObject]] = {}
         self.references: set[str] = set()
         self.claims: set[str] = set()
         self.candidates: set[str] = set()
@@ -161,8 +167,10 @@ class _Validator:
             "schema_version", "source_manifest", "world_claims",
         }
         optional = {"semantic_model", "timing", "collaboration"}
-        if self.root.get('schema_version') == '1.3.0':
+        if self.root.get('schema_version') in {'1.3.0', '1.4.0'}:
             optional.add('tool_availability')
+        if self.root.get('schema_version') == '1.4.0':
+            optional.add('search_profile')
         self.keys(self.root, "$", required, optional)
         if 'tool_availability' in self.root:
             tools = self.obj(self.root['tool_availability'], '$.tool_availability')
@@ -171,8 +179,8 @@ class _Validator:
                 self.issue('$.tool_availability', 'invalid-value', 'search availability must be boolean')
         schema_version = self.text(self.root.get("schema_version"), "$.schema_version")
         if schema_version not in SUPPORTED_SCENARIO_VERSIONS:
-            self.issue("$.schema_version", "unsupported-version", "expected a supported Scenario version (1.0.0 through 1.3.0)")
-        if schema_version in {"1.1.0", "1.2.0", "1.3.0"} and "semantic_model" not in self.root:
+            self.issue("$.schema_version", "unsupported-version", "expected a supported Scenario version (1.0.0 through 1.4.0)")
+        if schema_version in {"1.1.0", "1.2.0", "1.3.0", "1.4.0"} and "semantic_model" not in self.root:
             self.issue("$.semantic_model", "missing-field", "scenario requires a bounded semantic model")
         if schema_version == "1.0.0" and "semantic_model" in self.root:
             self.issue("$.semantic_model", "version-conflict", "semantic models require scenario 1.1.0")
@@ -183,10 +191,12 @@ class _Validator:
         self._validate_claims()
         self._validate_context()
         self._validate_participant_profile()
-        if schema_version == '1.3.0':
+        if schema_version in {'1.3.0', '1.4.0'}:
             profile = self.root.get('participant_profile')
             if isinstance(profile, dict):
                 self._knowledge_refs(profile.get('initial_claim_ids'), '$.participant_profile.initial_claim_ids')
+        if schema_version == '1.4.0':
+            self._validate_search_profile()
         self._validate_candidates()
         if "timing" in self.root:
             from lae_simulator.world.timing import load_timing
@@ -280,8 +290,56 @@ class _Validator:
         if isinstance(item.get("id"), str):
             self.source_digests[item["id"]] = digests
             self.source_classes[item["id"]] = str(record.get("classification", ""))
+            files = record.get("files", [])
+            self.source_files[item["id"]] = [entry for entry in files if isinstance(entry, dict)]
         if item.get("digest") not in digests:
             self.issue(f"{path}.digest", "digest-mismatch", "digest is absent from the G1 source")
+
+    def _g1_workspace(self) -> dict[str, bytes]:
+        """Build B0's decoded runtime paths from G1 fixed files for input validation."""
+        workspace: dict[str, bytes] = {}
+        g1_root = (self.bundle_dir.parent / "g1").resolve()
+        for record in self.source_files.get("B0", []):
+            relative = record.get("path")
+            if not isinstance(relative, str) or not relative.startswith("raw/b0/"):
+                continue
+            try:
+                source_path = (g1_root / relative).resolve(strict=True)
+                source_path.relative_to(g1_root)
+                raw = source_path.read_bytes()
+                if record.get("encoding") == "base64":
+                    content = base64.b64decode(b"".join(raw.split()), validate=True)
+                elif record.get("encoding") == "utf-8-drop-one-terminal-newline":
+                    raw.decode("utf-8")
+                    content = raw[:-1] if raw.endswith(b"\n") else raw
+                else:
+                    continue
+                if hashlib.sha256(content).hexdigest() != record.get("sha256"):
+                    continue
+                path = relative.removeprefix("raw/b0/")
+                if path.endswith(".b64"):
+                    path = path[:-4]
+                elif path.endswith("/shared.b64"):
+                    path = path[:-4] + ".ts"
+                workspace[path] = content
+            except (OSError, ValueError, UnicodeError):
+                continue
+        return workspace
+
+    def _validate_search_profile(self) -> None:
+        references = self.root.get("references")
+        # Core reference validation already reports a non-array value.
+        # Continue profile validation without iterating malformed input.
+        reference_items = references if isinstance(references, list) else []
+        workspace = self._g1_workspace()
+        try:
+            if "search_profile" in self.root:
+                normalize_search_paths(self.root["search_profile"], tuple(workspace))
+            resolve_workspace_references(
+                [item for item in reference_items if isinstance(item, dict)], workspace
+            )
+        except WorldValidationError as error:
+            self.issues.extend(error.issues)
 
     def _digest(self, value: Any, path: str) -> None:
         digest = self.text(value, path)
@@ -425,10 +483,10 @@ class _Validator:
             path = f"$.candidates[{index}]"
             item = self.obj(raw, path)
             self.keys(item, path, required, {'patch_ids', 'required_claims'}
-                      if self.root.get('schema_version') == '1.3.0' else {'patch_ids'})
+                      if self.root.get('schema_version') in {'1.3.0', '1.4.0'} else {'patch_ids'})
             if 'required_claims' in item:
                 self._knowledge_refs(item['required_claims'], path + '.required_claims')
-            if (self.root.get("schema_version") in {"1.2.0", "1.3.0"}
+            if (self.root.get("schema_version") in {"1.2.0", "1.3.0", "1.4.0"}
                     and item.get("operation") == "patch.apply" and not item.get("patch_ids")):
                 self.issue(f"{path}.patch_ids", "missing-patch-targets", "patch.apply requires explicit targets")
             if "patch_ids" in item:

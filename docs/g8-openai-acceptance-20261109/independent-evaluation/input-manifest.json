@@ -1,0 +1,19 @@
+{
+  "packet": {
+    "employee-package.json": "aa3f7e1e9bdac2e9bf82aae8d647083b200f7f3f3231c3a4ec68101772f6233a",
+    "retrieved-catalog.json": "4c402d8329656fa10def142a95346afb86e90a166f4eab288d8a108473f4569f",
+    "questions.json": "6236a824d3507ed445344c9ba2676513ea7e7cb539e04426da450f11e42a5bf4",
+    "system-prompt.txt": "ec6fc7ff6a8dc11f82e82362fb7ec29b74b4ba91e52bb46d6bf8fe7e08507c6b",
+    "answer-schema.json": "1fcf3e8afa7fd8e71151ea04365b748ebfc8b136e1c2a170944150027223cb1a",
+    "review-protocol.json": "a219b2f2ad35d40517f6b4778471c199d9bc14edfe83f5eb50820fdf41114ed4",
+    "responses.json": "2018123334774c8487259b47ee6528729ca5dfe83f5f00c53ce1c750757eaf6c"
+  },
+  "review_input": "a5690f7be506e2b296c39b34b25d8a47dfb75c45b21e88fe68d093fc5919ab4c",
+  "output_schema": "4c4baa7774b4cbcb68b70944e5474588bb2329dd2e1bb4df5366e7d82a39f6f6",
+  "source_audit": "104fc0878e9b8627fe6afcd86b0b3347e08086e44fc363585d39e4c2e5e19ec8",
+  "tools_allowed": false,
+  "sandbox": "read-only",
+  "primary_scores_included": false,
+  "model_identity_included": false,
+  "identity_scan": "provider and model names absent"
+}

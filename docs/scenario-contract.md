@@ -26,3 +26,54 @@ C01–C12はすべて `mode=modeled` である。C11/C12も実行計画とUNKNOW
 EX01/EX02は演習目的と仮想提出先を固定する。EX03は一人の仮名参加者、読取り・検索・仮想編集・modeled check・情報質問の範囲を宣言し、相談相手を承認者とは扱わない。EX04はこの入力ではAI無効、時間は合成tick、応答は期限前に保証されないとする。会社全体の個別権限、AI承認、実名の専門家、応答SLAは未決定の会社事実として補完しない。
 
 抽出履歴は手動抽出・レビューを記録する。準備LLMは使用しておらず、実行時LLM、Google Drive、GitHubへの接続は不要である。
+
+## Scenario版別入力例
+
+以下は各版で追加・異なる入力を示す断片であり、完全なScenario文書ではない。
+
+### 1.0.0 / 1.1.0
+
+```json
+{"schema_version":"1.0.0","candidates":[{"operation":"patch.apply"}]}
+```
+
+1.0.0/1.1.0では`patch.apply`候補の`patch_ids`省略を旧意味どおり全Patch選択可能として扱う。`search_profile`は未知入力として拒否する。
+
+### 1.2.0 / 1.3.0
+
+```json
+{"schema_version":"1.3.0","tool_availability":{"code.search":true}}
+```
+
+1.2.0/1.3.0では`patch.apply`に`patch_ids`が必須。1.3.0は`tool_availability`とCandidateの`required_claims`を受理し、初期知識・要求知識の出典上限を検査する。両版とも`search_profile`は拒否する。
+
+### 1.4.0
+
+```json
+{"schema_version":"1.4.0","tool_availability":{"code.search":true},"search_profile":{"paths":["server/src/is.ts"]}}
+```
+
+1.4.0は1.3.0の入力検査と実行意味を継承する。`search_profile`省略時はWorkspace全体、指定時は非空の一意な相対POSIXパス集合だけを検索範囲とする。明示した`null`は拒否する。参照の`evidence`は既存欄を使い、B0の収録済み参照を出典・完全Workspaceパス・1始まり包含行範囲へ一意に解決する。曖昧、誤出典、範囲外の行は実行前に拒否し、未収録・未解決参照を収録済みへ昇格させない。検索範囲を狭めても参照の曖昧さは解消しない。範囲や結果を直接入力するフィールドはない。
+# Scenario 1.4.0 search result contract
+
+For Scenario 1.4.0, a Search result is calculated from case-insensitive matches in the current Workspace version and the configured `search_profile.paths` only. Omitting `search_profile` searches all Workspace files. An explicit profile is a fixed set; its array order does not affect results. Recorded reference IDs are included only when their validated full Workspace path and line range contain a matching line, and only when the reference is recorded, non-audit, and not invalidated. Results are sorted deterministically.
+
+A successful search with no results records `no-match-in-search-scope`. This means only that the query had no match in that operation's scope. It does not assert that a match is absent outside the scope, that the search tool was unavailable, that a location is known, or that the participant understood the material. Search publication uses the existing `limitations` field to state that results are scope-limited without disclosing the paths or scope size. Earlier scenario versions retain their previous search and no-match semantics.
+
+## Scenario 1.4.0: 一つの参照は一つのファイルに限定する
+
+`evidence`は一つの完全Workspaceパスと、そのファイル内の行範囲に対応する。
+
+| 入力例 | 動作（対象と行が有効な場合） |
+|---|---|
+| `a.ts:1` | 受理 |
+| `a.ts:1-5,8-10` | 受理 |
+| `eslintServer.ts:692-700,823-827` | 受理 |
+| `a.ts:1,b.ts:2` | 拒否 |
+| `a.ts:1-3,b.ts:5-7` | 拒否 |
+
+異なる完全パスへ解決される指定は、`$.references[index].evidence`と理由コード
+`multiple-workspace-reference-paths`を含む入力エラーで拒否する。最後のファイルの採用、
+先行区間の付け替え、一部採用などの暗黙補正は行わない。同じ完全パスに解決される
+短い名前と完全パスの再指定は受理する。既存の単一ファイル参照と旧1.0〜1.3の
+入力検証意味は維持する。複数ファイル参照は将来必要性が確認された場合の別仕様変更とする。

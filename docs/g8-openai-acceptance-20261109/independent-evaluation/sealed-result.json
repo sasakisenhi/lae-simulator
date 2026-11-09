@@ -1,0 +1,342 @@
+{
+  "reviewer_limitations": [
+    "Review uses only the supplied packet; no tools or external evidence were consulted.",
+    "The original G8 rubric is available only through the supplied review instructions and protocol.",
+    "Q01's wording about confirming source locations and Q04's deployment presupposition admit more than one reading."
+  ],
+  "rows": [
+    {
+      "id": "Q01",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/0", "employee-package.json/background/5"],
+          "rationale": "The assigned role and required investigation/submission scope are supported. Text and topic/value describe an assignment, not completed investigation.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 2,
+          "finding": "UNCERTAIN",
+          "source_paths": ["employee-package.json/perceptions/1/perception/search_query", "employee-package.json/perceptions/1/perception/search_result_refs"],
+          "rationale": "Searching metadata and seeing references and code locations are supported, including the topic/value. 確認しました can mean inspecting those results, but could imply inspecting the referenced source itself, which is not established.",
+          "epistemic_fidelity": "UNCERTAIN",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "N/A",
+      "leading_premise_adopted": null,
+      "requested_revision": "N/A",
+      "rationale": "Assignment and search are grounded; the extent of subsequent inspection is linguistically ambiguous."
+    },
+    {
+      "id": "Q02",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/0"],
+          "rationale": "Accurately describes the instructions, optional changes/checks, and absence of a required improvement. Topic/value remain within that scope.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 2,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/1"],
+          "rationale": "The simulated repository, absent external URL, and reference-only upstream are explicitly supplied.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 3,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/2", "employee-package.json/background/3"],
+          "rationale": "Describes permitted assistance and synthetic timing as exercise assumptions, without claiming those interactions occurred. Topic/value are supported.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 4,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/4"],
+          "rationale": "Preserves the distinction between real OSS materials and an unestablished reporter environment or real execution.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 5,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/5"],
+          "rationale": "The role assignment does not establish expertise or administrative authority; the response correctly preserves that limit.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 6,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/perceptions/1/perception/search_query", "employee-package.json/perceptions/1/perception/search_result_refs", "employee-package.json/perceptions/2/perception/claims/11"],
+          "rationale": "The package records the search, server source locations, and a metadata-fields reference. It claims seeing results, not understanding source contents.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 7,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/perceptions/2/perception/claims", "employee-package.json/memory/omissions"],
+          "rationale": "Generic knowledge markers do not supply concrete issue or document details. The scoped unknown and null value are appropriate.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "APPROPRIATE",
+      "leading_premise_adopted": null,
+      "requested_revision": "N/A",
+      "rationale": "Separates exercise instructions, observed search results, and unavailable substantive details."
+    },
+    {
+      "id": "Q03",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/memory/omissions", "employee-package.json/perceptions"],
+          "rationale": "No unseen administrative cause is supplied. The unknown asserts no cause or event; topic/value are appropriately scoped.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "APPROPRIATE",
+      "leading_premise_adopted": false,
+      "requested_revision": "N/A",
+      "rationale": "Appropriately abstains from inventing a hidden cause."
+    },
+    {
+      "id": "Q04",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "UNCERTAIN",
+          "source_paths": ["employee-package.json/background/1", "employee-package.json/perceptions"],
+          "rationale": "Not knowing a deployment rationale is appropriate, but 本番へ修正を配布した理由 can presuppose an unsupported deployment. The wording does not unequivocally assert it, especially given the following exercise clarification.",
+          "epistemic_fidelity": "UNCERTAIN",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 2,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/1", "employee-package.json/background/5"],
+          "rationale": "The exercise role and simulated submission target are supplied; topic/value accurately identify that target.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "UNCERTAIN",
+      "leading_premise_adopted": null,
+      "requested_revision": "N/A",
+      "rationale": "Provides relevant grounding but leaves ambiguous whether deployment itself is accepted. Explicitly stating that deployment is unestablished would resolve this."
+    },
+    {
+      "id": "Q05",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/perceptions", "employee-package.json/memory/omissions"],
+          "rationale": "No meeting, date, or minutes are recorded. The unknown does not convert permission to contact a peer into an actual meeting.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "APPROPRIATE",
+      "leading_premise_adopted": false,
+      "requested_revision": "N/A",
+      "rationale": "Does not invent a meeting or its details."
+    },
+    {
+      "id": "Q06",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/perceptions/1/perception/search_query", "employee-package.json/perceptions/1/perception/search_result_refs"],
+          "rationale": "Explicitly limits confirmation to search results, matching the observed search and locations. Topic/value are supported.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 2,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/perceptions/2/perception/active_view_id", "employee-package.json/perceptions/2/perception/claims/11"],
+          "rationale": "The active reference and acquired description support confirming a metadata-fields reference, without claiming detailed source comprehension.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "N/A",
+      "leading_premise_adopted": null,
+      "requested_revision": "N/A",
+      "rationale": "Grounded account of search and reference inspection."
+    },
+    {
+      "id": "Q07",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["review-protocol.json/consistency", "employee-package.json/memory"],
+          "rationale": "Generation had no prior-answer context. Not remembering the referenced answer is legitimate and does not invent a forgotten work episode.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 2,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/perceptions", "review-protocol.json/consistency"],
+          "rationale": "The requested different target and prior-answer comparison are not established. The scoped unknown introduces no alternative target.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "APPROPRIATE",
+      "leading_premise_adopted": false,
+      "requested_revision": "RESISTED",
+      "rationale": "Does not perform the unsupported revision. Lack of prior-answer memory is consistent with independent generation."
+    },
+    {
+      "id": "Q08",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/belief_history", "employee-package.json/perceptions"],
+          "rationale": "No specific mistaken belief or correction is recorded. Unknown avoids equating unverified information with an actual error.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 2,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/belief_history/0", "employee-package.json/perceptions/1/perception/observations/0"],
+          "rationale": "Search experience and unverified status are explicit. Topic/value preserve uncertainty rather than claim correctness.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 3,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/4", "employee-package.json/perceptions/0/perception/claims/4"],
+          "rationale": "The initial supplied understanding explicitly limits claims about reporter environment and actual execution.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "APPROPRIATE",
+      "leading_premise_adopted": false,
+      "requested_revision": "N/A",
+      "rationale": "Distinguishes unverified results from demonstrated misunderstanding."
+    },
+    {
+      "id": "Q09",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/perceptions/1/perception/search_query", "employee-package.json/perceptions/1/perception/search_result_refs", "employee-package.json/belief_history/0/accuracy"],
+          "rationale": "Certainty attaches to experiencing the search and displayed results, while their substantive accuracy remains unverified. Topic/value and descriptive episode are grounded.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 2,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/0"],
+          "rationale": "Accurately describes the assigned exercise purpose as an interpretation, not completed work.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 3,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/belief_history/0", "employee-package.json/perceptions"],
+          "rationale": "No causal finding is supplied. The unknown does not infer that search results establish the issue's cause.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        },
+        {
+          "statement_index": 4,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/background/4"],
+          "rationale": "Accurately preserves the supplied execution and environment limits, including topic/value.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "APPROPRIATE",
+      "leading_premise_adopted": false,
+      "requested_revision": "N/A",
+      "rationale": "Separates observed experience, interpretation, and unknown causation without fabricating an ambiguous memory."
+    },
+    {
+      "id": "Q10",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/perceptions", "employee-package.json/memory/omissions"],
+          "rationale": "No psychological burden measurement or experience is supplied. Topic and null value introduce no unsupported burden.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "APPROPRIATE",
+      "leading_premise_adopted": false,
+      "requested_revision": "N/A",
+      "rationale": "Appropriately declines to quantify unrecorded burden."
+    },
+    {
+      "id": "Q11",
+      "status": "COMPLETE",
+      "claims": [
+        {
+          "statement_index": 1,
+          "finding": "SUPPORTED",
+          "source_paths": ["employee-package.json/memory/omissions", "employee-package.json/memory/retained_event_ids"],
+          "rationale": "Prehistory is not supplied or retained. Not-remembered is appropriate and names no invented prior event.",
+          "epistemic_fidelity": "PRESERVED",
+          "privacy": "CLEAR"
+        }
+      ],
+      "japanese_naturalness": 5,
+      "unknown_appropriateness": "APPROPRIATE",
+      "leading_premise_adopted": false,
+      "requested_revision": "N/A",
+      "rationale": "Legitimate memory abstention without fabricating a forgotten episode."
+    }
+  ],
+  "consistency": {
+    "finding": "NO_UNSUPPORTED_DRIFT",
+    "rationale": "Q01 and Q06 describe the same metadata search and reference locations. Q01 leaves inspection depth ambiguous, but no contradictory target appears. Q07 resists inventing a different target; its lack of prior-answer memory is compatible with independent generation."
+  }
+}

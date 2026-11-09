@@ -1,0 +1,47 @@
+{
+  "unittest": {
+    "command": ".venv/bin/python -m unittest discover -s tests -v",
+    "result": "PASS",
+    "count": 340,
+    "seconds": 63.286,
+    "log": "unittest-final.log",
+    "includes": "Replay, CF0, G6/G7, #1955 CLI, privacy and SDK mocks; existing negative harness FAIL JSON is expected test output"
+  },
+  "ruff": {
+    "command": "uvx --offline --from ruff==0.17.4 ruff check .",
+    "result": "PASS"
+  },
+  "mypy": {
+    "command": "uvx --offline --from mypy==2.4.1 mypy --strict src tests",
+    "result": "PASS",
+    "files": 86
+  },
+  "compileall": {
+    "command": ".venv/bin/python -m compileall -q src tests scripts/g8_offline_reaudit.py",
+    "result": "PASS"
+  },
+  "openspec": {
+    "command": "openspec validate build-reproducible-simulation-foundation --type change --strict --no-interactive",
+    "result": "PASS",
+    "scope": "format only"
+  },
+  "diff_check": {
+    "command": "git diff --check",
+    "result": "PASS"
+  },
+  "old_evidence": {
+    "files": 87,
+    "result": "UNCHANGED"
+  },
+  "offline_reaudit": {
+    "legacy_reproduced": 17,
+    "independent_second_output_comparison": "byte-identical",
+    "network": "socket connection forbidden in runner"
+  },
+  "dependency_review": "new diagnostics imports stdlib only; no cycle or core I/O introduced",
+  "task_6_3": "INCONCLUSIVE",
+  "task_6_5": "INCOMPLETE",
+  "new_api_requests": 0,
+  "dependency_installation": "not run; dependencies and lock unchanged; installed environment used",
+  "independent_semantic_review": "NOT PERFORMED"
+}

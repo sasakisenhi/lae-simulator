@@ -17,6 +17,7 @@ from lae_simulator.simulation.collaboration_model import (
 from lae_simulator.simulation.model import ScheduledEvent
 from lae_simulator.simulation.scheduler import SchedulerState, scheduler_dict
 from lae_simulator.world.collaboration import CollaborationDefinition
+from lae_simulator.world.search_profile import WorkspaceReference
 from lae_simulator.world.timing import TimingDefinition
 
 
@@ -175,6 +176,8 @@ class ScenarioExecution:
     base_files: tuple[WorkspaceFile, ...]
     timing: TimingDefinition | None = None
     collaboration: CollaborationDefinition | None = None
+    search_paths: tuple[str, ...] | None = None
+    workspace_references: tuple[WorkspaceReference, ...] = ()
     _validation_token: object = field(default=None, repr=False, compare=False)
 
     @property
@@ -563,6 +566,17 @@ def stable_run_id(execution: ScenarioExecution) -> str:
     profile = "g3-local-1.1" if execution.timing is None else "g4-local-1.0"
     if execution.collaboration is not None:
         profile = 'g5-local-1.0'
-    value = f"{profile}\n{execution.content_id}\n{execution.schema_version}"
+    # A 1.4 search profile is an unobserved management constraint. Keep it in
+    # the frozen input digest, but out of participant/public identifiers.
+    identity = execution.content_id
+    if execution.schema_version == "1.4.0":
+        scenario = json.loads(execution.canonical_bytes)
+        if not isinstance(scenario, dict):
+            raise ValueError("1.4.0 scenario identity must be an object")
+        scenario.pop("search_profile", None)
+        encoded = json.dumps(scenario, ensure_ascii=False, sort_keys=True,
+                            separators=(",", ":")).encode("utf-8")
+        identity = _digest(encoded)
+    value = f"{profile}\n{identity}\n{execution.schema_version}"
     return "local-" + hashlib.sha256(value.encode()).hexdigest()
 

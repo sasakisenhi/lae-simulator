@@ -1,0 +1,7 @@
+{
+  "status": "PASS limited checks",
+  "request_files": 22,
+  "findings": [],
+  "limits": "Pattern checks are not proof of absence of all personal/protected information; human review pending; G7 replay/disclosure gate also verified.",
+  "live_sent": false
+}

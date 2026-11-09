@@ -1,0 +1,17 @@
+{
+  "schema": "g8-human-adjudication-1",
+  "user_statement": "2件とも私は問題ない回答だと判断します。",
+  "scope": ["Q01 statement 2", "Q04 statement 1"],
+  "human_verdict": "ACCEPTABLE",
+  "independent_original_findings": "UNCERTAIN; preserved without modification",
+  "adjudication_basis": {
+    "attribution": "Review coordinator's context-based rationale; not additional user testimony or new world facts",
+    "Q01": "The sentence is introduced as metadata searching; accepting confirmation of locations in search results does not assert source reading or verified understanding.",
+    "Q04": "An unknown reason followed by clarification of the simulated exercise is accepted in context as nonconfirmation of a real production deployment, not proof such deployment occurred."
+  },
+  "resolution": "The user resolved the two remaining semantic acceptance uncertainties. No unanimous independent-review claim is made.",
+  "automatic_audits": "Unchanged; raw NEEDS_REVIEW decisions and public answer files remain as captured.",
+  "prompt_v3": "Not required for this accepted run; not implemented or sent.",
+  "new_api_requests": 0,
+  "new_numeric_scores": "None invented"
+}

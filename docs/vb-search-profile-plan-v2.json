@@ -1,0 +1,127 @@
+{
+  "id": "VB-C-search-profile-1",
+  "scope": "Task 7.2; new C follows approved D14 exactly; supplementary existing-contract conditions are separate from its eight runs",
+  "base": "fixtures/g2/scenario-collaboration.json",
+  "schema_version": "1.4.0",
+  "query": "metadata",
+  "seed": 0,
+  "randomness": "disabled; existing constant timing and fixed response models",
+  "replicates": [
+    {
+      "id": 1,
+      "PYTHONHASHSEED": "2"
+    },
+    {
+      "id": 2,
+      "PYTHONHASHSEED": "71"
+    }
+  ],
+  "new_C": {
+    "common_setup": "T01 reads D01; setup is scripted, not autonomous evidence",
+    "window": "Exactly two select_by_policy choices, each followed by the selected operation's start/reservation/consumption/completion",
+    "binding": "T03 -> metadata search at current version; T04 -> first currently observed search result; never use arm or hidden scope for operation parameters",
+    "arms": {
+      "C0": {
+        "paths": [
+          "server/src/is.ts"
+        ],
+        "expected_choices": [
+          "T03",
+          "T03"
+        ],
+        "expected_completion": "search, search; first result empty"
+      },
+      "C1": {
+        "paths": [
+          "server/src/is.ts",
+          "server/src/eslint.ts"
+        ],
+        "expected_choices": [
+          "T03",
+          "T04"
+        ],
+        "expected_completion": "search, navigate R01; first result nonempty"
+      },
+      "N0": {
+        "paths": [
+          "server/src/is.ts",
+          "server/src/eslint.ts"
+        ],
+        "expected_choices": [
+          "T03",
+          "T04"
+        ]
+      },
+      "N1": {
+        "paths": [
+          "server/src/is.ts",
+          "server/src/eslint.ts",
+          "README.md"
+        ],
+        "expected_choices": [
+          "T03",
+          "T04"
+        ]
+      }
+    },
+    "pre_search": "Compare actor observations at every canonical prefix before first Search, including consumption; compare employee/public bytes from separately closed copies at initial, prepared, selected and started legal boundaries. No live-trial mutation or later arm-dependent finish is used for this comparison.",
+    "information": "Record exact bounded real-byte oracle, line hits, reference IDs, Workspace version, claims/status/evidence, observations, available candidates, next choice and completed operation",
+    "negative": "N0/N1 complete traces, employee bytes and public bytes must match. C1 and N0 are independent processes with identical inputs.",
+    "termination": "Finite two-choice window closed as valid INCOMPLETE; no autonomous Issue resolution or submission claim",
+    "verdict": "PASS only if main behavioral branch, negative control, noninterference, input audit, repeats, Replay and persistence all hold. Valid main trial without predicted branch is INCONCLUSIVE. Contract/oracle/privacy/Replay violation or evaluator/worker failure is FAIL. Do not alter conditions, query, candidates, Policy, timing, seeds or window after observing results."
+  },
+  "supplements": {
+    "knowledge": {
+      "recipe": "Existing vb-contract-evidence knowledge plan: common synthetic QUERY-KNOWN claim and T03 required_claims; only initial knowledge mirror membership differs",
+      "expected_control": [
+        "T03"
+      ],
+      "expected_intervention": [
+        "T02"
+      ],
+      "steps": 1
+    },
+    "tool": {
+      "recipe": "Existing vb-contract-evidence tool plan: only tool_availability.code.search true versus false; same capability and candidate catalog",
+      "expected_control": [
+        "T03",
+        "T04"
+      ],
+      "expected_intervention": [
+        "T03",
+        "T02"
+      ],
+      "steps": 2
+    },
+    "access": {
+      "recipe": "Existing vb-reassessment plan: same D01 read and C01 FAIL preparation; only remove D02/read permission",
+      "expected_control": [
+        "T02",
+        "T02"
+      ],
+      "expected_intervention": [
+        "T05",
+        "T05"
+      ],
+      "steps": 2
+    },
+    "peer": {
+      "recipe": "Existing vb-evidence plan: only PEER-ANSWER delay_ticks 2 -> 45; same scripted request and wait; bounded existing 8-advance window",
+      "expected": "early actual answer observed versus late request timedout; the timeout notification is observed, while response/response_tick/response_event_id remain absent; completed wait branch"
+    },
+    "ai": {
+      "recipe": "Existing vb-evidence plan: only AI-PROPOSAL delay_ticks 3 -> 45; same scripted request and wait; bounded existing 8-advance window",
+      "expected": "early actual answer observed and T12 available versus late timeout notification observed with no actual response and no T12; completed wait/candidate branch"
+    }
+  },
+  "demos": {
+    "demo-normal": "Scripted D01 read, P1, C01 modeled PASS, local virtual submission; SUBMITTED",
+    "demo-mistake": "Scripted D01 read, P3, C02 modeled FAIL, revert, P1, C01 modeled PASS, local virtual submission; SUBMITTED",
+    "demo-no-ai": "Scripted D01 read, no AI request, valid INCOMPLETE"
+  },
+  "aggregate": "34 independent worker runs: new C 8, supplementary pairs 20, separate demos 6. Each condition repeated in distinct processes/input temp directories/save roots. Require worker exit0 and strict True Replay/store flags, two-sided complete artifact set and byte equality, declared one-factor input audit and all contrast/demo obligations. New C verdict independent from remaining conditions and from VA/VC. Required missing or inconclusive evidence prevents overall PASS; failures are retained, never skipped or replaced.",
+  "preservation": "Freeze full inputs, plan/design digests, target code including Policy/evaluator, dependency lock/environment, scope digest/rule/Workspace and historical VA/VB/G9 hashes before workers. Recheck after trial. Output roots must be new; retain every failed trial and process stdout/stderr. No external service, production Policy change, G8/VC/VF or commit/push/deploy/archive.",
+  "revision": "evaluator clarification 2; new C preregistration and all condition inputs unchanged",
+  "previous_trial": "docs/vb-search-profile-evidence/run-1; retained FAIL due evaluator mistaking timeout observation for actual response",
+  "clarification_basis": "Existing RequestState status timedout and disposition timeout; existing RESPONSE_OBSERVED records observation of timeout notices too. Correct evaluator classification only; no change to fixed delay, input, setup, observation window, Policy or new C predictions."
+}

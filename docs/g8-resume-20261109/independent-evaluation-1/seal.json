@@ -1,0 +1,11 @@
+{
+  "schema": "independent-review-seal-1",
+  "files": {
+    "sealed-result.json": "6ee24c77a04298cb80ff53b9bc900ee47e34dd5887ebcf0d8eaf28c79e5a3591",
+    "session-events.jsonl": "246f11f2ecddd5efcec9c1e306b58009749c48d3f13ca85c2c3313d22cff8cd8",
+    "session-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-input.txt": "33225ae18e91f42b6f70eb2ce167f3b3ab1692e5607fbf6b0d63e1464c23e86a",
+    "preflight.json": "d8c248db486c6d19a7b268e27075ad344fab98935dbb969821b192e2507a4ca6"
+  },
+  "seal_order": "output hashed before parent parsed or compared review content"
+}

@@ -1,0 +1,11 @@
+{
+  "docs/g8-live-review/employee-package.json": "aa3f7e1e9bdac2e9bf82aae8d647083b200f7f3f3231c3a4ec68101772f6233a",
+  "docs/g8-live-review/retrieved-catalog.json": "4c402d8329656fa10def142a95346afb86e90a166f4eab288d8a108473f4569f",
+  "docs/g8-live-review/questions.json": "6236a824d3507ed445344c9ba2676513ea7e7cb539e04426da450f11e42a5bf4",
+  "docs/g8-live-review/answer-schema.json": "1fcf3e8afa7fd8e71151ea04365b748ebfc8b136e1c2a170944150027223cb1a",
+  "docs/g8-live-review/system-prompt.txt": "ec6fc7ff6a8dc11f82e82362fb7ec29b74b4ba91e52bb46d6bf8fe7e08507c6b",
+  "docs/g8-live-review/live-results-20261109/provider-1-attempts.jsonl": "078dad6a348481388c0c014d850f406e62744e870b4ea8952b1814198c2bf6d4",
+  "docs/g8-live-review/live-results-20261109/provider-2-attempts.jsonl": "a7af49a40d029cbdf9764465c5c7263c4f89277d86dfb5acd497a8d5fbbdb0ec",
+  "docs/g8-live-review/live-results-20261109-repeat-1/provider-1-attempts.jsonl": "f6231affcd46c688db6787e040b92a5e8169043a7c435c75c019e7d7fdef240d",
+  "docs/g8-live-review/live-results-20261109-repeat-1/provider-2-attempts.jsonl": "db7225a40896eaf684648e0bcc5e3a9dba52d2f0b2d085211012e639be786e9b"
+}

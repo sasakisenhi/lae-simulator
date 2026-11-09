@@ -1,0 +1,11 @@
+{
+  "schema": "g8-independent-seal-1",
+  "files": {
+    "sealed-result.json": "af14c4681804ba572707ee0c05af358e64abeab4efc59203cb721a5d2952d785",
+    "review-input.txt": "a5690f7be506e2b296c39b34b25d8a47dfb75c45b21e88fe68d093fc5919ab4c",
+    "input-manifest.json": "a2f12c0fa9be8e2f742ff44cd586097830180d4088bad5ca73708f842fddfe3b",
+    "session-events.jsonl": "d3ac7aae690a5fc925bcb17616bda3795422e457d26e04b60fdefe57b76fe024",
+    "session-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "order": "hashed before parent read judgment"
+}

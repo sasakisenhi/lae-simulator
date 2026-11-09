@@ -1,0 +1,22 @@
+[
+  {
+    "approval_reference": "User approval in this session, 2026-11-09: 外部通信を許可します。 Applies to reviewed 22 requests and 2 USD estimated stop limit; new destination preserves existing zero-request run.",
+    "approved": true,
+    "config_digest": "sha256:e8c9c1c0cfa2a5a9e4fb0a92c1eb5af8a34ae0a1003c0f8779139c9bf96e08e8",
+    "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109-approved",
+    "model": "gemini-2.5-flash",
+    "package_digest": "sha256:aa3f7e1e9bdac2e9bf82aae8d647083b200f7f3f3231c3a4ec68101772f6233a",
+    "provider": "gemini",
+    "questions_digest": "sha256:febfeff9a31242a7d3a47d42b9b01946a2e9d671f50d018eea4131125cb2135a"
+  },
+  {
+    "approval_reference": "User approval in this session, 2026-11-09: 外部通信を許可します。 Applies to reviewed 22 requests and 2 USD estimated stop limit; new destination preserves existing zero-request run.",
+    "approved": true,
+    "config_digest": "sha256:e8c9c1c0cfa2a5a9e4fb0a92c1eb5af8a34ae0a1003c0f8779139c9bf96e08e8",
+    "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109-approved",
+    "model": "gpt-6.1-terra",
+    "package_digest": "sha256:aa3f7e1e9bdac2e9bf82aae8d647083b200f7f3f3231c3a4ec68101772f6233a",
+    "provider": "openai",
+    "questions_digest": "sha256:febfeff9a31242a7d3a47d42b9b01946a2e9d671f50d018eea4131125cb2135a"
+  }
+]

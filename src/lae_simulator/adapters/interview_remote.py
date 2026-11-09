@@ -7,13 +7,22 @@ from __future__ import annotations
 
 import os
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from importlib.metadata import PackageNotFoundError, version
 from typing import Any, Protocol
 
 from lae_simulator.adapters.interview_budget import BudgetLedger
 from lae_simulator.adapters.interview_config import Approval, GeneratorConfig, Price
+from lae_simulator.adapters.interview_diagnostics import (
+    FINISH_REASONS,
+    allowed,
+    count,
+    error_details,
+    model_identifier,
+    request_id,
+    safe_details,
+)
 from lae_simulator.simulation.canonical_store import (
     canonical_json_bytes,
     content_digest,
@@ -46,6 +55,7 @@ class ProviderReply:
     output_tokens: int | None
     model_observed: str | None
     failure: str | None = None
+    diagnostics: dict[str, object] = field(default_factory=dict)
 
 
 class InterviewTransport(Protocol):
@@ -56,18 +66,9 @@ def _number(value: object) -> int | None:
     return value if type(value) is int and value >= 0 else None
 
 
-def _failure(error: Exception) -> str:
-    # Only stable categories survive this boundary. Never serialize error text/URL/headers.
-    if isinstance(error, (TimeoutError,)) or "timeout" in type(error).__name__.casefold():
-        return "timeout"
-    code = getattr(error, "status_code", getattr(error, "code", None))
-    if code in (401, 403):
-        return "authentication-failed"
-    if code == 429:
-        return "rate-limit"
-    if isinstance(code, int) and code >= 500:
-        return "provider-unavailable"
-    return "provider-error"
+def _transport_failure(error: Exception, config: GeneratorConfig, api_key: str) -> GenerationFailure:
+    details = error_details(error, provider=config.provider, model=config.model, secret=api_key)
+    return GenerationFailure(str(details["category"]), {"diagnostics": details})
 
 
 class OpenAITransport:
@@ -98,11 +99,16 @@ class OpenAITransport:
                                       for item in response.output for part in getattr(item, "content", ()))
                       else "incomplete-output" if response.status != "completed" else None)
             return ProviderReply(response.output_text, _number(getattr(usage, "input_tokens", None)),
-                                 _number(getattr(usage, "output_tokens", None)), response.model, failed)
+                                 _number(getattr(usage, "output_tokens", None)), response.model, failed, {
+                                     "finish_reason": allowed(getattr(getattr(response, "incomplete_details", None), "reason", None), FINISH_REASONS, api_key),
+                                     "response_status": allowed(response.status, FINISH_REASONS, api_key),
+                                     "reasoning_tokens": count(getattr(getattr(usage, "output_tokens_details", None), "reasoning_tokens", None)),
+                                     "request_id": request_id(getattr(response, "_request_id", None), api_key),
+                                 })
         except GenerationFailure:
             raise
         except Exception as error:  # noqa: BLE001 -- redact untrusted SDK exception text
-            raise GenerationFailure(_failure(error)) from None
+            raise _transport_failure(error, config, api_key) from None
 
 
 class GeminiTransport:
@@ -141,11 +147,16 @@ class GeminiTransport:
             output_tokens = total - input_tokens if total is not None and input_tokens is not None and total >= input_tokens else None
             candidates = response.candidates or []
             failed = None if candidates and str(candidates[0].finish_reason) in {"STOP", "FinishReason.STOP"} else "incomplete-output"
-            return ProviderReply(response.text or "", input_tokens, output_tokens, response.model_version, failed)
+            return ProviderReply(response.text or "", input_tokens, output_tokens, response.model_version, failed, {
+                "finish_reason": allowed(str(candidates[0].finish_reason).removeprefix("FinishReason.") if candidates else None, FINISH_REASONS, api_key),
+                "reasoning_tokens": count(getattr(usage, "thoughts_token_count", None)),
+                "candidate_output_tokens": count(getattr(usage, "candidates_token_count", None)),
+                "request_id": request_id(getattr(response, "response_id", None), api_key),
+            })
         except GenerationFailure:
             raise
         except Exception as error:  # noqa: BLE001 -- redact untrusted SDK exception text
-            raise GenerationFailure(_failure(error)) from None
+            raise _transport_failure(error, config, api_key) from None
 
 
 class RemoteInterviewGenerator:
@@ -160,6 +171,7 @@ class RemoteInterviewGenerator:
         self.approval, self.config_digest, self.questions = approval, config_digest, questions
         self.evaluation_id = evaluation_id
         self.transport = transport
+        self._terminal_diagnostics: dict[str, object] | None = None
         self.name: str = config.provider
         self.model: str = config.model
         self.settings = canonical_json_bytes(config.model_dump(mode="json")).decode()
@@ -173,6 +185,8 @@ class RemoteInterviewGenerator:
                     provider=self.name, model=self.model, package_digest=package_digest,
                     questions_digest=questions_digest, config_digest=self.config_digest, evaluation_id=self.evaluation_id)):
             raise GenerationFailure("missing-approval")
+        if self._terminal_diagnostics is not None:
+            raise GenerationFailure("quota-or-billing", {"diagnostics": self._terminal_diagnostics, "attempts": []})
         if canonical_json_bytes(retrieved) != canonical_json_bytes(support_catalog(package)):
             raise GenerationFailure("invalid-retrieval")
         api_key = os.environ.get(self.config.api_key_env, "")
@@ -211,18 +225,40 @@ class RemoteInterviewGenerator:
             try:
                 reply = self.transport.request(self.config, api_key, prompt)
             except Exception as error:  # noqa: BLE001 -- redact untrusted SDK exception text
-                error_code = error.code if isinstance(error, GenerationFailure) else _failure(error)
+                raw_details = (error.execution.get("diagnostics", {}) if isinstance(error, GenerationFailure)
+                           else error_details(error, provider=self.name, model=self.model, secret=api_key))
+                has_details = bool(raw_details)
+                details = safe_details(raw_details, provider=self.name, model=self.model, secret=api_key)
+                error_code = (allowed(error.code, frozenset({"missing-sdk", "timeout", "authentication-failed", "rate-limit",
+                               "rate-limit-unknown", "quota-or-billing", "provider-unavailable", "provider-error"}), api_key)
+                              or "provider-error") if isinstance(error, GenerationFailure) else str(details["category"])
+                record["diagnostics"] = details
+                if details.get("category") == "quota-or-billing":
+                    self._terminal_diagnostics = details
                 record.update({"failure": error_code, "latency_seconds": time.monotonic() - started,
                                "usage": None, "usage_source": "unavailable; reservation retained"})
                 execution["ledger"] = self.ledger.snapshot()
-                if error_code in self.config.retry_on and index + 1 < self.config.max_attempts:
-                    time.sleep(self.config.retry_delay_seconds)
+                delay = details.get("retry_after_seconds") if isinstance(details, dict) else None
+                wait = max(self.config.retry_delay_seconds, float(delay) if isinstance(delay, (int, float)) else 0.0)
+                retryable = (details.get("retryable") is True if has_details
+                             else error_code in {"timeout", "provider-unavailable"})
+                if retryable and error_code in self.config.retry_on and index + 1 < self.config.max_attempts and wait <= 10:
+                    time.sleep(wait)
                     continue
                 raise GenerationFailure(error_code, execution) from None
             record.update({"latency_seconds": time.monotonic() - started,
                            "usage": {"input_tokens": reply.input_tokens, "output_tokens": reply.output_tokens},
                            "usage_source": "provider", "provider_response": True,
-                           "model_observed": reply.model_observed.replace(api_key, "[REDACTED]") if reply.model_observed else None,
+                           "completion": {
+                               "finish_reason": allowed(reply.diagnostics.get("finish_reason"), FINISH_REASONS, api_key),
+                               "response_status": allowed(reply.diagnostics.get("response_status"), FINISH_REASONS, api_key),
+                               "reasoning_tokens": count(reply.diagnostics.get("reasoning_tokens")),
+                               "candidate_output_tokens": count(reply.diagnostics.get("candidate_output_tokens")),
+                               "request_id": request_id(reply.diagnostics.get("request_id"), api_key),
+                               "output_tokens": reply.output_tokens,
+                               "max_output_tokens": self.config.max_output_tokens,
+                           },
+                           "model_observed": model_identifier(reply.model_observed, api_key),
                            "raw_output": reply.text.replace(api_key, "[REDACTED]")})
             try:
                 cost = self.ledger.settle(estimated_input, self.config.max_output_tokens, self.price,

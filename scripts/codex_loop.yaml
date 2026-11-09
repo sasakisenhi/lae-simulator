@@ -33,7 +33,7 @@ checks:
     - [openspec, validate, build-reproducible-simulation-foundation, --strict]
     - [git, diff, --check]
 
-# G1..G8 are implementation groups; VA/VB/VC/VF are acceptance groups.
+# G1..G9 are implementation/revalidation groups; VA/VB/VC/VF are acceptance groups.
 # A human/independent_acceptance mode intentionally requires manual action.
 groups:
   G1:
@@ -86,12 +86,21 @@ groups:
       - {id: '6.3', depends_on: []}
       - {id: '6.5', depends_on: ['6.3']}
     review: human
+  G9:
+    depends_on: [G6, G7]
+    tasks:
+      - {id: '2.6', depends_on: []}
+      - {id: '2.7', depends_on: ['2.6']}
+      - {id: '6.6', depends_on: ['2.7']}
+    review: independent_ai
   VA:
     depends_on: [G7]
     tasks:
       - {id: '7.1', depends_on: []}
     review: independent_acceptance
   VB:
+    # The Scenario 1.4.0 trial additionally requires task 2.7 in tasks.md.
+    # Do not require G9 acceptance: task 6.6 and VB remain independent.
     depends_on: [G6]
     tasks:
       - {id: '7.2', depends_on: []}
@@ -102,7 +111,7 @@ groups:
       - {id: '7.3', depends_on: []}
     review: independent_acceptance
   VF:
-    depends_on: [G8, VA, VB, VC]
+    depends_on: [G8, G9, VA, VB, VC]
     tasks:
       - {id: '7.4', depends_on: []}
     review: human

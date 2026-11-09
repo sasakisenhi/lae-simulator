@@ -1,0 +1,52 @@
+{
+  "acceptance_task_6_3": "INCONCLUSIVE",
+  "providers": [
+    {
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "sent": 22,
+      "api_response_success": 16,
+      "generation_complete": 14,
+      "structure_pass": 14,
+      "old_status": {
+        "rejected": 7,
+        "inconclusive": 7,
+        "generation-failed": 8
+      },
+      "new_decisions": {
+        "NEEDS_REVIEW": 14
+      },
+      "new_semantics": {
+        "NEEDS_REVIEW": 14,
+        "NOT_RUN": 8
+      },
+      "public_allowed": 0
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-6.1-terra",
+      "sent": 22,
+      "api_response_success": 3,
+      "generation_complete": 3,
+      "structure_pass": 3,
+      "old_status": {
+        "generation-failed": 19,
+        "rejected": 2,
+        "accepted": 1
+      },
+      "new_decisions": {
+        "NEEDS_REVIEW": 2,
+        "ACCEPT": 1
+      },
+      "new_semantics": {
+        "NOT_RUN": 19,
+        "NEEDS_REVIEW": 2,
+        "PASS": 1
+      },
+      "public_allowed": 1
+    }
+  ],
+  "prior_evidence_verified_files": 87,
+  "legacy_diagnostics": "finish/reasoning/status detail unknown; never inferred as fact",
+  "duplicates": "documentation copies and zero-send NOT READY run are inventoried, not double-counted"
+}

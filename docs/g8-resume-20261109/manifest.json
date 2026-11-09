@@ -1,0 +1,23 @@
+{
+  "schema": "g8-semantic-review-preparation-1",
+  "task_6_3": "INCONCLUSIVE",
+  "task_6_5": "INCOMPLETE",
+  "live_requests": 0,
+  "files": {
+    "source-manifest.json": "d684f5d353d731304449080a103af825fc28e8ac1f2e33c61bd58e8e29588de9",
+    "private-review-mapping.json": "f6dc154d0075e99cf6b1f15df03b29546ad58bc3ebe89478a2200d7fa1895fc6",
+    "independent-packet-manifest.json": "26706cff2f22b9a1d37f80ccf45bdbb172268d8bb4d022d84a268df5f9e1c71e",
+    "primary-question-scorecard.csv": "81ac48af967eef592c7bea58a3aeb63d347a776d369d635770a1e2f13be8531b",
+    "primary-claim-scorecard.csv": "e73c173480ec6279cb5f3f9ba94252e408453a542ec9ee30022c5a77974438ac",
+    "g8-tests.log": "24e8a572a22769b5c659ca9f0acbf2e641c9aa8cc312a011e157d05d9351b936",
+    "local-cli-check.json": "8c388db3136a33a32603d19eb43f32ce119df2a3a23a8482932222f9fbed866d",
+    "README.md": "e255ab114559432488fadb9198795f22559c1d2f1a6784ba02dffd398bba293b",
+    "independent-review/employee-package.json": "aa3f7e1e9bdac2e9bf82aae8d647083b200f7f3f3231c3a4ec68101772f6233a",
+    "independent-review/retrieved-catalog.json": "4c402d8329656fa10def142a95346afb86e90a166f4eab288d8a108473f4569f",
+    "independent-review/questions.json": "6236a824d3507ed445344c9ba2676513ea7e7cb539e04426da450f11e42a5bf4",
+    "independent-review/answer-schema.json": "1fcf3e8afa7fd8e71151ea04365b748ebfc8b136e1c2a170944150027223cb1a",
+    "independent-review/system-prompt.txt": "ec6fc7ff6a8dc11f82e82362fb7ec29b74b4ba91e52bb46d6bf8fe7e08507c6b",
+    "independent-review/responses.json": "ebcce69e8aa7c852184fe91781f695f9bc09074396ff6cf4a1abe378bb4cfe64",
+    "independent-review/INSTRUCTIONS.md": "31722728251cbdaa5fa291c0c09996528bbce5bbf146120f7a025f8841b2c25c"
+  }
+}

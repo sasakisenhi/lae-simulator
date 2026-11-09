@@ -1,0 +1,5 @@
+{
+  "method": "AST module-scope absolute imports, excluding deferred function/class imports; compared to HEAD",
+  "new_cycles": [],
+  "world_to_simulation_imports": []
+}

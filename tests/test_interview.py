@@ -47,7 +47,8 @@ class InterviewTests(unittest.TestCase):
             response("I deployed the fix yesterday.", "yesterday"),
         )), actor_id="A")
         result = service.ask("Q1", "You deployed it yesterday, right?")
-        self.assertEqual(result.status, "rejected")
+        self.assertEqual(result.status, "inconclusive")
+        self.assertEqual(result.audit["decision"], "NEEDS_REVIEW")
         self.assertIsNone(result.answer)
         self.assertIn(b"deployed the fix", service.audit_records())
         self.assertNotIn(b"deployed the fix", service.publication(result))
@@ -85,7 +86,7 @@ class InterviewBoundaryTests(unittest.TestCase):
     def test_rejected_answer_cannot_poison_accepted_history(self) -> None:
         service = self.service((response("I opened src/b.py.", "src/b.py"),
                                 response("opened file src/a.py", "src/a.py")))
-        self.assertEqual(service.ask("Q1", "Where?").status, "rejected")
+        self.assertEqual(service.ask("Q1", "Where?").status, "inconclusive")
         self.assertEqual(service.ask("Q2", "Where really?").status, "accepted")
         self.assertNotIn(b"src/b.py", service.public_history())
         self.assertIn(b"src/b.py", service.audit_records())
@@ -96,7 +97,7 @@ class InterviewBoundaryTests(unittest.TestCase):
         result = service.ask("Q", "What caused it?")
         self.assertEqual(result.status, "inconclusive")
         self.assertIsNone(result.answer)
-        self.assertEqual(result.audit["checks"][0]["semantics"], "UNKNOWN")  # type: ignore[index]
+        self.assertEqual(result.audit["checks"][0]["semantics"], "NEEDS_REVIEW")  # type: ignore[index]
         self.assertNotIn(b"outage", service.public_history())
 
     def test_unknown_label_does_not_authorize_fabricated_fact(self) -> None:

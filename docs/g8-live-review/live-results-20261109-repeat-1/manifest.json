@@ -1,0 +1,13 @@
+{
+  "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109-repeat-1",
+  "files": {
+    "provider-1-attempts.jsonl": "sha256:f6231affcd46c688db6787e040b92a5e8169043a7c435c75c019e7d7fdef240d",
+    "provider-1-public.json": "sha256:beca87c116677ad0347b4db6509822e1128880af2b691cdf02c6d3d9be2f6e5c",
+    "provider-2-attempts.jsonl": "sha256:db7225a40896eaf684648e0bcc5e3a9dba52d2f0b2d085211012e639be786e9b",
+    "provider-2-public.json": "sha256:bc09f83473dc5b034a62f732e197c34b833bf29dcc4b86a24e13c053cf9da386",
+    "answers.md": "sha256:14ca6601f1860ee09f2285347bfb5f7d8513f97d025fe412de7151f0d8aa4f27",
+    "report.md": "sha256:fe07a67db67a521c4ffa4e6a6f68dadaa77956e3f8382df005a3e07d73b69cfa",
+    "evaluation.json": "sha256:a9adf752c63419a2eb2292aea2bda331e170b916faf176fb1b15106d5d3d9e78",
+    "human-scorecard.csv": "sha256:670460e66fb7f5d4d7877b83255d0b3270476de3ec94604ba4bce49efb8e1ca0"
+  }
+}

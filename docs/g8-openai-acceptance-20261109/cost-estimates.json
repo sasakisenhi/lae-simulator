@@ -1,0 +1,76 @@
+{
+  "pricing_source": "https://developers.openai.com/api/docs/pricing",
+  "checked_on": "2026-11-09",
+  "input_usd_per_million": "1.00",
+  "output_usd_per_million": "5.00",
+  "requests": [
+    {
+      "question": "Q01",
+      "estimated_input_tokens": 17180,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.0223"
+    },
+    {
+      "question": "Q02",
+      "estimated_input_tokens": 17216,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022336"
+    },
+    {
+      "question": "Q03",
+      "estimated_input_tokens": 17201,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022321"
+    },
+    {
+      "question": "Q04",
+      "estimated_input_tokens": 17213,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022333"
+    },
+    {
+      "question": "Q05",
+      "estimated_input_tokens": 17213,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022333"
+    },
+    {
+      "question": "Q06",
+      "estimated_input_tokens": 17207,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022327"
+    },
+    {
+      "question": "Q07",
+      "estimated_input_tokens": 17219,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022339"
+    },
+    {
+      "question": "Q08",
+      "estimated_input_tokens": 17201,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022321"
+    },
+    {
+      "question": "Q09",
+      "estimated_input_tokens": 17204,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022324"
+    },
+    {
+      "question": "Q10",
+      "estimated_input_tokens": 17198,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022318"
+    },
+    {
+      "question": "Q11",
+      "estimated_input_tokens": 17201,
+      "max_output_tokens": 1024,
+      "estimated_cost_usd": "0.022321"
+    }
+  ],
+  "total_estimated_usd": "0.245573",
+  "limitation": "UTF-8 byte estimate; not exact tokenization or invoice hard cap"
+}

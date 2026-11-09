@@ -1,0 +1,17 @@
+{
+  "original_presend_manifest_digest": "sha256:42aae91a75701f42007ff4ad4fab9ef3e2552dcdd8d8b09095241ec6ab87beed",
+  "original_manifest_verified": true,
+  "credentials_absent_from_outputs": true,
+  "evaluation_path": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-live-comparison-20261109-approved",
+  "approval": "User 2026-11-09: 外部通信を許可します。",
+  "files": {
+    "provider-1-attempts.jsonl": "sha256:078dad6a348481388c0c014d850f406e62744e870b4ea8952b1814198c2bf6d4",
+    "provider-1-public.json": "sha256:beca87c116677ad0347b4db6509822e1128880af2b691cdf02c6d3d9be2f6e5c",
+    "provider-2-attempts.jsonl": "sha256:a7af49a40d029cbdf9764465c5c7263c4f89277d86dfb5acd497a8d5fbbdb0ec",
+    "provider-2-public.json": "sha256:beca87c116677ad0347b4db6509822e1128880af2b691cdf02c6d3d9be2f6e5c",
+    "report.md": "sha256:b79669bfc4f7e6b65c4b3e58279b8509340f950c9a1a04a95773279b4b1d6098",
+    "answers.md": "sha256:52b97cd75bba7d07cd4064b558be7376ef077a1646e393a6de38bd6d8068a9ec",
+    "evaluation.json": "sha256:80aadaac3999211c26df510e45015b5b96ca3077ba024c374c2670b18823eae0",
+    "human-scorecard.csv": "sha256:670460e66fb7f5d4d7877b83255d0b3270476de3ec94604ba4bce49efb8e1ca0"
+  }
+}

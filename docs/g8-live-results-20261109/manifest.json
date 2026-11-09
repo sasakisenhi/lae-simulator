@@ -1,0 +1,13 @@
+{
+  "schema": "g8-execution-evidence-1",
+  "files": {
+    "approval.json": "sha256:30c17414a74f132af369f6717d17f560f39db7bc08d6ea4af696d61b1f0c90fd",
+    "evaluation.json": "sha256:342c2b51ba46eb4aed229f24fecc6d92e814e551bf1f4dedcae232a20d5f0d5b",
+    "inputs.json": "sha256:8d859609c9c7a5d9f06595ad675a4383d5aa435052f714a39c6d145173d9bdd2",
+    "report.md": "sha256:da539f176069eb793359594463ae23b281603b380d166fbf9633727426262da7",
+    "provider-1/attempts.jsonl": "sha256:c172cab18dcdfc0a2662305834d2b6f178ae93f64d8e257cb3440a4da2f9800e",
+    "provider-1/public.json": "sha256:beca87c116677ad0347b4db6509822e1128880af2b691cdf02c6d3d9be2f6e5c",
+    "provider-2/attempts.jsonl": "sha256:8f8d6d018499dfe79166e61d14308066a9ee69268180ed2c60a244de8b416fac",
+    "provider-2/public.json": "sha256:beca87c116677ad0347b4db6509822e1128880af2b691cdf02c6d3d9be2f6e5c"
+  }
+}

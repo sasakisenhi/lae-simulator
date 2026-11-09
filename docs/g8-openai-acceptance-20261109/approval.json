@@ -1,0 +1,12 @@
+[
+  {
+    "approval_reference": "Current session: user approved external G8 work, then confirmed primary assessment and selected OpenAI only (1はOKです。問題ありません / OpenAIだけでいいです). Same approved package, questions, model, prompt, 1024 output cap and 2 USD estimated stop limit; 11 requests instead of 22, no retries, paced 65 seconds.",
+    "approved": true,
+    "config_digest": "sha256:de1c70aea4859e78eea63a88aab79aab8d5a626cacce4360b7c55fa761f1d3b8",
+    "evaluation_id": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-openai-only-20261109",
+    "model": "gpt-6.1-terra",
+    "package_digest": "sha256:aa3f7e1e9bdac2e9bf82aae8d647083b200f7f3f3231c3a4ec68101772f6233a",
+    "provider": "openai",
+    "questions_digest": "sha256:febfeff9a31242a7d3a47d42b9b01946a2e9d671f50d018eea4131125cb2135a"
+  }
+]

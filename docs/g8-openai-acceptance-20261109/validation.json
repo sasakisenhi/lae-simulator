@@ -1,0 +1,25 @@
+{
+  "unittest": {
+    "result": "PASS",
+    "count": 342,
+    "log": "unittest.log"
+  },
+  "ruff": "PASS",
+  "mypy_strict": {
+    "result": "PASS",
+    "files": 87
+  },
+  "compileall": "PASS",
+  "openspec_strict": "PASS",
+  "diff_check": "PASS",
+  "live_requests": 11,
+  "live_complete": 11,
+  "raw_outputs_preserved": true,
+  "independent_questions": 11,
+  "independent_claims": 26,
+  "independent_supported": 24,
+  "independent_uncertain": 2,
+  "task_6_3": "INCONCLUSIVE",
+  "task_6_5": "INCOMPLETE",
+  "prompt_v3": "PROPOSED_ONLY"
+}

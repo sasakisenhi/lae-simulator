@@ -1,0 +1,97 @@
+{
+  "status": "PASS for frozen VB target; later out-of-scope G8 changes excluded",
+  "checked_at": "2026-11-09T03:35:55.364354+00:00",
+  "planned_completion_record_changes": [
+    "openspec/changes/build-reproducible-simulation-foundation/design.md",
+    "openspec/changes/build-reproducible-simulation-foundation/proposal.md",
+    "openspec/changes/build-reproducible-simulation-foundation/tasks.md"
+  ],
+  "later_out_of_scope_changes": {
+    "src/lae_simulator/adapters/interview_remote.py": "sha256:be057924cd772f3cb69d56c78eda0d9b8dca399458de29e2058858a1c113402c",
+    "src/lae_simulator/simulation/interview.py": "sha256:1dc3df48071b7dad43398aec510008ccf1fd533768b3d6bb25b1b3b02f346e5e",
+    "src/lae_simulator/simulation/interview_validation.py": "sha256:53686f9d49f227734e0db5c02f5e8cdccac6a45c14385d6614b475b609754159",
+    "tests/test_interview.py": "sha256:2323beee928f2aaf1b5a411e8303c624eded9b36c33b765c006aa577a42387ac",
+    "tests/test_interview_remote.py": "sha256:05af413a73b2aae39cc3ce77e2a258a7847ff8ad19bdd6a8c5f6b6e23ee794b8"
+  },
+  "later_added_sources": [
+    "src/lae_simulator/adapters/interview_diagnostics.py",
+    "tests/test_g8_offline_repair.py"
+  ],
+  "VB_G9_core_evaluator_and_relevant_tests_inputs_unchanged": true,
+  "preserved_evidence_unchanged": true,
+  "preserved_file_count": 2051,
+  "G9_snapshot_later_out_of_scope_source_drift": [
+    "src/lae_simulator/adapters/interview_remote.py",
+    "src/lae_simulator/simulation/interview.py",
+    "src/lae_simulator/simulation/interview_validation.py",
+    "tests/test_interview.py",
+    "tests/test_interview_remote.py"
+  ],
+  "final_checks": [
+    {
+      "name": "G9-contract-final",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_search_profile_contract.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:29b7bfebfc32c426a055e4e63cade4e1150a8546ec887774403abb47c67c6f23"
+    },
+    {
+      "name": "VB-harness-final",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_vb*_harness.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:045aa074dd5af0c65853b5c28aab2df4be7695dff86ab753bb5d2e104636559e"
+    },
+    {
+      "name": "openspec-final",
+      "command": [
+        "openspec",
+        "validate",
+        "build-reproducible-simulation-foundation",
+        "--type",
+        "change",
+        "--strict",
+        "--no-interactive"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e5e8bfc05fe155a205484b62fb2b7c0913de6c65aae664a4713a0b8505bf9da5"
+    },
+    {
+      "name": "diff-check-final",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "report_sha256": "sha256:df2c4e9adff06841858349425505cf48828aff5b64c0b5847f3480f45144d4a0",
+  "run2_manifest_sha256": "sha256:45d8b7a37be8a9fa99d2e600f4f6fd34afce5b5682d4a777b97f4f2f03f16117",
+  "scope": "328-test full verification applies to frozen target before later G8 edits; final targeted G9/VB checks passed; no G8 acceptance claim"
+}

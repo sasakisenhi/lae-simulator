@@ -1,0 +1,26 @@
+{
+  "state": "PROPOSED_NOT_APPROVED_NOT_IMPLEMENTED_NOT_SENT",
+  "version": "employee-interview-v3",
+  "generator": "gpt-6.1-terra",
+  "scope": "generic wording constraints only; no question-specific result injection",
+  "requests": 11,
+  "max_output_tokens": 1024,
+  "min_start_interval_seconds": 65,
+  "retries": 0,
+  "estimated_cost_usd": 0.251777,
+  "estimated_stop_usd": "2.00",
+  "changes": [
+    "Explicitly distinguish search-result locations from source reading/verification.",
+    "Explicitly state an unsupported question premise is unestablished, not merely its reason unknown."
+  ],
+  "unchanged": [
+    "fixed package",
+    "questions",
+    "schema",
+    "model",
+    "reasoning effort none",
+    "public ceiling",
+    "acceptance criteria"
+  ],
+  "preservation": "Keep v2 and all earlier results. Treat v3 as a new trial, never retroactively replace v2."
+}

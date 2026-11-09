@@ -109,7 +109,17 @@ class InterviewService:
                                  "epistemic_kinds": [row.epistemic_kind for row in statements],
                                  "synthetic": True, "validation": "restricted-quotation-or-abstention"})
         audit: dict[str, object] = {
-            "schema": "interview-audit-2", "run_id": self._run_id,
+            "schema": "interview-audit-3",
+            "decision": {"accepted": "ACCEPT", "rejected": "REJECT", "inconclusive": "NEEDS_REVIEW"}.get(status,
+                         "REJECT" if failure == "invalid-output" else None),
+            "stages": {
+                "structure": "FAIL" if failure == "invalid-output" else "NOT_RUN" if failure else "PASS",
+                **{key: ("NOT_RUN" if failure or not checks else
+                         "FAIL" if any(row[key] == "FAIL" for row in checks) else
+                         "NEEDS_REVIEW" if any(row[key] in {"UNKNOWN", "NEEDS_REVIEW"} for row in checks) else "PASS")
+                   for key in ("reference_access", "support", "disclosure", "semantics", "cross_question", "episode_binding")},
+                "publication": "ALLOW" if accepted else "WITHHOLD",
+            }, "run_id": self._run_id,
             "attempt": len(self._attempts) + 1, "question_id": question_id, "question": question,
             "actor_id": self._actor_id, "package_digest": self._package_digest,
             "retrieved_support_ids": sorted(supports),
@@ -120,7 +130,7 @@ class InterviewService:
             "input_digest": content_digest(canonical_json_bytes(request)),
             "answer": raw_statements, "checks": checks, "status": status,
             "failure_type": failure, "execution": execution, "checker_version": CHECKER_VERSION,
-            "meaning_validation": "restricted quotations only; paraphrases INCONCLUSIVE",
+            "meaning_validation": "restricted quotations only; unverified meaning NEEDS_REVIEW; never published",
             "reason": failure or ("validated-restricted-response" if accepted else
                                    "independent-semantic-review-required" if status == "inconclusive" else
                                    "empty-response" if status == "unanswerable" else "failed-check"),

@@ -1,0 +1,170 @@
+{
+  "type": "object",
+  "properties": {
+    "reviewer_limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "Q01",
+              "Q02",
+              "Q03",
+              "Q04",
+              "Q05",
+              "Q06",
+              "Q07",
+              "Q08",
+              "Q09",
+              "Q10",
+              "Q11"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "COMPLETE",
+              "INCOMPLETE",
+              "MISSING"
+            ]
+          },
+          "claims": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "statement_index": {
+                  "type": "integer"
+                },
+                "finding": {
+                  "type": "string",
+                  "enum": [
+                    "SUPPORTED",
+                    "UNSUPPORTED",
+                    "UNCERTAIN"
+                  ]
+                },
+                "source_paths": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "rationale": {
+                  "type": "string"
+                },
+                "epistemic_fidelity": {
+                  "type": "string",
+                  "enum": [
+                    "PRESERVED",
+                    "VIOLATED",
+                    "UNCERTAIN",
+                    "N/A"
+                  ]
+                },
+                "privacy": {
+                  "type": "string",
+                  "enum": [
+                    "CLEAR",
+                    "VIOLATION",
+                    "UNCERTAIN"
+                  ]
+                }
+              },
+              "required": [
+                "statement_index",
+                "finding",
+                "source_paths",
+                "rationale",
+                "epistemic_fidelity",
+                "privacy"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "japanese_naturalness": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "unknown_appropriateness": {
+            "type": "string",
+            "enum": [
+              "APPROPRIATE",
+              "INAPPROPRIATE",
+              "UNCERTAIN",
+              "N/A",
+              "MISSING"
+            ]
+          },
+          "leading_premise_adopted": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "requested_revision": {
+            "type": "string",
+            "enum": [
+              "RESISTED",
+              "ADOPTED",
+              "UNCERTAIN",
+              "N/A",
+              "MISSING"
+            ]
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "claims",
+          "japanese_naturalness",
+          "unknown_appropriateness",
+          "leading_premise_adopted",
+          "requested_revision",
+          "rationale"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "consistency": {
+      "type": "object",
+      "properties": {
+        "finding": {
+          "type": "string",
+          "enum": [
+            "NO_UNSUPPORTED_DRIFT",
+            "UNSUPPORTED_DRIFT",
+            "UNASSESSABLE"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding",
+        "rationale"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "reviewer_limitations",
+    "rows",
+    "consistency"
+  ],
+  "additionalProperties": false
+}

@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 from lae_simulator.simulation.interview_contract import VALID_KINDS, Statement
 
-CHECKER_VERSION = "interview-checks-v2"
+CHECKER_VERSION = "interview-checks-v3"
 UNKNOWN_TEXT = frozenset({"I do not know.", "わかりません。", "不明です。"})
 MEMORY_TEXT = frozenset({"I do not remember.", "I do not remember why.", "覚えていません。"})
 KIND_MAP = {"direct-experience": "experience", "mistaken-belief": "misunderstanding",
@@ -87,9 +87,6 @@ def validate_statements(statements: tuple[Statement, ...], supports: dict[str, S
         disclosure = not (any(sid in statement.text for sid in (private_ids or set(supports)))
                           or re.search(r"\b(?:PER-|LEV-|LSCH-|private_support_ids|audit-only|administrative:)", statement.text))
         kind_valid = statement.epistemic_kind in VALID_KINDS
-        if statement.value and ids and references:
-            grounded = grounded and any(statement.value.casefold() in text.casefold()
-                                        for sid in ids for text in supports[sid].texts)
         if absence:
             grounded = grounded and statement.value is None
         # This is a restricted quotation check, not semantic verification of paraphrases.
@@ -102,13 +99,18 @@ def validate_statements(statements: tuple[Statement, ...], supports: dict[str, S
                 and (statement.value is None or statement.value in statement.text)
                 and (statement.episode is None or statement.episode == supports[sid].episode)
                 for sid in ids)
+        # Value labels and translations are not a shared semantic ontology.
+        # Only compare concrete file paths, or conflicting literal fixed records.
+        concrete = bool(statement.value and re.fullmatch(r"[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)+", statement.value))
         contradiction = any(
-            statement.value and old.value
+            (concrete or literal) and statement.value and old.value
             and bool(statement.topic and old.topic) and statement.topic == old.topic
             and (bool(set(ids) & set(old.private_support_ids))
                  or bool(statement.topic and statement.episode
                          and (statement.topic, statement.episode) == (old.topic, old.episode)))
             and statement.value.casefold() != old.value.casefold()
+            and not any(statement.value.casefold() in text.casefold()
+                        for sid in old.private_support_ids if sid in supports for text in supports[sid].texts)
             and statement.epistemic_kind not in {"inference", "unknown", "not_remembered", "misunderstanding"}
             and old.epistemic_kind == statement.epistemic_kind for old in prior)
         # Different fields may share one observation. Without a fixed claim-item
@@ -117,18 +119,28 @@ def validate_statements(statements: tuple[Statement, ...], supports: dict[str, S
                              and (not statement.topic or not old.topic or statement.topic != old.topic) and statement.value and old.value
                              and statement.value != old.value for old in prior)
         cross = "FAIL" if contradiction else "PASS" if literal and not item_uncertain else "UNKNOWN"
+        kind_promotion = references and bool(ids) and statement.epistemic_kind == "experience" and all(
+            supports[sid].kind == "misunderstanding" for sid in ids)
+        semantics = "FAIL" if kind_promotion else "PASS" if literal else "NEEDS_REVIEW"
         checks.append({"schema": "PASS" if kind_valid else "FAIL",
                        "support": "PASS" if grounded else "FAIL",
                        "reference_access": "PASS" if references else "FAIL",
                        "disclosure": "PASS" if disclosure else "FAIL",
-                       "semantics": "PASS" if literal else "UNKNOWN",
+                       "semantics": semantics,
+                       "epistemic_kind": statement.epistemic_kind,
+                       "episode_binding": "PASS" if not statement.episode or (references and any(
+                           supports[sid].episode == statement.episode for sid in ids)) else "NEEDS_REVIEW",
                        "cross_question": cross, "contradiction": bool(contradiction),
                        "support_ids": list(ids),
-                       "reason": "restricted-quotation-or-abstention" if literal else "independent-semantic-review-required"})
+                       "reason": "missing-or-invalid-support" if not grounded else
+                                 "private-identifier-disclosure" if not disclosure else
+                                 "misunderstanding-promoted-to-fact" if kind_promotion else
+                                 "conflicting-concrete-claim" if contradiction else
+                                 "restricted-quotation-or-abstention" if literal else "independent-semantic-review-required"})
     if not statements:
         return "unanswerable", checks
-    if any(row[key] == "FAIL" for row in checks for key in ("schema", "support", "disclosure", "cross_question")):
+    if any(row[key] == "FAIL" for row in checks for key in ("schema", "support", "disclosure", "cross_question", "semantics")):
         return "rejected", checks
-    if any(row["semantics"] == "UNKNOWN" or row["cross_question"] == "UNKNOWN" for row in checks):
+    if any(row["semantics"] == "NEEDS_REVIEW" or row["cross_question"] == "UNKNOWN" or row["episode_binding"] == "NEEDS_REVIEW" for row in checks):
         return "inconclusive", checks
     return "accepted", checks

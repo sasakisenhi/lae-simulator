@@ -32,6 +32,10 @@
 - **WHEN** Scenario 1.4.0の収録済みWorkspace参照を、検証済み出典・完全Workspaceパス・根拠行範囲へ対応付けられない、または同名ファイルによって対応が曖昧になる
 - **THEN** 実行前に対象参照と理由を示して拒否し、選択された検索範囲やファイルの列挙順で曖昧さを解消しない。未収録・未解決参照やWorkspace外の出典を有効なWorkspace参照へ補完しない
 
+#### Scenario: One file per recorded Workspace reference
+- **WHEN** Scenario 1.4.0の収録済みWorkspace参照のevidenceが異なる完全パスへ解決される複数ファイルを含む（例: `a.ts:1,b.ts:2`、`a.ts:1-3,b.ts:5-7`）
+- **THEN** 対象と複数ファイル非対応の理由を示して入力拒否し、最後のファイルへの集約や一部採用をしない。単一ファイルの`a.ts:1`、`a.ts:1-5,8-10`、`eslintServer.ts:692-700,823-827`は有効範囲であれば受理する。この制約は1.4.0に限定し、旧版へ遡及適用しない
+
 ### Requirement: WD03 Identifiable frozen inputs
 システムは、実行に使用する全入力と規則を内容識別可能なスナップショットとして固定しなければならない（SHALL）。
 

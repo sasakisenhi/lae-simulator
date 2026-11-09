@@ -1,0 +1,116 @@
+{
+  "commands": [
+    {
+      "name": "sync",
+      "command": [
+        "uv",
+        "sync",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e6ef10dc850e4a0bef1b69a16b14dc7e25aa59cfb69810e150976d58251cc274"
+    },
+    {
+      "name": "lock",
+      "command": [
+        "uv",
+        "lock",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:80dc9c01362a3e3f395506e863f54ae11bf189f30cfe068e2e62d6d9110d6087"
+    },
+    {
+      "name": "unittest",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:97d6373a361e4154a22820a963318b9b2472a2da7c3bc1883418308ee53be11c"
+    },
+    {
+      "name": "ruff",
+      "command": [
+        "uvx",
+        "--from",
+        "ruff==0.17.4",
+        "ruff",
+        "check",
+        "."
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "name": "mypy",
+      "command": [
+        "uvx",
+        "--from",
+        "mypy==2.4.1",
+        "mypy",
+        "--strict",
+        "src",
+        "tests"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:a766815ce9137d28823902e2a13996ac5e7021d76946b008d607ddbe5fe9163c"
+    },
+    {
+      "name": "compileall",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "src",
+        "tests"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "openspec",
+      "command": [
+        "openspec",
+        "validate",
+        "build-reproducible-simulation-foundation",
+        "--type",
+        "change",
+        "--strict",
+        "--no-interactive"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e5e8bfc05fe155a205484b62fb2b7c0913de6c65aae664a4713a0b8505bf9da5"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "recheck": {
+    "preserved_evidence_unchanged": true,
+    "code_and_tests_unchanged": true,
+    "inputs_unchanged": true,
+    "lock_unchanged": true,
+    "import_boundaries_unchanged": true
+  },
+  "target_manifest_sha256": "sha256:efd54da5aae90092ff44d020220c82f982dfc01458b72891206027d5ffa17f1a"
+}

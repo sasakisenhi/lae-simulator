@@ -1,0 +1,43 @@
+{
+  "schema": "g8-anonymous-review-protocol-1",
+  "source": "existing G8 rubric and disclosure boundary",
+  "evaluation_mode": "fresh read-only packet-only Codex session; no primary scores or model identity",
+  "required_ids": [
+    "Q01",
+    "Q02",
+    "Q03",
+    "Q04",
+    "Q05",
+    "Q06",
+    "Q07",
+    "Q08",
+    "Q09",
+    "Q10",
+    "Q11"
+  ],
+  "required_unknown_ids": [
+    "Q03",
+    "Q04",
+    "Q05",
+    "Q10",
+    "Q11"
+  ],
+  "private_identifiers": [
+    "EX01",
+    "EX02",
+    "EX03",
+    "EX04",
+    "OSS-FACT",
+    "PER-09be2c17e8f289511d59f3e1",
+    "PER-18b369177a564070df3fc072",
+    "PER-7fc0a495ded95be0acfa7931",
+    "PER-ad20563cc573cb6c5c611c30",
+    "TEAM-ASSIGNMENT",
+    "observed-claim-1"
+  ],
+  "known_participant_role_and_material_labels": "Role labels and known material/version labels are not automatically private support IDs; use the supplied boundary and context. Do not invent a stronger disclosure rule.",
+  "unknown_rule": "Original rubric permits unknown, denial or not-remembered when facts are absent. Judge whether wording asserts unsupported events rather than rejecting not_remembered categorically.",
+  "output_rule": "Return one row per record and one finding per supplied statement. Preserve missing and incomplete statuses exactly. Do not invent aggregate denominators; the caller computes them from inputs.",
+  "consistency": "Q01/Q06/Q07 for this one run; generation requests have no prior-answer context",
+  "no_automatic_pass": true
+}

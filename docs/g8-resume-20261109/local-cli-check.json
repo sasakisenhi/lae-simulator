@@ -1,0 +1,19 @@
+{
+  "simulation": {
+    "business_outcome": "incomplete",
+    "control": "explicit commands; not autonomous policy acceptance",
+    "replay": "PASS",
+    "run_id": "local-101217f59d4d49247749b05af54b18fc46d23b91eb8e43c3251b86409c5f9c88",
+    "run_path": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-resume-local-20261109/simulation/local-101217f59d4d49247749b05af54b18fc46d23b91eb8e43c3251b86409c5f9c88",
+    "status": "valid"
+  },
+  "evidence_retrieval": "PASS",
+  "interview": {
+    "acceptance": "NOT READY",
+    "output": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/g8-resume-local-20261109/fixed-interview",
+    "status": "answered-unknown"
+  },
+  "expected_interview_exit": 6,
+  "live_requests": 0,
+  "initial_harness_failure": "Resolved interpreter symlink incorrectly; corrected to venv executable path before run"
+}

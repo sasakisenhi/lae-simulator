@@ -1,0 +1,123 @@
+{
+  "commands": [
+    {
+      "name": "sync",
+      "command": [
+        "uv",
+        "sync",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:f5182697db482ec1849aab95ac762ecf08dd9bf76a18b819f529ce83d9923e84"
+    },
+    {
+      "name": "lock",
+      "command": [
+        "uv",
+        "lock",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e2dd2cee0573d9d8b6ff09df64b01cc54e1e42451dd0304133774abcf1824bbe"
+    },
+    {
+      "name": "unittest",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:2bd1f08e521b5b311ad71e89b103eb7b095c57f480bb63f7a02ffa36bb93c572"
+    },
+    {
+      "name": "ruff",
+      "command": [
+        "uvx",
+        "--from",
+        "ruff==0.17.4",
+        "ruff",
+        "check",
+        "."
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "name": "mypy",
+      "command": [
+        "uvx",
+        "--from",
+        "mypy==2.4.1",
+        "mypy",
+        "--strict",
+        "src",
+        "tests"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:58041ca0a5f16e793351345586a35e4159cdce61347fdae24588b96f9800b296"
+    },
+    {
+      "name": "compileall",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "src",
+        "tests"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "openspec",
+      "command": [
+        "openspec",
+        "validate",
+        "build-reproducible-simulation-foundation",
+        "--type",
+        "change",
+        "--strict",
+        "--no-interactive"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e5e8bfc05fe155a205484b62fb2b7c0913de6c65aae664a4713a0b8505bf9da5"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "evaluator-compileall",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "scripts/vb_search_profile_acceptance.py"
+      ],
+      "exit_code": 0,
+      "log_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

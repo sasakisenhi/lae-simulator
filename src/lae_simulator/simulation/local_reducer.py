@@ -550,17 +550,41 @@ def _reduce_local_event(execution: ScenarioExecution, state: LocalState,
         if not event.query or not event.query.strip():
             _event_fail(event, "empty-search", "search query must not be empty")
         term = event.query.casefold()
+        search_files = state.workspace_files
+        scoped_search = execution.schema_version == "1.4.0"
+        if scoped_search and execution.search_paths is not None:
+            allowed_paths = set(execution.search_paths)
+            search_files = tuple(file for file in state.workspace_files if file.path in allowed_paths)
         line_matches = tuple(sorted(
             f"{file.path}#{index + 1}"
-            for file in state.workspace_files
+            for file in search_files
             for index, line in enumerate(file.content.decode("utf-8", errors="replace").splitlines())
             if term in line.casefold()
         ))
-        refs_found = {
-            ref.id for ref in execution.references
-            if ref.coverage == "recorded" and ref.source_classification != "audit_only_comment"
-            and _reference_matches_lines(ref, line_matches)
-        }
+        if scoped_search:
+            # 1.4 references are pre-resolved to a verified full path and
+            # bounded line ranges. Never infer a path from a basename here.
+            line_numbers: dict[str, set[int]] = {}
+            for match in line_matches:
+                path, raw_line = match.rsplit("#", 1)
+                line_numbers.setdefault(path, set()).add(int(raw_line))
+            verified_refs = {item.reference_id: item for item in execution.workspace_references}
+            refs_found = {
+                ref_id for ref_id, resolved in verified_refs.items()
+                if resolved.path in line_numbers
+                and any(first <= number <= last
+                        for number in line_numbers[resolved.path]
+                        for first, last in resolved.ranges)
+                and any(ref.id == ref_id and ref.coverage == "recorded"
+                        and ref.source_classification != "audit_only_comment"
+                        for ref in execution.references)
+            }
+        else:
+            refs_found = {
+                ref.id for ref in execution.references
+                if ref.coverage == "recorded" and ref.source_classification != "audit_only_comment"
+                and _reference_matches_lines(ref, line_matches)
+            }
         # Canonical reference-ID order is ascending Python string order.
         # G2 contains reference records for B0 only. A workspace-text match
         # cannot promote an affected B0 reference to a verified new-version
@@ -587,7 +611,9 @@ def _reduce_local_event(execution: ScenarioExecution, state: LocalState,
                        claims=state.claims + (search_claim,) + effects,
                        observations=state.observations + (observation,),
                        invalidated_reference_ids=state.invalidated_reference_ids,
-                       observed_messages=state.observed_messages + (("no-match-in-fixed-corpus",) if not matches else ()))
+                       observed_messages=state.observed_messages + (
+                           (("no-match-in-search-scope",) if scoped_search else ("no-match-in-fixed-corpus",))
+                           if not matches else ()))
 
     if event.kind is LocalEventKind.NAVIGATE:
         if event.input_version != state.workspace_version:

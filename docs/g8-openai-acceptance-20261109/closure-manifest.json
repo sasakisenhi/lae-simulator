@@ -1,0 +1,21 @@
+{
+  "schema": "g8-closure-1",
+  "progress": {
+    "total": 28,
+    "complete": 26,
+    "remaining": 2
+  },
+  "previous_delivery_manifest_sha256": "7556987d1622c6e10120a564eb75b5fe6574468a225a410ef9553ef1decdce80",
+  "previous_delivery_verified_unchanged": true,
+  "files": {
+    "docs/g8-openai-acceptance-20261109/human-adjudication.json": "1640792510d89c7db90ba78193e864a6ad055a287aa7f103858d764615903dc3",
+    "docs/g8-openai-acceptance-20261109/final-acceptance.json": "4c178e2475df46b6ceb3b26ac01fc342b6bb29a9ab61738bb16a65ed42a1a3df",
+    "docs/g8-acceptance.md": "1a38d8c361b453553c3740a2f26d18a4a7a3e32b021af3b4152ef183ec4e0d2e",
+    "openspec/changes/build-reproducible-simulation-foundation/tasks.md": "984d55e9d897b4d35095edf78845bb9a2c5ddb1f73869de7959737b793cd6a20"
+  },
+  "final_checks": {
+    "openspec_strict": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "no_additional_model_calls": true
+}

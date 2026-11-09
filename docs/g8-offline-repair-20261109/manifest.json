@@ -1,0 +1,30 @@
+{
+  "schema": "g8-offline-repair-evidence-1",
+  "source_hashes": {
+    "src/lae_simulator/adapters/interview_diagnostics.py": "8a985558a53089565013dc2888138aa5d5b7c88ad70e93a2a92faf4398aca94e",
+    "src/lae_simulator/adapters/interview_remote.py": "4651a65130d46548e61fccf256ae4f575ed062f326625092be9ecec66b57a306",
+    "src/lae_simulator/simulation/interview.py": "6d076f3b413f4a47102e510f39c60153d04bab31fde6220b8518a4eba8f9283a",
+    "src/lae_simulator/simulation/interview_validation.py": "3700c89999e116790f238ba1bb0164969420aad7385cb4cc15e61a507cf1b6ef",
+    "tests/test_g8_offline_repair.py": "f89ac4c38cb30c4b2d1caa86c8e3ca77ff9c9d3af038ca31340599c2c32d8a7a",
+    "tests/test_interview.py": "2323beee928f2aaf1b5a411e8303c624eded9b36c33b765c006aa577a42387ac",
+    "tests/test_interview_remote.py": "05af413a73b2aae39cc3ce77e2a258a7847ff8ad19bdd6a8c5f6b6e23ee794b8",
+    "scripts/g8_offline_reaudit.py": "3baf4fbd489d617e746132d14635e9e878fda0e89e112ac830906dd1aa6d13f4"
+  },
+  "artifacts": {
+    "prior-evidence-hashes.json": "9e7367caec53e1bb035be7ed5d4d7a2fe86ec2b49fe3814bec0a4278ab352596",
+    "legacy_validator.py": "9a4ff38d2eb3cc31925f1ce211bd170250babf3a91f1fceca5dda2cd3bf1cea2",
+    "question-stages.csv": "14d0fa919ea6e743e5dc47736d41f87c5880fa869a97728db1d4b118f1a3027f",
+    "reaudited-answers.json": "89289ffc5fa84782670fd18fe14e3971ad0205352545830c7755d8751026a0c9",
+    "evidence-inventory.json": "734e5eec17fcb2b40d4f6d97c30ae4985835d0534e912a9dc9cfd4ac8e056e4e",
+    "summary.json": "462977ea3f0e5165a95f8ab7715e04caf1af98933f46c65686480a57ad99fe98",
+    "unittest-final.log": "3b8e0854704970c42a5cd55e948b7b1b0c9a2d5d9313a224a5f9381036613fd2",
+    "report.md": "1fbd6c21721974aa245af3c0507dda3a82bed20fccb8512a673e606836180476",
+    "dependencies.json": "ee7d0b1dc41ecc8dfbfe9f829220044dd288c6b14ecca6258236ed57396aacd3",
+    "validation.json": "699cdf44967c2a04b012cfd78f5f43c9685b56ee917eac3566649169740902cc",
+    "reaudit-final/question-stages.csv": "0056e11b8d1b36df28fec25530ded34b371052aa77647cb6e69eb0d55fb56d44",
+    "reaudit-final/reaudited-answers.json": "89289ffc5fa84782670fd18fe14e3971ad0205352545830c7755d8751026a0c9",
+    "reaudit-final/evidence-inventory.json": "734e5eec17fcb2b40d4f6d97c30ae4985835d0534e912a9dc9cfd4ac8e056e4e",
+    "reaudit-final/summary.json": "462977ea3f0e5165a95f8ab7715e04caf1af98933f46c65686480a57ad99fe98"
+  },
+  "scope": "offline G8 repair only; no acceptance upgrade"
+}

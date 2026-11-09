@@ -1,0 +1,15 @@
+{
+  "schema": "g8-independent-delivery-1",
+  "result": "REVIEW_COMPLETED_ACCEPTANCE_INCONCLUSIVE",
+  "files": {
+    "review-input.txt": "33225ae18e91f42b6f70eb2ce167f3b3ab1692e5607fbf6b0d63e1464c23e86a",
+    "preflight.json": "d8c248db486c6d19a7b268e27075ad344fab98935dbb969821b192e2507a4ca6",
+    "session-events.jsonl": "246f11f2ecddd5efcec9c1e306b58009749c48d3f13ca85c2c3313d22cff8cd8",
+    "session-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sealed-result.json": "6ee24c77a04298cb80ff53b9bc900ee47e34dd5887ebcf0d8eaf28c79e5a3591",
+    "seal.json": "cef444d3cd1d3bcf8dc3a85ae7ebdbacfcf4d8d60cca5f8872d161f35f1920f2",
+    "verification-and-adjudication.json": "e629a06692af7a7435b0072529c5ca7cc06ebed779d47a900b38e076580c04ee",
+    "review-question-index.csv": "6cdb670de0472c4f7fd8334fba92c8f470fe337e67b69df219cee6981728bcc6",
+    "report.md": "9f4dd0c2c33e8671fd74f3fb813f3db38296c4e282f3e437a6ad9701965fc00e"
+  }
+}

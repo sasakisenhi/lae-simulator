@@ -179,7 +179,9 @@ def _project_local_log(
                 if not ref.startswith('LEV-') or ref in public_event_ids
             ),
             coverage=event.coverage, limitations=(
-                event.limitations if event.kind not in {LocalEventKind.RUN_ENDED, LocalEventKind.SUBMISSION_CREATED} else None
+                "Results are limited to the search scope; no conclusion about paths outside it."
+                if event.kind is LocalEventKind.SEARCH and execution.schema_version == "1.4.0"
+                else event.limitations if event.kind not in {LocalEventKind.RUN_ENDED, LocalEventKind.SUBMISSION_CREATED} else None
             ),
             query=event.query if event.kind is LocalEventKind.SEARCH else None,
             result_refs=visible_search_results,
