@@ -1,0 +1,10 @@
+{
+  "sealed_at": "2026-11-09T08:48:18.447648+00:00",
+  "returncode": 0,
+  "files": {
+    "stage-1.json": "29efe5a76f872d2a3378448c6cbeb74dd5e6819b33b37814b7ab996c698254eb",
+    "stage-1-input.txt": "31da3d80250b67246c70369d78b4f1e67bd85dd11e56a5de26f3038895a349b2",
+    "stage-1-events.jsonl": "0bedb6958fc0beaaced4ba270f6737b91db16e0974859d9ec2af2edad32ae747",
+    "stage-1-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

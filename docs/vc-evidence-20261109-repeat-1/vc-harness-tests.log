@@ -1,0 +1,10 @@
+test_command_access_is_rejected_after_sealing (test_vc_harness.VCHarnessTests.test_command_access_is_rejected_after_sealing) ... ok
+test_failed_session_is_retained_without_replacement (test_vc_harness.VCHarnessTests.test_failed_session_is_retained_without_replacement) ... ok
+test_malformed_result_is_sealed_before_parsing (test_vc_harness.VCHarnessTests.test_malformed_result_is_sealed_before_parsing) ... ok
+test_no_tools_is_accepted_and_sealed (test_vc_harness.VCHarnessTests.test_no_tools_is_accepted_and_sealed) ... ok
+test_unknown_tool_is_rejected (test_vc_harness.VCHarnessTests.test_unknown_tool_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.006s
+
+OK

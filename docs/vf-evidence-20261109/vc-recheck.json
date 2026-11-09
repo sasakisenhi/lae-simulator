@@ -1,0 +1,33 @@
+{
+  "verified_at": "2026-11-09T09:05:39.249568+00:00",
+  "checks": {
+    "frozen_inputs": true,
+    "stage-1-seal.json": true,
+    "retrieval-seal.json": true,
+    "stage-2-seal.json": true,
+    "seal_order": true,
+    "zero_tools_stage_1": true,
+    "zero_tools_stage_2": true,
+    "separate_contexts": true,
+    "investigator_chosen_requests": true,
+    "public_api_response_0": true,
+    "public_event_mapping": true,
+    "mapping_targets_exist": true,
+    "claim_citations_exist": true,
+    "hypothesis_reassessment": true,
+    "initial_packet_same_as_first_trial": true,
+    "initial_prompt_same_as_first_trial": true,
+    "criteria_unchanged": true
+  },
+  "structural_result": "PASS",
+  "sessions": [
+    "01a1bf80-f1f9-7642-a5cc-cb9ddb521a3b",
+    "01a1bf81-2aea-7701-81a0-b912f83fd059"
+  ],
+  "model": "gpt-6.1-terra",
+  "canonical_event_count": 14,
+  "public_records": 51,
+  "additional_requests": 1,
+  "claim_citations": 12,
+  "limitation": "Citation existence and canonical correspondence do not establish semantic support. Separate post-seal meaning review is required."
+}

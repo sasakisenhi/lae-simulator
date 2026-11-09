@@ -1,0 +1,9 @@
+test_current_traceability_is_complete_but_mvp_awaits_approval (test_vf_harness.VfGateTests.test_current_traceability_is_complete_but_mvp_awaits_approval) ... ok
+test_every_unresolved_mandatory_status_blocks_each_dimension (test_vf_harness.VfGateTests.test_every_unresolved_mandatory_status_blocks_each_dimension) ... ok
+test_missing_obligations_or_acceptance_cannot_pass (test_vf_harness.VfGateTests.test_missing_obligations_or_acceptance_cannot_pass) ... ok
+test_only_all_pass_with_human_approval_completes (test_vf_harness.VfGateTests.test_only_all_pass_with_human_approval_completes) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.006s
+
+OK

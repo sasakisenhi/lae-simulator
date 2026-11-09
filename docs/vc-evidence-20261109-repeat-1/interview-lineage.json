@@ -1,0 +1,10 @@
+{
+  "source_hashes": {
+    ".lae-runs/g8-openai-only-20261109/provider-1/public.json": "d3c7c516776ecf20fba716efa4056d348020e33ffce60d27d046667f4745f568",
+    "docs/g8-openai-acceptance-20261109/protocol.json": "333e796c5fe0ac63d2623b05599522de6825e9109c9d02a3d8c7ece0a8cda7bf",
+    "docs/g8-openai-acceptance-20261109/config.json": "de1c70aea4859e78eea63a88aab79aab8d5a626cacce4360b7c55fa761f1d3b8",
+    "docs/g8-openai-acceptance-20261109/final-acceptance.json": "4c178e2475df46b6ceb3b26ac01fc342b6bb29a9ab61738bb16a65ed42a1a3df"
+  },
+  "disclosure": "Only public.json answers; no raw withheld outputs or administrative package",
+  "frozen_initial_packet": "initial-public.json / manifest.json"
+}

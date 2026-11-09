@@ -1,0 +1,6 @@
+{
+  "changed_baseline_files": [],
+  "baseline_file_count": 2984,
+  "unchanged": true,
+  "scope": "All previously existing src/tests/fixtures/docs and Python scripts plus lock and pyproject; OpenSpec task follow-up intentionally excluded"
+}

@@ -1,0 +1,117 @@
+{
+  "hypothesis_updates": [
+    {
+      "id": "H1",
+      "status": "revised",
+      "claim": "The proposed URL-dependent metadata mechanism remains unverified, but retrieval supports two premises: the supplied header rule declares type layout and fixable whitespace without docs.url, and the supplied ESLint documentation describes fixTypes as selecting rule types for autofix.",
+      "changed_after_retrieval": "Direct plugin source and API documentation replace uncertainty about those premises. Extension metadata capture and filtering logic remain unavailable as source text; indexed relation names and line locators do not establish their behavior.",
+      "evidence_ids": ["document:D01", "document:D04", "document:D05", "document:D06", "reference:R02", "reference:R04"]
+    },
+    {
+      "id": "H2",
+      "status": "supported",
+      "claim": "Within the simulation, the metadata search is consistent with investigation relevant to the reported issue.",
+      "changed_after_retrieval": "New records show a simulated read of D01 and navigation to R01, which the curated index labels metadata-fields. This strengthens the narrow interpretation of relevant exploration without establishing understanding or diagnosis.",
+      "evidence_ids": ["public:PUB-588e35b2e3b3b707", "public:PUB-7d678321ba8c57b5", "public:PUB-a15837892e1efe9d", "reference:R01"],
+      "limits": "Real collection is unverified. The simulator records an incomplete ending without explaining why.",
+      "limit_evidence_ids": ["public:PUB-870117d6ee9d78b1"]
+    },
+    {
+      "id": "stage1_competing_explanation_1",
+      "status": "held due to insufficient evidence",
+      "claim": "Other fixTypes behavior or plugin conditions could contribute to the reported outcome.",
+      "changed_after_retrieval": "The supplied plugin source includes branches that condition fixes on canFix, providing a concrete alternative consideration. The reporter's input and rule options are unavailable, so relevance to the reported outcome cannot be determined.",
+      "evidence_ids": ["document:D01", "document:D05", "document:D06"]
+    },
+    {
+      "id": "stage1_competing_explanation_2",
+      "status": "supported",
+      "claim": "The retained search and navigation establish exploration, not a verified mechanism.",
+      "changed_after_retrieval": "Navigation and an incomplete simulator ending add activity context, but no diagnostic reasoning, implementation change, or reproduction result appears in the returned records.",
+      "evidence_ids": ["public:PUB-7d678321ba8c57b5", "public:PUB-a15837892e1efe9d", "public:PUB-870117d6ee9d78b1"],
+      "limits": "This describes the returned records only; it does not establish global absence of further work."
+    }
+  ],
+  "conclusions": [
+    {
+      "claim": "The supplied fixed documentation makes docs optional for custom rules, and the supplied header rule has autofix metadata without docs.url. Missing docs.url alone therefore does not establish a violation of that documented custom-rule format.",
+      "kind": "inference",
+      "evidence_ids": ["document:D04", "document:D06"]
+    },
+    {
+      "claim": "Retrieval strengthens the premises of the reporter's proposed explanation but does not verify URL-dependent exclusion or its causal connection to lost autofixes.",
+      "kind": "inference",
+      "evidence_ids": ["document:D01", "document:D05", "document:D06", "reference:R02", "reference:R04"]
+    },
+    {
+      "claim": "The incomplete outcome is a simulator record, not a compilation result or a measurement of software behavior.",
+      "kind": "observation",
+      "evidence_ids": ["public:PUB-870117d6ee9d78b1"]
+    }
+  ],
+  "unknowns": [
+    "Whether the reported autofix loss is reproducible with the reporter's actual versions, input, configuration, and plugin options.",
+    "The extension source logic at the indexed locations: D02 contains README text, while the references and workspace hits supply labels and locators rather than implementation text.",
+    "Whether missing docs.url is necessary or sufficient for the reported outcome, and whether single-fix and all-fixes paths behave differently.",
+    "Why the simulated run ended incomplete; no cause is supplied.",
+    "Management context, motives, unrecorded interactions, psychological effects, and true causes remain unknown.",
+    "No real compilation, controlled comparison, or causal effect measurement is supplied; absence from returned retained records is not global absence."
+  ],
+  "additional_evidence_used": [
+    "public:PUB-588e35b2e3b3b707",
+    "public:PUB-a15837892e1efe9d",
+    "public:PUB-870117d6ee9d78b1",
+    "document:D02",
+    "document:D04",
+    "document:D05",
+    "document:D06",
+    "reference:R01",
+    "reference:R02",
+    "reference:R04",
+    "reference:R-UNKNOWN",
+    "workspace:B0:server/src/eslint.ts#121"
+  ],
+  "claim_evidence": [
+    {
+      "claim": "The issue author reports lost header-rule autofixes after adding fixTypes and proposes missing docs.url as the mechanism.",
+      "evidence_ids": ["document:D01"],
+      "kind": "observation"
+    },
+    {
+      "claim": "The supplied header rule declares type layout and fixable whitespace, with no docs property in its meta object.",
+      "evidence_ids": ["document:D06"],
+      "kind": "observation"
+    },
+    {
+      "claim": "The supplied custom-rule documentation describes docs as optional for custom rules and fixable as mandatory for fixable rules.",
+      "evidence_ids": ["document:D04"],
+      "kind": "observation"
+    },
+    {
+      "claim": "The supplied API documentation describes fixTypes as selecting rule types used for autofix.",
+      "evidence_ids": ["document:D05"],
+      "kind": "observation"
+    },
+    {
+      "claim": "The retrieval does not expose the extension implementation needed to verify URL-dependent metadata exclusion: D02 is README content, and the cited index entries and workspace locator contain no implementation text.",
+      "evidence_ids": ["document:D02", "reference:R02", "reference:R04", "workspace:B0:server/src/eslint.ts#121"],
+      "kind": "observation"
+    },
+    {
+      "claim": "Simulated issue reading, metadata searching, and navigation to a metadata-fields reference are consistent with relevant exploration.",
+      "evidence_ids": ["public:PUB-588e35b2e3b3b707", "public:PUB-7d678321ba8c57b5", "public:PUB-a15837892e1efe9d", "reference:R01"],
+      "kind": "inference"
+    },
+    {
+      "claim": "The simulator records an incomplete ending but supplies no explanation for it.",
+      "evidence_ids": ["public:PUB-870117d6ee9d78b1"],
+      "kind": "observation"
+    },
+    {
+      "claim": "Relations outside the finite curated index remain unresolved.",
+      "evidence_ids": ["reference:R-UNKNOWN"],
+      "kind": "unknown"
+    }
+  ],
+  "context_declaration": "Only the embedded initial packet, sealed Stage 1 record, and supplied retrieval results were used. No tools or external access were used. Fixed OSS issue, documentation, and plugin source are distinguished from synthetic event projections, curated references, and search locators. Retrieved material available to this investigator does not establish that the simulated actor read it. No real-world behavior or causal effect measurement is supplied. The completed observation window concerns an explicit-command synthetic exercise, not a developer population. No hidden management information, motives, true causes, software grade, or VC acceptance judgment is inferred."
+}

@@ -1,0 +1,14 @@
+{
+  "task": "7.3",
+  "verdict": "PASS",
+  "protocol": "VC-blind-1",
+  "model": "gpt-6.1-terra",
+  "independent_investigation": "stage-1.json / stage-2.json; sealed before management comparison",
+  "criteria": "protocol.json",
+  "structural_checks": "verification.json",
+  "semantic_review": "report.md",
+  "prior_trial": "../vc-evidence-20261109/report.md: INCONCLUSIVE preserved",
+  "scope": "One fixed synthetic explicit-command run; additional retrieval path, not real-user effectiveness",
+  "remaining_task": "7.4; not executed",
+  "modified_production_code": false
+}

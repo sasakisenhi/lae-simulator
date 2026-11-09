@@ -1,0 +1,27 @@
+{
+  "files": {
+    "final-acceptance.json": "aa5e0fa260cf98a8938760ea5220ec1da585908f7b9f9d77c0f1aa6594177d31",
+    "initial-public.json": "1561e70ef0027cd106dcc6aee15f5fbac01a176f66e5b16b1daf81fd3a05cc3a",
+    "interview-lineage.json": "b291e1c3f1971c45c7d3ae7a324d16d1e9a3c8b3c589330aeec0b6594c82f9ad",
+    "manifest.json": "67a9bd99ea61273fcf43079e0e893ddd9f068a11e0caee2973ba8f706a0b22fb",
+    "protocol.json": "5efa11dda0b6d57e7b3618043d882aa73265572fe05d6b8477fbd69419d3f652",
+    "report.md": "7b8f1db92cb62693fff561b89b80e37b415afa675dacb002fe5010de9840d602",
+    "retrieval-audit.json": "c2b69ab97ff4395a0f4e81f550d3e57c477c3ab78f55c57b8bd4d46343ac4db5",
+    "retrieval-seal.json": "4d2d55bcfe55048ca8024fbae548dbaebf710aaa3d815ae3f80ff5dd9a843a60",
+    "stage-1-events.jsonl": "a2e59ee6c6d419a9cfe011055a129d8ac4c53c491c7a4d19d6e5cf548ac6a283",
+    "stage-1-input.txt": "31da3d80250b67246c70369d78b4f1e67bd85dd11e56a5de26f3038895a349b2",
+    "stage-1-seal.json": "fc1c5c7155e34f1b34840a5b4e887a42e9526494affa0ac3c009c91d81bd1f3c",
+    "stage-1-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stage-1.json": "53cf61ce50f30da81a8cae5db0d3848274f737e48d95e85d7e1cb1535001b200",
+    "stage-2-events.jsonl": "669d7a85d5dc5cbc7853e95b871a04a81b29976778299031d12d557ff934dd1a",
+    "stage-2-input.txt": "de1a25c084a1b9d260dde958f85f7f775019c99ffac7dcc419f6fd89fec4e9f8",
+    "stage-2-seal.json": "08115142dcbefb0d3ebd838dba1363582144127fd2829453e22bdf82efdbbe6c",
+    "stage-2-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stage-2.json": "a62ee9a511e68a3ea6adfaab70e9ca55955a8ce5d5acb3366e3ed4fa39af3efc",
+    "unittest.log": "c725e24d790d501c954b795852175ac74aef863e79905124963a2b9c83ddd732",
+    "validation.json": "a7613ee1f6827ceaaf02678bdc5fc737787e9665b60f67e981c2e1166d6a1984",
+    "vc-harness-tests.log": "64fb9c2f13151408a023e1aee3116de1de326133f0df76fcd15a9c66e3d43954",
+    "verification.json": "28aba9457e965b9e1447c887bca540350c8bd04bc5aa3e2e74fff4b1d1773480"
+  },
+  "note": "Completion artifact integrity; investigator seals predate meaning review and are separate."
+}

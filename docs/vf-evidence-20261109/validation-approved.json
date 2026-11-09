@@ -1,0 +1,77 @@
+{
+  "vf-tests": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_vf_harness.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "log": "docs/vf-evidence-20261109/vf-tests-approved.log",
+    "sha256": "b38655539d8e09575db98173f895c842e7c9e01be71d263c920c9ec36c1f183e"
+  },
+  "vf-verification": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "scripts.vf_acceptance"
+    ],
+    "exit_code": 0,
+    "log": "docs/vf-evidence-20261109/vf-verification-approved.log",
+    "sha256": "a9b8ba1205e5167545a5bd55a35c9473f2916fb0724ed9105408f05bc9501f8a"
+  },
+  "compileall": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "compileall",
+      "-q",
+      "scripts/vf_acceptance.py",
+      "tests/test_vf_harness.py"
+    ],
+    "exit_code": 0,
+    "log": "docs/vf-evidence-20261109/compileall-approved.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "openspec": {
+    "command": [
+      "openspec",
+      "validate",
+      "build-reproducible-simulation-foundation",
+      "--type",
+      "change",
+      "--strict",
+      "--no-interactive"
+    ],
+    "exit_code": 0,
+    "log": "docs/vf-evidence-20261109/openspec-approved.log",
+    "sha256": "e5e8bfc05fe155a205484b62fb2b7c0913de6c65aae664a4713a0b8505bf9da5"
+  },
+  "diff": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "log": "docs/vf-evidence-20261109/diff-approved.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "ruff": {
+    "exit_code": 0,
+    "log": "docs/vf-evidence-20261109/ruff-approved.log",
+    "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "execution": "approved outside sandbox"
+  },
+  "mypy": {
+    "exit_code": 0,
+    "log": "docs/vf-evidence-20261109/mypy-approved.log",
+    "sha256": "14c86ee194cc9406b4f38866ce2eb1ba7e54c55437faf1ccc89f0195c485674d",
+    "execution": "approved outside sandbox"
+  }
+}

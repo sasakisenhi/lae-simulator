@@ -1,0 +1,197 @@
+{
+  "unittest": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "exit_code": 0,
+    "sha256": "f49724853dcdb0b495f7972daae1f8685c4da02f903a7524bbe74c93042e34ae"
+  },
+  "compileall": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "compileall",
+      "-q",
+      "src",
+      "tests",
+      "scripts/vf_acceptance.py"
+    ],
+    "exit_code": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "openspec": {
+    "command": [
+      "openspec",
+      "validate",
+      "build-reproducible-simulation-foundation",
+      "--type",
+      "change",
+      "--strict",
+      "--no-interactive"
+    ],
+    "exit_code": 0,
+    "sha256": "e5e8bfc05fe155a205484b62fb2b7c0913de6c65aae664a4713a0b8505bf9da5"
+  },
+  "diff": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "traceability": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "scripts.vf_acceptance"
+    ],
+    "exit_code": 0,
+    "sha256": "c5e1f90135d15df668fd1d5fa833a574c54933829477dde99fb64e8ed2519800"
+  },
+  "ruff-sandbox-attempt": {
+    "command": [
+      "uvx",
+      "--from",
+      "ruff==0.17.4",
+      "ruff",
+      "check",
+      "."
+    ],
+    "exit_code": 2,
+    "sha256": "714cccd3f4a3e16cd2629fa75de4f34c920190726e6ddf5ce74ab46df7a14406"
+  },
+  "ruff": {
+    "command": [
+      "uvx",
+      "--from",
+      "ruff==0.17.4",
+      "ruff",
+      "check",
+      "."
+    ],
+    "exit_code": 0,
+    "log": "ruff-final.log",
+    "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "execution": "Approved execution outside sandbox after uv cache write rejection"
+  },
+  "mypy-sandbox-attempt": {
+    "command": [
+      "uvx",
+      "--from",
+      "mypy==2.4.1",
+      "mypy",
+      "--strict",
+      "src",
+      "tests"
+    ],
+    "exit_code": 2,
+    "sha256": "da8e2fca9049ed6823a60a57f80c90adc23c3441e2679547a19a97d1ff0c70ba"
+  },
+  "mypy": {
+    "command": [
+      "uvx",
+      "--from",
+      "mypy==2.4.1",
+      "mypy",
+      "--strict",
+      "src",
+      "tests"
+    ],
+    "exit_code": 0,
+    "log": "mypy-final.log",
+    "sha256": "14c86ee194cc9406b4f38866ce2eb1ba7e54c55437faf1ccc89f0195c485674d",
+    "execution": "Approved execution outside sandbox after uv cache write rejection"
+  },
+  "lock-sandbox-attempt": {
+    "command": [
+      "uv",
+      "lock",
+      "--check"
+    ],
+    "exit_code": 2,
+    "sha256": "0213df45e8142213c40732f3607acf88a77626132cbad8d4f4fb099ccd712000"
+  },
+  "lock": {
+    "command": [
+      "uv",
+      "lock",
+      "--check"
+    ],
+    "exit_code": 0,
+    "log": "lock-final.log",
+    "sha256": "e2dd2cee0573d9d8b6ff09df64b01cc54e1e42451dd0304133774abcf1824bbe",
+    "execution": "Approved execution outside sandbox"
+  },
+  "vf-final-tests": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_vf_harness.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "log": "vf-final-tests.log",
+    "sha256": "2947b6097469162bd8da6fcf806144a166e4eb51995ae4a46e68a90cfac6f859"
+  },
+  "traceability-final": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "scripts.vf_acceptance"
+    ],
+    "exit_code": 0,
+    "log": "traceability-final.log",
+    "sha256": "1f830516dc7ebce4c9ad623b725f72cfd36a65cb33c553e1a718cacb346a415a"
+  },
+  "compileall-final": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "compileall",
+      "-q",
+      "src",
+      "tests",
+      "scripts/vf_acceptance.py"
+    ],
+    "exit_code": 0,
+    "log": "compileall-final.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "openspec-final": {
+    "command": [
+      "openspec",
+      "validate",
+      "build-reproducible-simulation-foundation",
+      "--type",
+      "change",
+      "--strict",
+      "--no-interactive"
+    ],
+    "exit_code": 0,
+    "log": "openspec-final.log",
+    "sha256": "e5e8bfc05fe155a205484b62fb2b7c0913de6c65aae664a4713a0b8505bf9da5"
+  },
+  "diff-final": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "log": "diff-final.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

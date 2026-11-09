@@ -1,0 +1,11 @@
+{
+  "schema": "vf-human-approval-1",
+  "recorded_at": "2026-11-09T09:20:00.775903+00:00",
+  "source": "User message in this conversation after review of VF report and explicit final approval question",
+  "user_statement": "確認しました。問題ないです",
+  "approved": true,
+  "scope": "MVP completion under documented VF scope, acceptance evidence, exclusions and residual risks",
+  "reviewed_manifest_sha256": "b37bf935d5a1aaff6bad9445963dc6d200181589d96fe8474d3c648bd919940b",
+  "reviewed_manifest": "docs/vf-evidence-20261109/pre-approval/manifest.json",
+  "no_commit_push_deploy_archive": true
+}

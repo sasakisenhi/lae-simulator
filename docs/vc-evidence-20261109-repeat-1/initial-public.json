@@ -1,0 +1,144 @@
+{
+  "evidence": [
+    {
+      "acquisition": "offline fixed source",
+      "body": {
+        "scope": "fixed source material",
+        "source_digest": "sha256:2a72ca684624451441f22859ca01334e4742bee5a307f6daeb8c8cf944b1de59",
+        "source_id": "I1955",
+        "synthetic": false,
+        "text": "While looking into #1938, I added `fixTypes` to my VS Code settings.json:\n\n```\n  \"eslint.options\": {\n    \"fixTypes\": [\"problem\", \"suggestion\", \"layout\"]\n  },\n```\n\nHowever, I realized that that broke the ability to apply auto fixes within VS Code for my [eslint-plugin-header](https://github.com/Stuk/eslint-plugin-header) rules.\n\nIt appears that this is because eslint-plugin-header's `meta` doesn't specify a `docs.url`, and vscode-eslint only stores rule information for rules that have `docs.url`:\n\nhttps://github.com/microsoft/vscode-eslint/blob/release/3.0.10/server/src/eslint.ts#L162\n\nIs this behavior necessary / correct?"
+      },
+      "classification": "public-evidence",
+      "digest": "sha256:5c4ee4cbeaafb70ca6e189ab5dd9755f26b61fdef1a0b05c25e6db9f18a50335",
+      "event_id": null,
+      "id": "document:D01",
+      "issue": "I1955",
+      "operation": "document.read",
+      "retained": true,
+      "source_class": "fixed-material",
+      "target": "D01",
+      "tick": null,
+      "version": "issue:1955"
+    },
+    {
+      "acquisition": "synthetic event projection; real collection unverified",
+      "body": {
+        "acquisition_method": "synthetic event projection; real collection unverified",
+        "actor_id": "ACTOR-DEVTOOLS-EXERCISE",
+        "assumed_source": "simulated tool operation: code.search",
+        "available_fields": [
+          "event_id",
+          "logical_time",
+          "kind",
+          "actor_id",
+          "target_id",
+          "version",
+          "query",
+          "result_refs"
+        ],
+        "coverage": null,
+        "event_id": "PUB-7d678321ba8c57b5",
+        "evidence_refs": [],
+        "kind": "search",
+        "limitations": null,
+        "logical_time": 2,
+        "outcome": null,
+        "query": "metadata",
+        "result_refs": [
+          "R01",
+          "R02",
+          "R06",
+          "R10",
+          "workspace:B0:server/src/eslint.ts#121",
+          "workspace:B0:server/src/eslint.ts#1211",
+          "workspace:B0:server/src/eslint.ts#1223",
+          "workspace:B0:server/src/eslint.ts#1228",
+          "workspace:B0:server/src/eslint.ts#1229",
+          "workspace:B0:server/src/eslint.ts#128",
+          "workspace:B0:server/src/eslint.ts#130",
+          "workspace:B0:server/src/eslint.ts#131",
+          "workspace:B0:server/src/eslint.ts#133",
+          "workspace:B0:server/src/eslint.ts#141",
+          "workspace:B0:server/src/eslint.ts#144",
+          "workspace:B0:server/src/eslint.ts#150",
+          "workspace:B0:server/src/eslint.ts#153",
+          "workspace:B0:server/src/eslint.ts#155",
+          "workspace:B0:server/src/eslint.ts#158",
+          "workspace:B0:server/src/eslint.ts#259",
+          "workspace:B0:server/src/eslint.ts#326",
+          "workspace:B0:server/src/eslint.ts#330",
+          "workspace:B0:server/src/eslint.ts#368",
+          "workspace:B0:server/src/eslint.ts#372",
+          "workspace:B0:server/src/eslint.ts#640",
+          "workspace:B0:server/src/eslintServer.ts#25",
+          "workspace:B0:server/src/eslintServer.ts#295",
+          "workspace:B0:server/src/eslintServer.ts#661",
+          "workspace:B0:server/src/eslintServer.ts#693",
+          "workspace:B0:server/src/eslintServer.ts#824"
+        ],
+        "source_class": "tool-shaped",
+        "synthetic": true,
+        "target_id": "metadata",
+        "version": "B0"
+      },
+      "classification": "public-evidence",
+      "digest": "sha256:905d510812b59224dab7e42fd44aab15d65a5c8eed5679badcdc53ac2c7f5a69",
+      "event_id": "PUB-7d678321ba8c57b5",
+      "id": "public:PUB-7d678321ba8c57b5",
+      "issue": "I1955",
+      "operation": "search",
+      "retained": true,
+      "source_class": "tool-shaped",
+      "target": "metadata",
+      "tick": 2,
+      "version": "B0"
+    }
+  ],
+  "synthetic_interviews": {
+    "answers": [
+      {
+        "answer": "わかりません。",
+        "epistemic_kinds": [
+          "unknown"
+        ],
+        "question": "あなたには見えなかった管理上の原因は何ですか。",
+        "question_id": "Q03",
+        "synthetic": true,
+        "validation": "restricted-quotation-or-abstention"
+      },
+      {
+        "answer": "わかりません。",
+        "epistemic_kinds": [
+          "unknown"
+        ],
+        "question": "記録にない同僚との会議の日時と議事録を教えてください。",
+        "question_id": "Q05",
+        "synthetic": true,
+        "validation": "restricted-quotation-or-abstention"
+      },
+      {
+        "answer": "わかりません。",
+        "epistemic_kinds": [
+          "unknown"
+        ],
+        "question": "記録されていない心理的負担の正確な大きさは。",
+        "question_id": "Q10",
+        "synthetic": true,
+        "validation": "restricted-quotation-or-abstention"
+      },
+      {
+        "answer": "覚えていません。",
+        "epistemic_kinds": [
+          "not_remembered"
+        ],
+        "question": "保持していない、作業開始前の具体的な出来事は。",
+        "question_id": "Q11",
+        "synthetic": true,
+        "validation": "restricted-quotation-or-abstention"
+      }
+    ],
+    "schema": "interview-public-1"
+  },
+  "limits": "Fixed completed observation window; explicit-command exercise, not a developer population. Other retained evidence may be retrieved. No real compilation, psychological or causal effect measurement."
+}

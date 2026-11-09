@@ -1,0 +1,94 @@
+{
+  "hypothesis_updates": [
+    {
+      "id": "H1",
+      "status": "held due to insufficient evidence",
+      "explanation": "The retrieved header rule independently shows a layout type and whitespace fixability without docs metadata. The ESLint documentation describes fixTypes as selecting rule types for autofix and says docs is optional for custom rules. These findings give context to the report but do not establish that the missing URL caused the reported loss. The extension source text at the referenced locations was not returned.",
+      "evidence_ids": ["document:D01", "document:D04", "document:D05", "document:D06", "reference:R02"]
+    },
+    {
+      "id": "H2",
+      "status": "supported",
+      "explanation": "The retrieved synthetic record confirms the previously observed metadata search and its returned references. It also contains a synthetic navigation event targeting R01, but no navigation result or source text.",
+      "evidence_ids": ["public:PUB-7d678321ba8c57b5", "public:PUB-a15837892e1efe9d", "reference:R01"]
+    },
+    {
+      "id": "competing_explanation_1",
+      "status": "held due to insufficient evidence",
+      "claim": "FixTypes filtering or other rule metadata could be involved rather than docs.url alone.",
+      "explanation": "The retrieved API documentation describes fixTypes in terms of rule types, and the header source supplies type and fixable metadata. The records do not establish how the extension handled those fields in the reported case.",
+      "evidence_ids": ["document:D05", "document:D06", "reference:R02", "reference:R04"]
+    },
+    {
+      "id": "competing_explanation_2",
+      "status": "held due to insufficient evidence",
+      "claim": "The reported behavior could depend on the particular plugin, configuration, or version.",
+      "explanation": "The retrieved materials add a fixed plugin source and describe configuration and API choices, but contain no comparative reproduction across plugins, configurations, or versions.",
+      "evidence_ids": ["document:D01", "document:D02", "document:D06"]
+    }
+  ],
+  "conclusions": [
+    {
+      "claim": "The fixed issue records a reporter's experience and proposed explanation; it does not itself verify the mechanism.",
+      "evidence_ids": ["document:D01"]
+    },
+    {
+      "claim": "The retrieved fixed header rule has type layout and fixable whitespace, with no docs field in its meta object. The fixed ESLint documentation says docs is optional for custom rules and describes fixTypes as selecting rule types for autofix.",
+      "evidence_ids": ["document:D04", "document:D05", "document:D06"]
+    },
+    {
+      "claim": "The synthetic run record ends with outcome incomplete. The returned records do not show a reproduction, change, or evaluation; this does not establish that none occurred outside the retained records.",
+      "evidence_ids": ["public:PUB-870117d6ee9d78b1"]
+    }
+  ],
+  "unknowns": [
+    "Whether the reported behavior was reproduced, its cause, and the configurations under which it occurs.",
+    "The actual extension implementation at the indexed source locations: the returned references and search hits identify locations but omit their source text.",
+    "Whether any change or evaluation occurred outside the returned retained records.",
+    "Management causes, unrecorded meetings, psychological effects, and events outside the retained observation window."
+  ],
+  "additional_evidence_used": [
+    "public:PUB-a15837892e1efe9d",
+    "public:PUB-870117d6ee9d78b1",
+    "document:D02",
+    "document:D04",
+    "document:D05",
+    "document:D06",
+    "reference:R01",
+    "reference:R02",
+    "reference:R04"
+  ],
+  "claim_evidence": [
+    {
+      "claim": "The issue reporter associated adding fixTypes with losing auto fixes for eslint-plugin-header and proposed missing docs.url as an explanation.",
+      "evidence_ids": ["document:D01"],
+      "kind": "observation"
+    },
+    {
+      "claim": "The fixed header rule's meta object contains type layout and fixable whitespace, and no docs field.",
+      "evidence_ids": ["document:D06"],
+      "kind": "observation"
+    },
+    {
+      "claim": "The retrieved documentation describes docs as optional for custom rules and fixTypes as the rule types used for autofix.",
+      "evidence_ids": ["document:D04", "document:D05"],
+      "kind": "observation"
+    },
+    {
+      "claim": "The documentation and header source make rule type relevant context for investigation, but do not establish the mechanism behind the report.",
+      "evidence_ids": ["document:D01", "document:D05", "document:D06"],
+      "kind": "inference"
+    },
+    {
+      "claim": "The synthetic records include a metadata search, navigation to R01, and a run-ended event with outcome incomplete.",
+      "evidence_ids": ["public:PUB-7d678321ba8c57b5", "public:PUB-a15837892e1efe9d", "public:PUB-870117d6ee9d78b1"],
+      "kind": "observation"
+    },
+    {
+      "claim": "The retrieved extension locators do not provide the source text needed to verify the proposed metadata-capture mechanism.",
+      "evidence_ids": ["reference:R02", "workspace:B0:server/src/eslint.ts#158"],
+      "kind": "unknown"
+    }
+  ],
+  "context_declaration": "The issue, documentation, and plugin code are fixed OSS source material. The events, workspace search hits, and curated reference entries are synthetic records or indexes; real collection is unverified, and the locators do not supply the referenced extension source text. The interviews are synthetic. The exercise covers a fixed completed observation window, not a developer population. No real compilation, psychological effect, or causal effect was measured. Absence from retained records is not global absence."
+}
