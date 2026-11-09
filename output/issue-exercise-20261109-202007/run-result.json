@@ -1,0 +1,8 @@
+{
+  "business_outcome": "incomplete",
+  "control": "explicit commands; not autonomous policy acceptance",
+  "replay": "PASS",
+  "run_id": "local-101217f59d4d49247749b05af54b18fc46d23b91eb8e43c3251b86409c5f9c88",
+  "run_path": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/issue-exercise-20261109-202007/local-101217f59d4d49247749b05af54b18fc46d23b91eb8e43c3251b86409c5f9c88",
+  "status": "valid"
+}

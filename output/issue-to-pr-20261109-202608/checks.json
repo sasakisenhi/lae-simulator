@@ -1,0 +1,58 @@
+[
+  {
+    "id": "C01",
+    "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+    "status": "PASS",
+    "mode": "modeled",
+    "coverage": "metadata registration and fix recording",
+    "limitations": "No VS Code or plugin execution."
+  },
+  {
+    "id": "C02",
+    "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+    "status": "PASS",
+    "mode": "modeled",
+    "coverage": "explicit type filtering",
+    "limitations": "Limited semantic model."
+  },
+  {
+    "id": "C03",
+    "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+    "status": "PASS",
+    "mode": "modeled",
+    "coverage": "registration and URL retrieval",
+    "limitations": "Does not prove action execution."
+  },
+  {
+    "id": "C04",
+    "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+    "status": "PASS",
+    "mode": "modeled",
+    "coverage": "documentation action presentation",
+    "limitations": "UI rendering is not executed."
+  },
+  {
+    "id": "C05",
+    "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+    "status": "PASS",
+    "mode": "modeled",
+    "coverage": "unfiltered branch",
+    "limitations": "Only the bounded record path."
+  },
+  {
+    "id": "C06",
+    "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+    "status": "PASS",
+    "mode": "modeled",
+    "coverage": "unknown type handling",
+    "limitations": "Missing metadata may have other causes."
+  },
+  {
+    "id": "C10",
+    "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+    "status": "UNKNOWN",
+    "mode": "modeled",
+    "coverage": "version correspondence",
+    "limitations": "No actual workspace apply."
+  }
+]

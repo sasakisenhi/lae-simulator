@@ -1,0 +1,17 @@
+{
+  "control": "explicit demonstration using existing engine; not autonomous policy",
+  "scenario": "fixtures/g2/scenario-collaboration.json",
+  "steps": [
+    "read D01",
+    "search metadata",
+    "navigate R02",
+    "read D02",
+    "read D04",
+    "read D05",
+    "read D06",
+    "apply P1",
+    "model checks C01,C02,C03,C04,C05,C06,C10",
+    "submit virtual PR"
+  ],
+  "checks": "modeled only; C11/C12 and real runtime unexecuted"
+}

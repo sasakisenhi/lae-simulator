@@ -1,0 +1,22 @@
+--- a/server/src/eslint.ts
++++ b/server/src/eslint.ts
+@@ -159,7 +159,7 @@
+ 			if (ruleId2Meta.has(key)) {
+ 				return;
+ 			}
+-			if (meta && meta.docs && Is.string(meta.docs.url)) {
++			if (meta) {
+ 				ruleId2Meta.set(key, meta);
+ 			}
+ 		});
+--- a/server/src/eslintServer.ts
++++ b/server/src/eslintServer.ts
+@@ -690,7 +690,7 @@
+ 		}
+ 
+ 		if (settings.codeAction.showDocumentation.enable && result.get(ruleId).showDocumentation === undefined) {
+-			if (RuleMetaData.hasRuleId(ruleId)) {
++			if (RuleMetaData.getUrl(ruleId) !== undefined) {
+ 				result.get(ruleId).showDocumentation = createCodeAction(
+ 					`Show documentation for ${ruleId}`,
+ 					kind,

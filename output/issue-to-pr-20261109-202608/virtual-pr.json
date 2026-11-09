@@ -1,0 +1,48 @@
+{
+  "acquisition": "synthetic event projection; real collection unverified",
+  "body": {
+    "acquisition_method": "synthetic event projection; real collection unverified",
+    "actor_id": "ACTOR-DEVTOOLS-EXERCISE",
+    "assumed_source": "simulated tool operation: pr.create",
+    "available_fields": [
+      "event_id",
+      "logical_time",
+      "kind",
+      "actor_id",
+      "target_id",
+      "version",
+      "evidence_refs",
+      "coverage"
+    ],
+    "coverage": "modeled",
+    "event_id": "PUB-94a0d4a4554501a6",
+    "evidence_refs": [
+      "public:PUB-d8a969e4e7ad4f37",
+      "public:PUB-e1ca682c0ff86faa",
+      "public:PUB-dd351d2a8ece4afa",
+      "public:PUB-f4a342f24987199e",
+      "public:PUB-d4647aefa69d41ab",
+      "public:PUB-1242970d2c6e23af",
+      "public:PUB-329d543d3b7d2407"
+    ],
+    "kind": "submission-created",
+    "limitations": null,
+    "logical_time": 15,
+    "outcome": null,
+    "source_class": "tool-shaped",
+    "synthetic": true,
+    "target_id": "SIMULATED-SUBMISSION",
+    "version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace"
+  },
+  "classification": "public-evidence",
+  "digest": "sha256:8d2d9b520a680821aa7e05f38444b01d44b28eb3ba9ca01ffc918dcda4249fab",
+  "event_id": "PUB-94a0d4a4554501a6",
+  "id": "public:PUB-94a0d4a4554501a6",
+  "issue": "I1955",
+  "operation": "submission-created",
+  "retained": true,
+  "source_class": "tool-shaped",
+  "target": "SIMULATED-SUBMISSION",
+  "tick": 15,
+  "version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace"
+}

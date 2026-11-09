@@ -1,0 +1,76 @@
+{
+  "status": "valid",
+  "business_outcome": "submitted",
+  "replay": "PASS",
+  "retrieval_repeat_equal": true,
+  "control": "explicit demonstration using existing engine; not autonomous policy",
+  "run_id": "local-101217f59d4d49247749b05af54b18fc46d23b91eb8e43c3251b86409c5f9c88",
+  "run_path": "/home/sengakuhisai/dev/lae-simulator/.lae-runs/issue-to-pr-20261109-202608/local-101217f59d4d49247749b05af54b18fc46d23b91eb8e43c3251b86409c5f9c88",
+  "public_evidence_count": 64,
+  "operation_evidence_count": 17,
+  "changed_files": [
+    "server/src/eslint.ts",
+    "server/src/eslintServer.ts"
+  ],
+  "checks": [
+    {
+      "id": "C01",
+      "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+      "status": "PASS",
+      "mode": "modeled",
+      "coverage": "metadata registration and fix recording",
+      "limitations": "No VS Code or plugin execution."
+    },
+    {
+      "id": "C02",
+      "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+      "status": "PASS",
+      "mode": "modeled",
+      "coverage": "explicit type filtering",
+      "limitations": "Limited semantic model."
+    },
+    {
+      "id": "C03",
+      "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+      "status": "PASS",
+      "mode": "modeled",
+      "coverage": "registration and URL retrieval",
+      "limitations": "Does not prove action execution."
+    },
+    {
+      "id": "C04",
+      "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+      "status": "PASS",
+      "mode": "modeled",
+      "coverage": "documentation action presentation",
+      "limitations": "UI rendering is not executed."
+    },
+    {
+      "id": "C05",
+      "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+      "status": "PASS",
+      "mode": "modeled",
+      "coverage": "unfiltered branch",
+      "limitations": "Only the bounded record path."
+    },
+    {
+      "id": "C06",
+      "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+      "status": "PASS",
+      "mode": "modeled",
+      "coverage": "unknown type handling",
+      "limitations": "Missing metadata may have other causes."
+    },
+    {
+      "id": "C10",
+      "workspace_version": "P1:d464584f0328d3ce1f15cd7a761d1003794728474d4e027e4ac57ca973370ace",
+      "status": "UNKNOWN",
+      "mode": "modeled",
+      "coverage": "version correspondence",
+      "limitations": "No actual workspace apply."
+    }
+  ],
+  "virtual_pr_id": "public:PUB-94a0d4a4554501a6",
+  "limitations": "合成教材の意味モデルによる検査のみ。VS Code/plugin実行、自動修正の実機再現、build/typecheck/既存テスト（C11/C12）、実GitHub送信は未実施。",
+  "input_sha256": "3b50eb9af4b7d9018cfeb321d41e59dc6b9a69390ccc66c03cbf01c165d1ac0c"
+}
