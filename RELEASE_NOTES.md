@@ -6,6 +6,8 @@
 
 GitHub Releaseのソースアーカイブを展開し、READMEの手順でセットアップします。本体と必要な教材を含み、開発資料・検証証跡・テスト・個人設定は `.gitattributes` の `export-ignore` で除外します。リポジトリのGit履歴はアーカイブに含みません。
 
+旧シナリオ `scenario.json`・`scenario-timed.json` と、その専用レビュー記録は配布対象から除外します。READMEで使う `scenario-collaboration.json` と共有の教材・Patchは同梱します。
+
 ## 制約
 
 - Python 3.14.8を使用します。Linux x86_64以外は未検証です。

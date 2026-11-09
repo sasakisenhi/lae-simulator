@@ -9,3 +9,9 @@
 /scripts export-ignore
 /skills export-ignore
 /tests export-ignore
+
+# Release only the scenario used by the README and its review record.
+/fixtures/g2/scenario.json export-ignore
+/fixtures/g2/scenario-timed.json export-ignore
+/fixtures/g2/extraction-review.txt export-ignore
+/fixtures/g2/timing-review.txt export-ignore
