@@ -1,0 +1,11 @@
+# Keep development and audit artifacts in Git, outside release source archives.
+/.agents export-ignore
+/.codex export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
+/AGENTS.md export-ignore
+/docs export-ignore
+/openspec export-ignore
+/scripts export-ignore
+/skills export-ignore
+/tests export-ignore

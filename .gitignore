@@ -12,3 +12,7 @@ build/
 .env
 .env.*
 .lae-runs/
+.lae-interviews/
+
+# Account recovery codes must never be committed
+scripts/github-recovery-codes.txt
