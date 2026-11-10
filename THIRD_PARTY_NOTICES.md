@@ -2,7 +2,7 @@
 
 確認日: 2026-11-10
 
-ルートの [LICENSE](LICENSE) は、本プロジェクトが権利を持つオリジナルコードと本体向けドキュメントに適用します。第三者素材を再ライセンスするものではありません。`fixtures/g1/sources/lae/` の資料は権利者確認が未完了のため、本体MITライセンスの対象から除きます。
+ルートの [LICENSE](LICENSE) は、本プロジェクトが権利を持つオリジナルコードと本体向けドキュメントに適用します。第三者素材を再ライセンスするものではありません。`fixtures/g1/sources/lae/` の資料6件は、2026-11-10に提供者本人から権利保有とMITでの公開許諾を確認し、ルートのMITライセンスを適用します。
 
 ## 固定教材
 
@@ -13,7 +13,7 @@
 | eslint-plugin-header（H0） | `63f18ce725edb23a2d274b234df7f12ff0b7f009` / Stuart Knightley and contributors | MIT。著作権・許諾文を保持して配布 | `fixtures/g1/sources/oss/h0/LICENSE.md`、`fixtures/g1/raw/h0/LICENSE.md.b64` |
 | Issue #1955（I1955） | 2024-11-26 / Josh Kelley (`joshkel`) | 下記のGitHub規約D.6と投稿時のMITライセンスに基づく判断 | `fixtures/g1/sources/issue/issue-1955.md`、[原投稿](https://github.com/microsoft/vscode-eslint/issues/1955) |
 | Issueコメント（I1955-C1） | 2024-11-27 / `dbaeumer` | 同上。監査用資料であり、演習開始時の本人知識ではない | `fixtures/g1/sources/issue/comment-2503124072.md`、[原投稿](https://github.com/microsoft/vscode-eslint/issues/1955#issuecomment-2503124072) |
-| LAE資料6ファイル | 架空企業資料 v0.2.0 / 原著作者・許諾を未確認 | **権利者確認待ち。一般公開の可否を確定していない** | `fixtures/g1/sources/lae/`、元のDrive IDはmanifestに記録 |
+| LAE資料6ファイル | 架空企業資料 v0.2.0 / プロジェクト提供者 | MIT。2026-11-10に提供者が権利保有・公開を確認 | `fixtures/g1/sources/lae/`、元のDrive IDはmanifestに記録 |
 
 ### Issue本文・コメントの扱い
 
@@ -27,7 +27,7 @@ manifestの `NOASSERTION` は取得時の記録です。固定入力・digest・
 
 固定コミットにある3件のライセンス原文のSHA-256と、`raw/` のbase64を復号したバイト列が一致することを確認しました。`sources/` の読みやすいコピーには改行の変換・追加が含まれます。対象版、出典、内容digestは `fixtures/g1/manifest.json` にあります。
 
-LAE資料が架空企業の設定であること、Driveから閲覧できることは、著作権や公開許諾の証明にはなりません。権利者の確認が完了するまでは、教材込みの公開Releaseは作成しません。
+LAE資料の許諾根拠は、提供者本人による権利保有・MIT公開の確認です。架空企業の設定であることやDriveから閲覧できることを、許諾の根拠とはしていません。
 
 ## Python依存ライブラリ
 
