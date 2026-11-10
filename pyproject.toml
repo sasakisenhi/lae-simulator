@@ -7,6 +7,8 @@ name = "lae-simulator"
 version = "0.1.0"
 description = "Reproducible synthetic issue simulation foundation"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
 requires-python = "==3.14.8"
 dependencies = [
     "google-genai==3.0.0",

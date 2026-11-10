@@ -75,6 +75,6 @@ uv run --locked lae-sim interview <run_path> --scenario fixtures/g2/scenario-col
 
 ## 利用条件と配布範囲
 
-本体のオープンソースライセンスは未設定です。このリリースによって一般への再配布権を付与するものではありません。第三者素材の出典・利用条件は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) を確認してください。
+本体のオリジナルコードと本体向けドキュメントは [MIT License](LICENSE) で提供します。第三者素材とLAE資料に本体のライセンスを自動適用するものではありません。素材の出典・利用条件・未確認事項は [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) を確認してください。
 
 リリースアーカイブは本体・使い方・必要データ・依存固定ファイルを含みます。開発用仕様、テスト、検証ログ、個人設定は含みません。変更点と制約は [RELEASE_NOTES.md](RELEASE_NOTES.md) を参照してください。
